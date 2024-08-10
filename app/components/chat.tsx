@@ -12,7 +12,6 @@ import React, {
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
 import RenameIcon from "../icons/rename.svg";
-import ExportIcon from "../icons/share.svg";
 import ReturnIcon from "../icons/return.svg";
 import CopyIcon from "../icons/copy.svg";
 import LoadingIcon from "../icons/three-dots.svg";
@@ -100,7 +99,6 @@ import { ContextPrompts, MaskAvatar, MaskConfig } from "./mask";
 import { useMaskStore } from "../store/mask";
 import { ChatCommandPrefix, useChatCommand, useCommand } from "../command";
 import { prettyObject } from "../utils/format";
-import { ExportMessageModal } from "./exporter";
 import { getClientConfig } from "../config/client";
 import { useAllModels } from "../utils/hooks";
 import { MultimodalContent } from "../client/api";
@@ -1343,16 +1341,6 @@ function _Chat() {
               />
             </div>
           )}
-          <div className="window-action-button">
-            <IconButton
-              icon={<ExportIcon />}
-              bordered
-              title={Locale.Chat.Actions.Export}
-              onClick={() => {
-                setShowExport(true);
-              }}
-            />
-          </div>
           {showMaxIcon && (
             <div className="window-action-button">
               <IconButton
@@ -1654,10 +1642,6 @@ function _Chat() {
           />
         </label>
       </div>
-
-      {showExport && (
-        <ExportMessageModal onClose={() => setShowExport(false)} />
-      )}
 
       {isEditingMessage && (
         <EditMessageModal

@@ -34,7 +34,6 @@ const tw = {
     Actions: {
       ChatList: "檢視訊息列表",
       CompressedHistory: "檢視壓縮後的歷史 Prompt",
-      Export: "匯出聊天紀錄",
       Copy: "複製",
       Stop: "停止",
       Retry: "重試",
