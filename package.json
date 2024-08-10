@@ -1,5 +1,5 @@
 {
-  "name": "chatgpt-broker",
+  "name": "llm-broker",
   "private": false,
   "license": "mit",
   "scripts": {

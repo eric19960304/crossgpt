@@ -1,6 +1,6 @@
 {
-  "name": "ChatGPT Broker",
-  "short_name": "ChatGPT Broker",
+  "name": "LLM Broker",
+  "short_name": "LLM Broker",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
