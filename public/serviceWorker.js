@@ -1,5 +1,5 @@
-const CHATGPT_NEXT_WEB_CACHE = "cross-platform-llm-client-cache";
-const CHATGPT_NEXT_WEB_FILE_CACHE = "cross-platform-llm-client-file";
+const CHATGPT_NEXT_WEB_CACHE = "llm-broker-cache";
+const CHATGPT_NEXT_WEB_FILE_CACHE = "llm-broker-file";
 let a="useandom-26T198340PX75pxXACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";let nanoid=(e=21)=>{let t="",r=crypto.getRandomValues(new Uint8Array(e));for(let n=0;n<e;n++)t+=a[63&r[n]];return t};
 
 self.addEventListener("activate", function (event) {

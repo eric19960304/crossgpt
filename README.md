@@ -13,8 +13,6 @@ NodeJS >= 18, Docker >= 20
 
 ## Development
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/cross-platform-llm-client)
-
 Before starting development, you must create a new `.env.local` file at project root, and place your api key into it:
 
 ```

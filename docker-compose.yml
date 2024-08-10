@@ -1,10 +1,10 @@
 version: '3'
 services:
-  cross-platform-llm-client:
+  llm-broker:
     build:
       context: .
-    container_name: cross-platform-llm-client
-    image: cross-platform-llm-client:latest
+    container_name: llm-broker
+    image: llm-broker:latest
     ports:
       - 3000:3000
     environment:
