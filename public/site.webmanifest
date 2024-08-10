@@ -1,6 +1,6 @@
 {
-  "name": "NextChat",
-  "short_name": "NextChat",
+  "name": "ChatGPT Broker",
+  "short_name": "ChatGPT Broker",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

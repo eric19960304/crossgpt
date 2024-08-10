@@ -184,7 +184,9 @@ export function Artifacts() {
   return (
     <div className={styles["artifacts"]}>
       <div className={styles["artifacts-header"]}>
-        <div className={styles["artifacts-title"]}>NextChat Artifacts</div>
+        <div className={styles["artifacts-title"]}>
+          ChatGPT Broker Artifacts
+        </div>
         <ArtifactsShareButton
           id={id}
           getCode={() => code}
