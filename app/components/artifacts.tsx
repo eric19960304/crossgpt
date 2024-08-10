@@ -75,7 +75,7 @@ export function HTMLPreview(props: {
       className={styles["artifacts-iframe"]}
       id={frameId.current}
       ref={ref}
-      sandbox="allow-forms allow-modals allow-scripts"
+      sandbox="allow-scripts"
       style={{ height }}
       srcDoc={srcDoc}
       onLoad={handleOnLoad}
