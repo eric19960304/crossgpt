@@ -31,4 +31,4 @@ COPY --from=builder /app/.next/server ./.next/server
 
 EXPOSE 3001
 
-CMD [ "node", "server.js" ]
+CMD ["node", "server.js", "-p", "3001"]
