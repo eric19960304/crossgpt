@@ -227,7 +227,7 @@ export function SideBar(props: { className?: string }) {
         subTitle="Access ChatGPT from anywhere."
         logo={<ChatGptIcon />}
       >
-        <div className={styles["sidebar-header-bar"]}>
+        {/* <div className={styles["sidebar-header-bar"]}>
           <IconButton
             icon={<MaskIcon />}
             text={shouldNarrow ? undefined : Locale.Mask.Name}
@@ -248,7 +248,7 @@ export function SideBar(props: { className?: string }) {
             onClick={() => setShowPluginSelector(true)}
             shadow
           />
-        </div>
+        </div> */}
         {showPluginSelector && (
           <Selector
             items={[
