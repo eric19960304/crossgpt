@@ -1255,7 +1255,7 @@ export function Settings() {
       </div>
       <div className={styles["settings"]}>
         <List>
-          <ListItem title={Locale.Settings.Avatar}>
+          {/* <ListItem title={Locale.Settings.Avatar}>
             <Popover
               onClose={() => setShowEmojiPicker(false)}
               content={
@@ -1279,7 +1279,7 @@ export function Settings() {
                 <Avatar avatar={config.avatar} />
               </div>
             </Popover>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem title={Locale.Settings.SendKey}>
             <Select
