@@ -149,7 +149,6 @@ export const useAppConfig = createPersistStore(
         state.modelConfig.frequency_penalty = 0;
         state.modelConfig.top_p = 1;
         state.modelConfig.template = DEFAULT_INPUT_TEMPLATE;
-        state.dontShowMaskSplashScreen = false;
         state.hideBuiltinMasks = false;
       }
 
@@ -176,6 +175,7 @@ export const useAppConfig = createPersistStore(
             : config?.template ?? DEFAULT_INPUT_TEMPLATE;
       }
 
+      state.dontShowMaskSplashScreen = true;
       return state as any;
     },
   },
