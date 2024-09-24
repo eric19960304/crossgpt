@@ -1371,7 +1371,7 @@ function _Chat() {
               >
                 <div className={styles["chat-message-container"]}>
                   <div className={styles["chat-message-header"]}>
-                    <div className={styles["chat-message-avatar"]}>
+                    {/* <div className={styles["chat-message-avatar"]}>
                       <div className={styles["chat-message-edit"]}>
                         <IconButton
                           icon={<EditIcon />}
@@ -1423,7 +1423,7 @@ function _Chat() {
                           )}
                         </>
                       )}
-                    </div>
+                    </div> */}
 
                     {showActions && (
                       <div className={styles["chat-message-actions"]}>
