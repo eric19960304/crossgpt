@@ -1274,11 +1274,11 @@ function _Chat() {
           )}
         </div>
 
-        <PromptToast
+        {/* <PromptToast
           showToast={!hitBottom}
           showModal={showPromptModal}
           setShowModal={setShowPromptModal}
-        />
+        /> */}
       </div>
 
       <div
@@ -1466,7 +1466,7 @@ function _Chat() {
 
                   <div className={styles["chat-message-action-date"]}>
                     {isContext
-                      ? Locale.Chat.IsContext
+                      ? ""
                       : message.date.toLocaleString()}
                   </div>
                 </div>
