@@ -516,51 +516,6 @@ export function ChatActions(props: {
         />
       )}
 
-      {/* <ChatAction
-        onClick={nextTheme}
-        text={Locale.Chat.InputActions.Theme[theme]}
-        icon={
-          <>
-            {theme === Theme.Auto ? (
-              <AutoIcon />
-            ) : theme === Theme.Light ? (
-              <LightIcon />
-            ) : theme === Theme.Dark ? (
-              <DarkIcon />
-            ) : null}
-          </>
-        }
-      /> */}
-
-      {/* <ChatAction
-        onClick={props.showPromptHints}
-        text={Locale.Chat.InputActions.Prompt}
-        icon={<PromptIcon />}
-      /> */}
-
-      {/* <ChatAction
-        onClick={() => {
-          navigate(Path.Masks);
-        }}
-        text={Locale.Chat.InputActions.Masks}
-        icon={<MaskIcon />}
-      /> */}
-
-      {/* <ChatAction
-        text={Locale.Chat.InputActions.Clear}
-        icon={<BreakIcon />}
-        onClick={() => {
-          chatStore.updateCurrentSession((session) => {
-            if (session.clearContextIndex === session.messages.length) {
-              session.clearContextIndex = undefined;
-            } else {
-              session.clearContextIndex = session.messages.length;
-              session.memoryPrompt = ""; // will clear memory
-            }
-          });
-        }}
-      /> */}
-
       <ChatAction
         onClick={() => setShowModelSelector(true)}
         text={currentModelName}
@@ -584,15 +539,6 @@ export function ChatActions(props: {
                 providerName as ServiceProvider;
               session.mask.syncGlobalConfig = false;
             });
-            if (providerName == "ByteDance") {
-              const selectedModel = models.find(
-                (m) =>
-                  m.name == model && m?.provider?.providerName == providerName,
-              );
-              showToast(selectedModel?.displayName ?? "");
-            } else {
-              showToast(model);
-            }
           }}
         />
       )}
@@ -623,12 +569,6 @@ export function ChatActions(props: {
           }}
         />
       )}
-
-      {/* <ChatAction
-        onClick={() => setShowPluginSelector(true)}
-        text={Locale.Plugin.Name}
-        icon={<PluginIcon />}
-      /> */}
 
       {showUploadImage && (
         <ChatAction
