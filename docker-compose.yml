@@ -1,10 +1,10 @@
 version: '3'
 services:
-  llm-broker:
+  chohogpt:
     build:
       context: .
-    container_name: llm-broker
-    image: llm-broker:latest
+    container_name: chohogpt
+    image: chohogpt:latest
     ports:
       - 3000:3000
     environment:
