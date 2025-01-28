@@ -184,7 +184,7 @@ export function Artifacts() {
   return (
     <div className={styles["artifacts"]}>
       <div className={styles["artifacts-header"]}>
-        <div className={styles["artifacts-title"]}>LLM Broker Artifacts</div>
+        <div className={styles["artifacts-title"]}>ChocoGPT Artifacts</div>
         <ArtifactsShareButton
           id={id}
           getCode={() => code}
