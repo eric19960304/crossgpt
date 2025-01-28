@@ -117,20 +117,6 @@ export const getServerSideConfig = () => {
   let customModels = process.env.CUSTOM_MODELS ?? "";
   let defaultModel = process.env.DEFAULT_MODEL ?? "";
 
-  if (disableGPT4) {
-    if (customModels) customModels += ",";
-    customModels += DEFAULT_MODELS.filter(
-      (m) => m.name.startsWith("gpt-4") && !m.name.startsWith("gpt-4o-mini"),
-    )
-      .map((m) => "-" + m.name)
-      .join(",");
-    if (
-      defaultModel.startsWith("gpt-4") &&
-      !defaultModel.startsWith("gpt-4o-mini")
-    )
-      defaultModel = "";
-  }
-
   const isStability = !!process.env.STABILITY_API_KEY;
 
   const isAzure = !!process.env.AZURE_URL;
