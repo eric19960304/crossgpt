@@ -11,7 +11,7 @@ const serverConfig = getServerSideConfig();
 
 export const metadata: Metadata = {
   title: "ChocoGPT",
-  description: "Access ChatGPT from anywhere anonymously",
+  description: "ChatGPT anywhere, anonymously.",
   appleWebApp: {
     title: "ChocoGPT",
     statusBarStyle: "default",

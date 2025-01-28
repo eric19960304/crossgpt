@@ -224,7 +224,7 @@ export function SideBar(props: { className?: string }) {
     >
       <SideBarHeader
         title="ChocoGPT"
-        subTitle="Access ChatGPT from anywhere anonymously"
+        subTitle="ChatGPT anywhere, anonymously."
         logo={<ChatGptIcon />}
       >
         {/* <div className={styles["sidebar-header-bar"]}>
