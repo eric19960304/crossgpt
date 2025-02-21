@@ -8,7 +8,7 @@ const CustomSeq = {
     if (CustomSeq.cache.has(id)) {
       return CustomSeq.cache.get(id) as number;
     } else {
-      let seq = CustomSeq.val++;
+      const seq = CustomSeq.val++;
       CustomSeq.cache.set(id, seq);
       return seq;
     }
@@ -30,7 +30,7 @@ const customProvider = (providerName: string) => ({
 const sortModelTable = (models: ReturnType<typeof collectModels>) =>
   models.sort((a, b) => {
     if (a.provider && b.provider) {
-      let cmp = a.provider.sorted - b.provider.sorted;
+      const cmp = a.provider.sorted - b.provider.sorted;
       return cmp === 0 ? a.sorted - b.sorted : cmp;
     } else {
       return a.sorted - b.sorted;
@@ -140,7 +140,7 @@ export function collectModelTableWithDefaultModel(
   customModels: string,
   defaultModel: string,
 ) {
-  let modelTable = collectModelTable(models, customModels);
+  const modelTable = collectModelTable(models, customModels);
   if (defaultModel && defaultModel !== "") {
     if (defaultModel.includes("@")) {
       if (defaultModel in modelTable) {

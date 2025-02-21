@@ -52,7 +52,7 @@ export function SideBar(props: { className?: string }) {
         }
       }
     }
-    let data: any = {
+    const data: any = {
       model: currentModel.value,
       model_name: currentModel.name,
       status: "wait",

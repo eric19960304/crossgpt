@@ -60,14 +60,14 @@ const serverConfig = getServerSideConfig();
 async function request(req: NextRequest) {
   const controller = new AbortController();
 
-  let authHeaderName = "x-api-key";
-  let authValue =
+  const authHeaderName = "x-api-key";
+  const authValue =
     req.headers.get(authHeaderName) ||
     req.headers.get("Authorization")?.replaceAll("Bearer ", "").trim() ||
     serverConfig.anthropicApiKey ||
     "";
 
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Anthropic, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Anthropic, "");
 
   let baseUrl =
     serverConfig.anthropicUrl || serverConfig.baseUrl || ANTHROPIC_BASE_URL;

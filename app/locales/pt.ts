@@ -80,7 +80,7 @@ const pt: PartialLocaleType = {
     Rename: "Renomear Chat",
     Typing: "Digitando…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} para enviar`;
+      let inputHints = `${submitKey} para enviar`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += ", Shift + Enter para quebrar linha";
       }

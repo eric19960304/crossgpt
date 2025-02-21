@@ -81,7 +81,7 @@ const bn: PartialLocaleType = {
     Rename: "চ্যাট নাম পরিবর্তন করুন",
     Typing: "লিখছে…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} পাঠান`;
+      let inputHints = `${submitKey} পাঠান`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter নতুন লাইন";
       }

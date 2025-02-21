@@ -81,7 +81,7 @@ const jp: PartialLocaleType = {
     Rename: "チャットの名前を変更",
     Typing: "入力中…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey}で送信`;
+      let inputHints = `${submitKey}で送信`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "、Shift + Enterで改行";
       }

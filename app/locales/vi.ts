@@ -81,7 +81,7 @@ const vi: PartialLocaleType = {
     Rename: "Đổi tên cuộc trò chuyện",
     Typing: "Đang nhập…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} gửi`;
+      let inputHints = `${submitKey} gửi`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter xuống dòng";
       }

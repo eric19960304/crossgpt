@@ -82,7 +82,7 @@ const de: PartialLocaleType = {
     Rename: "Gespräch umbenennen",
     Typing: "Tippt…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} senden`;
+      let inputHints = `${submitKey} senden`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter für Zeilenumbruch";
       }

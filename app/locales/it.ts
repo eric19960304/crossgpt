@@ -82,7 +82,7 @@ const it: PartialLocaleType = {
     Rename: "Rinomina conversazione",
     Typing: "Digitazione in corso…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} per inviare`;
+      let inputHints = `${submitKey} per inviare`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter per andare a capo";
       }

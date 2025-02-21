@@ -338,7 +338,7 @@ export class MsEdgeTTS {
 
   toArrayBuffer(input: string, options?: ProsodyOptions): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
-      let data: Uint8Array[] = [];
+      const data: Uint8Array[] = [];
       const readable = this.toStream(input, options);
       readable.on("data", (chunk) => {
         data.push(chunk);

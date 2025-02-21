@@ -81,7 +81,7 @@ export const useSdStore = createPersistStore<
         };
         const path = `${prefix}/${Stability.GeneratePath}/${data.model}`;
         const formData = new FormData();
-        for (let paramsKey in data.params) {
+        for (const paramsKey in data.params) {
           formData.append(paramsKey, data.params[paramsKey]);
         }
         fetch(path, {

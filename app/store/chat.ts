@@ -159,7 +159,7 @@ function fillTemplateWith(input: string, modelConfig: ModelConfig) {
   // Find the model in the DEFAULT_MODELS array that matches the modelConfig.model
   const modelInfo = DEFAULT_MODELS.find((m) => m.name === modelConfig.model);
 
-  var serviceProvider = "OpenAI";
+  let serviceProvider = "OpenAI";
   if (modelInfo) {
     // TODO: auto detect the providerName from the modelConfig.model
 
@@ -399,7 +399,7 @@ export const useChatStore = createPersistStore(
           ];
         }
 
-        let userMessage: ChatMessage = createMessage({
+        const userMessage: ChatMessage = createMessage({
           role: "user",
           content: mContent,
           isMcpResponse,
@@ -527,7 +527,7 @@ export const useChatStore = createPersistStore(
           (session.mask.modelConfig.model.startsWith("gpt-") ||
             session.mask.modelConfig.model.startsWith("chatgpt-"));
 
-        var systemPrompts: ChatMessage[] = [];
+        const systemPrompts: ChatMessage[] = [];
 
         if (shouldInjectSystemPrompts) {
           console.log(

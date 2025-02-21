@@ -29,7 +29,7 @@ async function handle(
 
   const requestUrl = new URL(req.url);
   let endpoint = requestUrl.searchParams.get("endpoint");
-  let proxy_method = requestUrl.searchParams.get("proxy_method") || req.method;
+  const proxy_method = requestUrl.searchParams.get("proxy_method") || req.method;
 
   // Validate the endpoint to prevent potential SSRF attacks
   if (

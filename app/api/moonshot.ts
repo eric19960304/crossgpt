@@ -42,7 +42,7 @@ async function request(req: NextRequest) {
   const controller = new AbortController();
 
   // alibaba use base url or just remove the path
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Moonshot, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Moonshot, "");
 
   let baseUrl = serverConfig.moonshotUrl || MOONSHOT_BASE_URL;
 

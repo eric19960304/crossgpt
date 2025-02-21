@@ -81,7 +81,7 @@ const tr: PartialLocaleType = {
     Rename: "Sohbeti yeniden adlandır",
     Typing: "Yazıyor…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} gönder`;
+      let inputHints = `${submitKey} gönder`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += " Shift + Enter satır sonu için";
       }

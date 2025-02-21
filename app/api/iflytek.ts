@@ -43,7 +43,7 @@ async function request(req: NextRequest) {
   const controller = new AbortController();
 
   // iflytek use base url or just remove the path
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Iflytek, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Iflytek, "");
 
   let baseUrl = serverConfig.iflytekUrl || IFLYTEK_BASE_URL;
 

@@ -1,19 +1,23 @@
+/* eslint-disable no-empty */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IconButton } from "./button";
 import { ErrorBoundary } from "./error";
 
 import styles from "./mask.module.scss";
 
-import DownloadIcon from "../icons/download.svg";
-import UploadIcon from "../icons/upload.svg";
-import EditIcon from "../icons/edit.svg";
 import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
-import DeleteIcon from "../icons/delete.svg";
-import EyeIcon from "../icons/eye.svg";
 import CopyIcon from "../icons/copy.svg";
+import DeleteIcon from "../icons/delete.svg";
+import DownloadIcon from "../icons/download.svg";
 import DragIcon from "../icons/drag.svg";
+import EditIcon from "../icons/edit.svg";
+import EyeIcon from "../icons/eye.svg";
+import UploadIcon from "../icons/upload.svg";
 
-import { DEFAULT_MASK_AVATAR, Mask, useMaskStore } from "../store/mask";
+import { useNavigate } from "react-router-dom";
+import { MultimodalContent, ROLES } from "../client/api";
+import Locale, { ALL_LANG_OPTIONS, AllLangs, Lang } from "../locales";
 import {
   ChatMessage,
   createMessage,
@@ -22,40 +26,37 @@ import {
   useAppConfig,
   useChatStore,
 } from "../store";
-import { MultimodalContent, ROLES } from "../client/api";
+import { DEFAULT_MASK_AVATAR, Mask, useMaskStore } from "../store/mask";
+import { Avatar } from "./emoji";
 import {
   Input,
   List,
   ListItem,
   Modal,
-  Popover,
   Select,
-  showConfirm,
+  showConfirm
 } from "./ui-lib";
-import { Avatar, AvatarPicker } from "./emoji";
-import Locale, { AllLangs, ALL_LANG_OPTIONS, Lang } from "../locales";
-import { useNavigate } from "react-router-dom";
 
-import chatStyle from "./chat.module.scss";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  OnDragEndResponder,
+} from "@hello-pangea/dnd";
+import clsx from "clsx";
 import { useState } from "react";
+import { FileName, Path } from "../constant";
+import { BUILTIN_MASK_STORE } from "../masks";
+import { Updater } from "../typing";
 import {
   copyToClipboard,
   downloadAs,
   getMessageImages,
+  getMessageTextContent,
   readFromFile,
 } from "../utils";
-import { Updater } from "../typing";
+import chatStyle from "./chat.module.scss";
 import { ModelConfigList } from "./model-config";
-import { FileName, Path } from "../constant";
-import { BUILTIN_MASK_STORE } from "../masks";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  OnDragEndResponder,
-} from "@hello-pangea/dnd";
-import { getMessageTextContent } from "../utils";
-import clsx from "clsx";
 
 // drag and drop helper function
 function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
@@ -80,7 +81,6 @@ export function MaskConfig(props: {
   readonly?: boolean;
   shouldSyncFromGlobal?: boolean;
 }) {
-  const [showPicker, setShowPicker] = useState(false);
 
   const updateConfig = (updater: (config: ModelConfig) => void) => {
     if (props.readonly) return;
@@ -660,7 +660,6 @@ export function MaskPage() {
                 bordered
                 text={Locale.Mask.EditModal.Clone}
                 onClick={() => {
-                  navigate(Path.Masks);
                   maskStore.create(editingMask);
                   setEditingMaskId(undefined);
                 }}

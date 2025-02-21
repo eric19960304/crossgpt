@@ -27,7 +27,7 @@ export async function handle(
     baseUrl = baseUrl.slice(0, -1);
   }
 
-  let path = `${req.nextUrl.pathname}`.replaceAll("/api/stability/", "");
+  const path = `${req.nextUrl.pathname}`.replaceAll("/api/stability/", "");
 
   console.log("[Stability Proxy] ", path);
   console.log("[Stability Base Url]", baseUrl);

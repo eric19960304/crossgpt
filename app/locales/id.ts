@@ -81,7 +81,7 @@ const id: PartialLocaleType = {
     Rename: "Ganti Nama Obrolan",
     Typing: "Sedang Mengetik…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} kirim`;
+      let inputHints = `${submitKey} kirim`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter untuk baris baru";
       }

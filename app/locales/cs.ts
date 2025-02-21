@@ -81,7 +81,7 @@ const cs: PartialLocaleType = {
     Rename: "Přejmenovat konverzaci",
     Typing: "Píše se…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} odeslat`;
+      let inputHints = `${submitKey} odeslat`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter pro nový řádek";
       }

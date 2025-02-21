@@ -18,8 +18,8 @@ export function compressImage(file: Blob, maxSize: number): Promise<string> {
     reader.onload = (readerEvent: any) => {
       const image = new Image();
       image.onload = () => {
-        let canvas = document.createElement("canvas");
-        let ctx = canvas.getContext("2d");
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
         let width = image.width;
         let height = image.height;
         let quality = 0.9;
@@ -173,7 +173,7 @@ export function stream(
   let remainText = "";
   let finished = false;
   let running = false;
-  let runTools: any[] = [];
+  const runTools: any[] = [];
   let responseRes: Response;
 
   // animate response to make it looks smooth
@@ -396,7 +396,7 @@ export function streamWithThink(
   let remainText = "";
   let finished = false;
   let running = false;
-  let runTools: any[] = [];
+  const runTools: any[] = [];
   let responseRes: Response;
   let isInThinkingMode = false;
   let lastIsThinking = false;

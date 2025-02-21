@@ -41,7 +41,7 @@ export async function handle(
 async function request(req: NextRequest) {
   const controller = new AbortController();
 
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.ByteDance, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.ByteDance, "");
 
   let baseUrl = serverConfig.bytedanceUrl || BYTEDANCE_BASE_URL;
 

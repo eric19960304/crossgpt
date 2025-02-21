@@ -70,7 +70,7 @@ import {
   
       async getLatestVersion(force = false) {
         const versionType = get().versionType;
-        let version =
+        const version =
           versionType === "date"
             ? getClientConfig()?.commitDate
             : getClientConfig()?.version;

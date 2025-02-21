@@ -81,7 +81,7 @@ const sk: PartialLocaleType = {
     Rename: "Premenovať Chat",
     Typing: "Písanie…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} na odoslanie`;
+      let inputHints = `${submitKey} na odoslanie`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += ", Shift + Enter na zalomenie";
       }

@@ -42,7 +42,7 @@ async function request(req: NextRequest) {
   const controller = new AbortController();
 
   // alibaba use base url or just remove the path
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.SiliconFlow, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.SiliconFlow, "");
 
   let baseUrl = serverConfig.siliconFlowUrl || SILICONFLOW_BASE_URL;
 

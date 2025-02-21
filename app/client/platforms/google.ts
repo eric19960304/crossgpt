@@ -181,7 +181,7 @@ export class GeminiProApi implements LLMApi {
       ],
     };
 
-    let shouldStream = !!options.config.stream;
+    const shouldStream = !!options.config.stream;
     const controller = new AbortController();
     options.onController?.(controller);
     try {

@@ -54,7 +54,7 @@ export async function handle(
 async function request(req: NextRequest) {
   const controller = new AbortController();
 
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Baidu, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Baidu, "");
 
   let baseUrl = serverConfig.baiduUrl || BAIDU_BASE_URL;
 

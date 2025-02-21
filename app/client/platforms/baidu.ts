@@ -126,7 +126,7 @@ export class ErnieApi implements LLMApi {
       let chatPath = this.path(Baidu.ChatPath(modelConfig.model));
 
       // getAccessToken can not run in browser, because cors error
-      if (!!getClientConfig()?.isApp) {
+      if (getClientConfig()?.isApp) {
         const accessStore = useAccessStore.getState();
         if (accessStore.useCustomConfig) {
           if (accessStore.isValidBaidu()) {

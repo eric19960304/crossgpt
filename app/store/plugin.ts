@@ -27,7 +27,7 @@ export type FunctionToolItem = {
   function: {
     name: string;
     description?: string;
-    parameters: Object;
+    parameters: object;
   };
 };
 

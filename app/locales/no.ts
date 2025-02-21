@@ -83,7 +83,7 @@ const no: PartialLocaleType = {
     Rename: "Gi nytt navn til samtale",
     Typing: "Skriver…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} send`;
+      let inputHints = `${submitKey} send`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter for linjeskift";
       }

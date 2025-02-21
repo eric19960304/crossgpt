@@ -81,7 +81,7 @@ const ar: PartialLocaleType = {
     Rename: "إعادة تسمية الدردشة",
     Typing: "يكتب…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} إرسال`;
+      let inputHints = `${submitKey} إرسال`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "، Shift + Enter لإدراج سطر جديد";
       }

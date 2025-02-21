@@ -83,7 +83,7 @@ const es: PartialLocaleType = {
     Rename: "Renombrar conversación",
     Typing: "Escribiendo…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} para enviar`;
+      let inputHints = `${submitKey} para enviar`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter para nueva línea";
       }

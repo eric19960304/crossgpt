@@ -80,7 +80,7 @@ const tw = {
     Rename: "重新命名對話",
     Typing: "正在輸入…",
     Input: (submitKey: string) => {
-      var inputHints = `輸入訊息後，按下 ${submitKey} 鍵即可傳送`;
+      let inputHints = `輸入訊息後，按下 ${submitKey} 鍵即可傳送`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter 鍵換行";
       }

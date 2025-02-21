@@ -120,8 +120,8 @@ export function PreCode(props: { children: any }) {
         "latex",
       ];
       codeElements.forEach((codeElement) => {
-        let languageClass = codeElement.className.match(/language-(\w+)/);
-        let name = languageClass ? languageClass[1] : "";
+        const languageClass = codeElement.className.match(/language-(\w+)/);
+        const name = languageClass ? languageClass[1] : "";
         if (wrapLanguages.includes(name)) {
           codeElement.style.whiteSpace = "pre-wrap";
         }

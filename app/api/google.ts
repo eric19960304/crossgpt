@@ -73,7 +73,7 @@ async function request(req: NextRequest, apiKey: string) {
 
   let baseUrl = serverConfig.googleUrl || GEMINI_BASE_URL;
 
-  let path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Google, "");
+  const path = `${req.nextUrl.pathname}`.replaceAll(ApiPath.Google, "");
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `https://${baseUrl}`;

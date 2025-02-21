@@ -81,7 +81,7 @@ const ru: PartialLocaleType = {
     Rename: "Переименовать чат",
     Typing: "Печатает…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} Отправить`;
+      let inputHints = `${submitKey} Отправить`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter для новой строки";
       }

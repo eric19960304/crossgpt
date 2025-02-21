@@ -11,7 +11,7 @@ export async function requestOpenai(req: NextRequest) {
 
   const isAzure = req.nextUrl.pathname.includes("azure/deployments");
 
-  var authValue,
+  let authValue,
     authHeaderName = "";
   if (isAzure) {
     authValue =

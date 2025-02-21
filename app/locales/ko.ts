@@ -81,7 +81,7 @@ const ko: PartialLocaleType = {
     Rename: "채팅 이름 변경",
     Typing: "입력 중…",
     Input: (submitKey: string) => {
-      var inputHints = `${submitKey} 전송`;
+      let inputHints = `${submitKey} 전송`;
       if (submitKey === String(SubmitKey.Enter)) {
         inputHints += "，Shift + Enter 줄 바꿈";
       }
