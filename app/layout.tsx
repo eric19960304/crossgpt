@@ -5,8 +5,8 @@ import "./styles/highlight.scss";
 import { getClientConfig } from "./config/client";
 import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { getServerSideConfig } from "./config/server";
-import { GoogleTagManager } from "@next/third-parties/google";
 import { SITE_NAME } from "./constant";
 const serverConfig = getServerSideConfig();
 
@@ -34,6 +34,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const serverConfig = getServerSideConfig();
+
   return (
     <html lang="en">
       <head>
@@ -42,7 +44,11 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <link rel="manifest" href="/site.webmanifest"></link>
+        <link
+          rel="manifest"
+          href="/site.webmanifest"
+          crossOrigin="use-credentials"
+        ></link>
         <script src="/serviceWorkerRegister.js" defer></script>
       </head>
       <body>
@@ -55,6 +61,11 @@ export default function RootLayout({
         {serverConfig?.gtmId && (
           <>
             <GoogleTagManager gtmId={serverConfig.gtmId} />
+          </>
+        )}
+        {serverConfig?.gaId && (
+          <>
+            <GoogleAnalytics gaId={serverConfig.gaId} />
           </>
         )}
       </body>

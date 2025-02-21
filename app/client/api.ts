@@ -1,11 +1,16 @@
 import { getClientConfig } from "../config/client";
 import {
   ACCESS_CODE_PREFIX,
-  Azure,
   ModelProvider,
   ServiceProvider,
 } from "../constant";
-import { ChatMessage, ModelType, useAccessStore, useChatStore } from "../store";
+import {
+  ChatMessageTool,
+  ChatMessage,
+  ModelType,
+  useAccessStore,
+  useChatStore,
+} from "../store";
 import { ChatGPTApi, DalleRequestPayload } from "./platforms/openai";
 import { GeminiProApi } from "./platforms/google";
 import { ClaudeApi } from "./platforms/anthropic";
@@ -15,11 +20,16 @@ import { QwenApi } from "./platforms/alibaba";
 import { HunyuanApi } from "./platforms/tencent";
 import { MoonshotApi } from "./platforms/moonshot";
 import { SparkApi } from "./platforms/iflytek";
+import { DeepSeekApi } from "./platforms/deepseek";
+import { XAIApi } from "./platforms/xai";
+import { ChatGLMApi } from "./platforms/glm";
+import { SiliconflowApi } from "./platforms/siliconflow";
 
 export const ROLES = ["system", "user", "assistant"] as const;
 export type MessageRole = (typeof ROLES)[number];
 
-export const Models = ["gpt-4o-mini", "gpt-3.5-turbo"] as const;
+export const Models = ["gpt-3.5-turbo", "gpt-4"] as const;
+export const TTSModels = ["tts-1", "tts-1-hd"] as const;
 export type ChatModel = ModelType;
 
 export interface MultimodalContent {
@@ -44,6 +54,17 @@ export interface LLMConfig {
   presence_penalty?: number;
   frequency_penalty?: number;
   size?: DalleRequestPayload["size"];
+  quality?: DalleRequestPayload["quality"];
+  style?: DalleRequestPayload["style"];
+}
+
+export interface SpeechOptions {
+  model: string;
+  input: string;
+  voice: string;
+  response_format?: string;
+  speed?: number;
+  onController?: (controller: AbortController) => void;
 }
 
 export interface ChatOptions {
@@ -51,9 +72,11 @@ export interface ChatOptions {
   config: LLMConfig;
 
   onUpdate?: (message: string, chunk: string) => void;
-  onFinish: (message: string) => void;
+  onFinish: (message: string, responseRes: Response) => void;
   onError?: (err: Error) => void;
   onController?: (controller: AbortController) => void;
+  onBeforeTool?: (tool: ChatMessageTool) => void;
+  onAfterTool?: (tool: ChatMessageTool) => void;
 }
 
 export interface LLMUsage {
@@ -78,6 +101,7 @@ export interface LLMModelProvider {
 
 export abstract class LLMApi {
   abstract chat(options: ChatOptions): Promise<void>;
+  abstract speech(options: SpeechOptions): Promise<ArrayBuffer>;
   abstract usage(): Promise<LLMUsage>;
   abstract models(): Promise<LLMModel[]>;
 }
@@ -132,6 +156,18 @@ export class ClientApi {
       case ModelProvider.Iflytek:
         this.llm = new SparkApi();
         break;
+      case ModelProvider.DeepSeek:
+        this.llm = new DeepSeekApi();
+        break;
+      case ModelProvider.XAI:
+        this.llm = new XAIApi();
+        break;
+      case ModelProvider.ChatGLM:
+        this.llm = new ChatGLMApi();
+        break;
+      case ModelProvider.SiliconFlow:
+        this.llm = new SiliconflowApi();
+        break;
       default:
         this.llm = new ChatGPTApi();
     }
@@ -159,19 +195,22 @@ export function validString(x: string): boolean {
   return x?.length > 0;
 }
 
-export function getHeaders() {
+export function getHeaders(ignoreHeaders: boolean = false) {
   const accessStore = useAccessStore.getState();
   const chatStore = useChatStore.getState();
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  };
+  let headers: Record<string, string> = {};
+  if (!ignoreHeaders) {
+    headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+  }
 
   const clientConfig = getClientConfig();
 
   function getConfig() {
     const modelConfig = chatStore.currentSession().mask.modelConfig;
-    const isGoogle = modelConfig.providerName == ServiceProvider.Google;
+    const isGoogle = modelConfig.providerName === ServiceProvider.Google;
     const isAzure = modelConfig.providerName === ServiceProvider.Azure;
     const isAnthropic = modelConfig.providerName === ServiceProvider.Anthropic;
     const isBaidu = modelConfig.providerName == ServiceProvider.Baidu;
@@ -179,6 +218,11 @@ export function getHeaders() {
     const isAlibaba = modelConfig.providerName === ServiceProvider.Alibaba;
     const isMoonshot = modelConfig.providerName === ServiceProvider.Moonshot;
     const isIflytek = modelConfig.providerName === ServiceProvider.Iflytek;
+    const isDeepSeek = modelConfig.providerName === ServiceProvider.DeepSeek;
+    const isXAI = modelConfig.providerName === ServiceProvider.XAI;
+    const isChatGLM = modelConfig.providerName === ServiceProvider.ChatGLM;
+    const isSiliconFlow =
+      modelConfig.providerName === ServiceProvider.SiliconFlow;
     const isEnabledAccessControl = accessStore.enabledAccessControl();
     const apiKey = isGoogle
       ? accessStore.googleApiKey
@@ -192,6 +236,14 @@ export function getHeaders() {
       ? accessStore.alibabaApiKey
       : isMoonshot
       ? accessStore.moonshotApiKey
+      : isXAI
+      ? accessStore.xaiApiKey
+      : isDeepSeek
+      ? accessStore.deepseekApiKey
+      : isChatGLM
+      ? accessStore.chatglmApiKey
+      : isSiliconFlow
+      ? accessStore.siliconflowApiKey
       : isIflytek
       ? accessStore.iflytekApiKey && accessStore.iflytekApiSecret
         ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
@@ -206,13 +258,23 @@ export function getHeaders() {
       isAlibaba,
       isMoonshot,
       isIflytek,
+      isDeepSeek,
+      isXAI,
+      isChatGLM,
+      isSiliconFlow,
       apiKey,
       isEnabledAccessControl,
     };
   }
 
   function getAuthHeader(): string {
-    return isAzure ? "api-key" : isAnthropic ? "x-api-key" : "Authorization";
+    return isAzure
+      ? "api-key"
+      : isAnthropic
+      ? "x-api-key"
+      : isGoogle
+      ? "x-goog-api-key"
+      : "Authorization";
   }
 
   const {
@@ -220,17 +282,26 @@ export function getHeaders() {
     isAzure,
     isAnthropic,
     isBaidu,
+    isByteDance,
+    isAlibaba,
+    isMoonshot,
+    isIflytek,
+    isDeepSeek,
+    isXAI,
+    isChatGLM,
+    isSiliconFlow,
     apiKey,
     isEnabledAccessControl,
   } = getConfig();
-  // when using google api in app, not set auth header
-  if (isGoogle && clientConfig?.isApp) return headers;
   // when using baidu api in app, not set auth header
   if (isBaidu && clientConfig?.isApp) return headers;
 
   const authHeader = getAuthHeader();
 
-  const bearerToken = getBearerToken(apiKey, isAzure || isAnthropic);
+  const bearerToken = getBearerToken(
+    apiKey,
+    isAzure || isAnthropic || isGoogle,
+  );
 
   if (bearerToken) {
     headers[authHeader] = bearerToken;
@@ -261,6 +332,14 @@ export function getClientApi(provider: ServiceProvider): ClientApi {
       return new ClientApi(ModelProvider.Moonshot);
     case ServiceProvider.Iflytek:
       return new ClientApi(ModelProvider.Iflytek);
+    case ServiceProvider.DeepSeek:
+      return new ClientApi(ModelProvider.DeepSeek);
+    case ServiceProvider.XAI:
+      return new ClientApi(ModelProvider.XAI);
+    case ServiceProvider.ChatGLM:
+      return new ClientApi(ModelProvider.ChatGLM);
+    case ServiceProvider.SiliconFlow:
+      return new ClientApi(ModelProvider.SiliconFlow);
     default:
       return new ClientApi(ModelProvider.GPT);
   }
