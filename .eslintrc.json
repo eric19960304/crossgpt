@@ -2,7 +2,6 @@
   "extends": "next/core-web-vitals",
   "plugins": ["prettier", "unused-imports"],
   "rules": {
-    "unused-imports/no-unused-imports": "on",
-    "unused-imports/no-unused-imports-ts": "on"
+    "unused-imports/no-unused-imports": "warn"
   }
 }
