@@ -338,17 +338,6 @@ export async function executeMcpAction(
   clientId: string,
   request: McpRequestMessage,
 ) {
-  try {
-    const client = clientsMap.get(clientId);
-    if (!client?.client) {
-      throw new Error(`Client ${clientId} not found`);
-    }
-    logger.info(`Executing request for [${clientId}]`);
-    return await executeRequest(client.client, request);
-  } catch (error) {
-    logger.error(`Failed to execute request for [${clientId}]: ${error}`);
-    throw error;
-  }
 }
 
 // 获取 MCP 配置文件

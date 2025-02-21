@@ -650,18 +650,9 @@ export const MAX_RENDER_MSG_COUNT = 45;
 
 // some famous webdav endpoints
 export const internalAllowedWebDavEndpoints = [
-  "https://dav.jianguoyun.com/dav/",
-  "https://dav.dropdav.com/",
-  "https://dav.box.com/dav",
-  "https://nanao.teracloud.jp/dav/",
-  "https://bora.teracloud.jp/dav/",
-  "https://webdav.4shared.com/",
-  "https://dav.idrivesync.com",
-  "https://webdav.yandex.com",
-  "https://app.koofr.net/dav/Koofr",
 ];
 
-export const DEFAULT_GA_ID = "G-89WN60ZK2E";
+export const DEFAULT_GA_ID = "";
 
 export const SAAS_CHAT_URL = "https://ericlauchiho.me";
 export const SAAS_CHAT_UTM_URL = "https://ericlauchiho.me?utm=github";
