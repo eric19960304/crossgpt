@@ -48,7 +48,6 @@ export function AuthPage() {
 
   return (
     <div className={styles["auth-page"]}>
-      <TopBanner></TopBanner>
       <div className={styles["auth-header"]}>
         <IconButton
           icon={<LeftIcon />}
@@ -176,7 +175,6 @@ function TopBanner() {
               trackSettingsPageGuideToCPaymentClick();
             }}
           >
-            {Locale.Settings.Access.SaasStart.ChatNow}
             <Arrow style={{ marginLeft: "4px" }} />
           </a>
         </span>
