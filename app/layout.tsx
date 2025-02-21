@@ -7,13 +7,14 @@ import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getServerSideConfig } from "./config/server";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { SITE_NAME } from "./constant";
 const serverConfig = getServerSideConfig();
 
 export const metadata: Metadata = {
-  title: "ChocoGPT",
-  description: "ChatGPT anywhere, anonymously.",
+  title: SITE_NAME,
+  description: "Ask ChatGPT, Gimini, DeekSeek simultaneously.",
   appleWebApp: {
-    title: "ChocoGPT",
+    title: SITE_NAME,
     statusBarStyle: "default",
   },
 };

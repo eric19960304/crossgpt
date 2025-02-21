@@ -9,14 +9,6 @@ import { requestOpenai } from "./common";
 const ALLOWD_PATH = new Set(Object.values(OpenaiPath));
 
 function getModels(remoteModelRes: OpenAIListModelResponse) {
-  const config = getServerSideConfig();
-
-  if (config.disableGPT4) {
-    remoteModelRes.data = remoteModelRes.data.filter(
-      (m) => !(m.id.startsWith("chatgpt-4o") || m.id.startsWith("o1") || m.id.startsWith("gpt-4o-mini")),
-    );
-  }
-
   return remoteModelRes;
 }
 

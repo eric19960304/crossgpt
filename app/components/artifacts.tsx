@@ -9,7 +9,7 @@ import LoadingButtonIcon from "../icons/loading.svg";
 import Locale from "../locales";
 import { Modal, showToast } from "./ui-lib";
 import { copyToClipboard, downloadAs } from "../utils";
-import { Path, ApiPath } from "@/app/constant";
+import { Path, ApiPath, SITE_NAME } from "@/app/constant";
 import { Loading } from "./home";
 import styles from "./artifacts.module.scss";
 
@@ -184,7 +184,7 @@ export function Artifacts() {
   return (
     <div className={styles["artifacts"]}>
       <div className={styles["artifacts-header"]}>
-        <div className={styles["artifacts-title"]}>ChocoGPT Artifacts</div>
+        <div className={styles["artifacts-title"]}>{SITE_NAME} Artifacts</div>
         <ArtifactsShareButton
           id={id}
           getCode={() => code}

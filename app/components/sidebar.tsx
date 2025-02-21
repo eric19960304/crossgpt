@@ -23,6 +23,7 @@ import {
   NARROW_SIDEBAR_WIDTH,
   Path,
   PLUGINS,
+  SITE_NAME,
 } from "../constant";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -223,9 +224,8 @@ export function SideBar(props: { className?: string }) {
       {...props}
     >
       <SideBarHeader
-        title="ChocoGPT"
-        subTitle="ChatGPT anywhere, anonymously."
-        logo={<ChatGptIcon />}
+        title={SITE_NAME}
+        subTitle="Ask ChatGPT, Gemini, DeekSeek at once."
       >
         {/* <div className={styles["sidebar-header-bar"]}>
           <IconButton

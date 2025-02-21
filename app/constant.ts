@@ -76,6 +76,7 @@ export enum StoreKey {
   SdList = "sd-list",
 }
 
+export const SITE_NAME = "CrossGPT";
 export const DEFAULT_SIDEBAR_WIDTH = 300;
 export const MAX_SIDEBAR_WIDTH = 500;
 export const MIN_SIDEBAR_WIDTH = 230;
@@ -86,7 +87,7 @@ export const ACCESS_CODE_PREFIX = "nk-";
 export const LAST_INPUT_KEY = "last-input";
 export const UNFINISHED_INPUT = (id: string) => "unfinished-input-" + id;
 
-export const STORAGE_KEY = "chocogpt";
+export const STORAGE_KEY = "crossgpt";
 
 export const REQUEST_TIMEOUT_MS = 60000;
 
@@ -237,6 +238,7 @@ export const KnowledgeCutOffDate: Record<string, string> = {
   "gpt-4o-mini-2024-07-18": "2023-10",
   "o1-mini": "2023-10",
   "o1-preview": "2023-10",
+  "gemini-2.0-flash": "2024-08",
 };
 
 const openaiModels = [
@@ -247,6 +249,7 @@ const openaiModels = [
 ];
 
 const googleModels : string[] = [
+  "gemini-2.0-flash"
 ];
 
 const anthropicModels : string[] = [
@@ -280,6 +283,17 @@ export const DEFAULT_MODELS = [
       providerName: "OpenAI",
       providerType: "openai",
       sorted: 1, // 这里是固定的，确保顺序与之前内置的版本一致
+    },
+  })),
+  ...googleModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "google",
+      providerName: "Google",
+      providerType: "google",
+      sorted: 3,
     },
   })),
 ] as const;
