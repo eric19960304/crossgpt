@@ -1,10 +1,10 @@
 version: '3'
 services:
-  chohogpt:
+  crossgpt:
     build:
       context: .
-    container_name: chohogpt
-    image: chohogpt:latest
+    container_name: crossgpt
+    image: crossgpt:latest
     ports:
       - 3000:3000
     environment:
