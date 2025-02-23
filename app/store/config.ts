@@ -1,5 +1,5 @@
+import type { Voice } from "rt-client";
 import { LLMModel } from "../client/api";
-import { DalleQuality, DalleStyle, ModelSize } from "../typing";
 import { getClientConfig } from "../config/client";
 import {
   DEFAULT_INPUT_TEMPLATE,
@@ -11,11 +11,11 @@ import {
   DEFAULT_TTS_MODELS,
   DEFAULT_TTS_VOICE,
   DEFAULT_TTS_VOICES,
-  StoreKey,
   ServiceProvider,
+  StoreKey,
 } from "../constant";
+import { DalleQuality, DalleStyle, ModelSize } from "../typing";
 import { createPersistStore } from "../utils/store";
-import type { Voice } from "rt-client";
 
 export type ModelType = (typeof DEFAULT_MODELS)[number]["name"];
 export type TTSModelType = (typeof DEFAULT_TTS_MODELS)[number];
@@ -64,7 +64,7 @@ export const DEFAULT_CONFIG = {
   models: DEFAULT_MODELS as any as LLMModel[],
 
   modelConfig: {
-    model: "gpt-4o-mini" as ModelType,
+    model: "o1-mini" as ModelType,
     providerName: "OpenAI" as ServiceProvider,
     temperature: 0.5,
     top_p: 1,
