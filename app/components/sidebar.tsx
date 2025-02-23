@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 
 import styles from "./home.module.scss";
 
-import { IconButton } from "./button";
-import SettingsIcon from "../icons/settings.svg";
 import AddIcon from "../icons/add.svg";
 import DeleteIcon from "../icons/delete.svg";
 import DragIcon from "../icons/drag.svg";
+import SettingsIcon from "../icons/settings.svg";
+import { IconButton } from "./button";
 
 import Locale from "../locales";
 
@@ -21,12 +21,12 @@ import {
   SITE_NAME,
 } from "../constant";
 
-import { Link, useNavigate } from "react-router-dom";
-import { isIOS, useMobileScreen } from "../utils";
-import dynamic from "next/dynamic";
-import { Selector, showConfirm } from "./ui-lib";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
+import { Link, useNavigate } from "react-router-dom";
 import { isMcpEnabled } from "../mcp/actions";
+import { isIOS, useMobileScreen } from "../utils";
+import { Selector, showConfirm } from "./ui-lib";
 
 const DISCOVERY = [
   { name: "Stable Diffusion", path: Path.Sd },
@@ -245,7 +245,7 @@ export function SideBar(props: { className?: string }) {
     >
       <SideBarHeader
         title={SITE_NAME}
-        subTitle="Ask ChatGPT, Gemini, DeekSeek at once."
+        subTitle="Ask ChatGPT, Gemini, Grok at once."
       >
         {showDiscoverySelector && (
           <Selector
