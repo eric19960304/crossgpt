@@ -464,13 +464,13 @@ export const VISION_MODEL_REGEXES = [
 export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
 
 const openaiModels = [
+  "gpt-4o",
   "o1-mini",
   "o1",
   "o3-mini",
 ];
 
 const googleModels = [
-  "gemini-2.0-flash",
   "gemini-2.0-pro-exp",
 ];
 
