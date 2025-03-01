@@ -1,4 +1,4 @@
-import DeleteIcon from "../icons/delete.svg";
+import DeleteIcon from "../icons/delete_24.svg";
 
 import {
   DragDropContext,
