@@ -1,24 +1,24 @@
 import DeleteIcon from "../icons/delete.svg";
 
-import styles from "./home.module.scss";
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   OnDragEndResponder,
 } from "@hello-pangea/dnd";
+import styles from "./home.module.scss";
 
 import { useChatStore } from "../store";
 
-import Locale from "../locales";
+import clsx from "clsx";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Path } from "../constant";
-import { MaskAvatar } from "./mask";
+import Locale from "../locales";
 import { Mask } from "../store/mask";
-import { useRef, useEffect } from "react";
-import { showConfirm } from "./ui-lib";
 import { useMobileScreen } from "../utils";
-import clsx from "clsx";
+import { MaskAvatar } from "./mask";
+import { showConfirm } from "./ui-lib";
 
 export function ChatItem(props: {
   onClick?: () => void;
@@ -88,6 +88,7 @@ export function ChatItem(props: {
 
           <div
             className={styles["chat-item-delete"]}
+            title="delete chat"
             onClickCapture={(e) => {
               props.onDelete?.();
               e.preventDefault();
