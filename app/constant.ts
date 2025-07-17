@@ -407,28 +407,13 @@ export const DEEPSEEK_SUMMARIZE_MODEL = "deepseek-chat";
 
 export const KnowledgeCutOffDate: Record<string, string> = {
   default: "2021-09",
-  "gpt-4o": "2023-10",
-  "gpt-4o-2024-05-13": "2023-10",
-  "gpt-4o-2024-08-06": "2023-10",
-  "gpt-4o-2024-11-20": "2023-10",
-  "chatgpt-4o-latest": "2023-10",
-  "gpt-4o-mini": "2023-10",
-  "gpt-4o-mini-2024-07-18": "2023-10",
-  "gpt-4-vision-preview": "2023-04",
-  "o1-mini-2024-09-12": "2023-10",
-  "o1-mini": "2023-10",
-  "o1-preview-2024-09-12": "2023-10",
-  "o1-preview": "2023-10",
-  "o1-2024-12-17": "2023-10",
-  o1: "2023-10",
-  "o3-mini-2025-01-31": "2023-10",
-  "o3-mini": "2023-10",
-  // After improvements,
-  // it's now easier to add "KnowledgeCutOffDate" instead of stupid hardcoding it, as was done previously.
-  "gemini-pro": "2023-12",
-  "gemini-pro-vision": "2023-12",
-  "deepseek-chat": "2024-07",
-  "deepseek-coder": "2024-07",
+  "o1-mini": "2025-04",
+  "o1": "2024-12",
+  "o3-mini": "2025-01",
+  "o3": "2025-04",
+  "gemini-2.5-flash": "2025-01",
+  "gemini-2.5-pro": "2025-01",
+  "grok-4-0709": "2025-07",
 };
 
 export const DEFAULT_TTS_ENGINE = "OpenAI-TTS";
@@ -464,14 +449,16 @@ export const VISION_MODEL_REGEXES = [
 export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
 
 const openaiModels = [
-  "gpt-4o",
+  "gpt-4.1",
   "o1-mini",
   "o1",
   "o3-mini",
+  "o3"
 ];
 
 const googleModels = [
-  "gemini-2.0-pro-exp",
+  "gemini-2.5-flash",
+  "gemini-2.5-pro",
 ];
 
 const anthropicModels: string[] = [];
@@ -490,7 +477,7 @@ const iflytekModels: string[] = [];
 const deepseekModels: string[] = [];
 
 const xAIModes = [
-  "grok-2-latest",
+  "grok-4-0709",
 ];
 
 const chatglmModels: string[] = [];
