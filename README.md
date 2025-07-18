@@ -18,7 +18,7 @@ Before starting development, you must create a new `.env.local` file at project 
 ```
 OPENAI_API_KEY=<your api key here>
 GOOGLE_API_KEY=<your api key here>
-DEFAULT_MODEL=o1-mini
+DEFAULT_MODEL=gpt-4.1-nano
 ```
 
 ### Local Development

@@ -407,10 +407,11 @@ export const DEEPSEEK_SUMMARIZE_MODEL = "deepseek-chat";
 
 export const KnowledgeCutOffDate: Record<string, string> = {
   default: "2021-09",
-  "o1-mini": "2025-04",
-  "o1": "2024-12",
   "o3-mini": "2025-01",
   "o3": "2025-04",
+  "o4-mini": "2025-04",
+  "gpt-4.1-nano": "2025-04",
+  "gpt-4.1-mini": "2025-04",
   "gemini-2.5-flash": "2025-01",
   "gemini-2.5-pro": "2025-01",
   "grok-4-0709": "2025-07",
@@ -431,27 +432,18 @@ export const DEFAULT_TTS_VOICES = [
 ];
 
 export const VISION_MODEL_REGEXES = [
-  /vision/,
-  /gpt-4o/,
-  /claude-3/,
-  /gemini-1\.5/,
-  /gemini-exp/,
-  /gemini-2\.0/,
-  /learnlm/,
-  /qwen-vl/,
-  /qwen2-vl/,
-  /gpt-4-turbo(?!.*preview)/, // Matches "gpt-4-turbo" but not "gpt-4-turbo-preview"
-  /^dall-e-3$/, // Matches exactly "dall-e-3"
-  /glm-4v/,
-  /vl/i,
+  /gpt-4.1/,
+  /gemini-2\.5/,
+  /o3/,
+  /o4/,
 ];
 
 export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
 
 const openaiModels = [
-  "gpt-4.1",
-  "o1-mini",
-  "o1",
+  "gpt-4.1-nano",
+  "gpt-4.1-mini",
+  "o4-mini",
   "o3-mini",
   "o3"
 ];
