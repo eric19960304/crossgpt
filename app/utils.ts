@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { showToast } from "./components/ui-lib";
-import Locale from "./locales";
 import { RequestMessage } from "./client/api";
+import { showToast } from "./components/ui-lib";
 import {
   REQUEST_TIMEOUT_MS,
   REQUEST_TIMEOUT_MS_FOR_THINKING,
   ServiceProvider,
 } from "./constant";
+import Locale from "./locales";
 // import { fetch as tauriFetch, ResponseType } from "@tauri-apps/api/http";
-import { fetch as tauriStreamFetch } from "./utils/stream";
-import { VISION_MODEL_REGEXES, EXCLUDE_VISION_MODEL_REGEXES } from "./constant";
+import { EXCLUDE_VISION_MODEL_REGEXES, VISION_MODEL_REGEXES } from "./constant";
 import { useAccessStore } from "./store";
 import { ModelSize } from "./typing";
+import { fetch as tauriStreamFetch } from "./utils/stream";
 
 export function trimTopic(topic: string) {
   // Fix an issue where double quotes still show in the Indonesian language
@@ -286,9 +286,9 @@ export function isVisionModel(model: string) {
   if (envVisionModels?.includes(model)) {
     return true;
   }
+  const isExcluded = EXCLUDE_VISION_MODEL_REGEXES?.length > 0 && !EXCLUDE_VISION_MODEL_REGEXES.some((regex) => regex.test(model))
   return (
-    !EXCLUDE_VISION_MODEL_REGEXES.some((regex) => regex.test(model)) &&
-    VISION_MODEL_REGEXES.some((regex) => regex.test(model))
+    isExcluded && VISION_MODEL_REGEXES.some((regex) => regex.test(model))
   );
 }
 
