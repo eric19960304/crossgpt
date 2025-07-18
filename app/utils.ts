@@ -8,7 +8,7 @@ import {
 } from "./constant";
 import Locale from "./locales";
 // import { fetch as tauriFetch, ResponseType } from "@tauri-apps/api/http";
-import { EXCLUDE_VISION_MODEL_REGEXES, VISION_MODEL_REGEXES } from "./constant";
+import { VISION_MODEL_REGEXES } from "./constant";
 import { useAccessStore } from "./store";
 import { ModelSize } from "./typing";
 import { fetch as tauriStreamFetch } from "./utils/stream";
@@ -286,9 +286,8 @@ export function isVisionModel(model: string) {
   if (envVisionModels?.includes(model)) {
     return true;
   }
-  const isExcluded = EXCLUDE_VISION_MODEL_REGEXES?.length > 0 && !EXCLUDE_VISION_MODEL_REGEXES.some((regex) => regex.test(model))
   return (
-    isExcluded && VISION_MODEL_REGEXES.some((regex) => regex.test(model))
+    VISION_MODEL_REGEXES.some((regex) => regex.test(model))
   );
 }
 
