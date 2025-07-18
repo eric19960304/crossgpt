@@ -438,7 +438,7 @@ export const VISION_MODEL_REGEXES = [
   /o4/,
 ];
 
-export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
+export const EXCLUDE_VISION_MODEL_REGEXES = [];
 
 const openaiModels = [
   "gpt-4.1-nano",
