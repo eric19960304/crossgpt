@@ -438,7 +438,7 @@ export const VISION_MODEL_REGEXES = [
   /o4/,
 ];
 
-export const EXCLUDE_VISION_MODEL_REGEXES = [];
+export const EXCLUDE_VISION_MODEL_REGEXES: RegExp[] = [];
 
 const openaiModels = [
   "gpt-4.1-nano",
