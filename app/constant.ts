@@ -442,9 +442,6 @@ export const EXCLUDE_VISION_MODEL_REGEXES: RegExp[] = [/o4/];
 const openaiModels = [
   "gpt-4.1-nano",
   "gpt-4.1-mini",
-  "o4-mini",
-  "o3-mini",
-  "o3"
 ];
 
 const googleModels = [
