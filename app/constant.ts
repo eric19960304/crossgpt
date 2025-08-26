@@ -432,7 +432,7 @@ export const DEFAULT_TTS_VOICES = [
 ];
 
 export const VISION_MODEL_REGEXES = [
-  /gpt-4\.1-/,
+  /gpt/,
   /gemini-2\.5/,
   /o3-mini/,
 ];
@@ -440,8 +440,8 @@ export const VISION_MODEL_REGEXES = [
 export const EXCLUDE_VISION_MODEL_REGEXES: RegExp[] = [/o4/];
 
 const openaiModels = [
-  "gpt-4.1-nano",
-  "gpt-4.1-mini",
+  "gpt-5-nano",
+  "gpt-5-mini",
 ];
 
 const googleModels = [
