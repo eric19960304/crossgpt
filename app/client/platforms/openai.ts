@@ -2,10 +2,10 @@
 // azure and openai, using same models. so using same LLMApi.
 import {
   ApiPath,
-  OPENAI_BASE_URL,
-  DEFAULT_MODELS,
-  OpenaiPath,
   Azure,
+  DEFAULT_MODELS,
+  OPENAI_BASE_URL,
+  OpenaiPath,
   REQUEST_TIMEOUT_MS,
   ServiceProvider,
 } from "@/app/constant";
@@ -16,16 +16,25 @@ import {
   useChatStore,
   usePluginStore,
 } from "@/app/store";
-import { collectModelsWithDefaultModel } from "@/app/utils/model";
+import { DalleQuality, DalleStyle, ModelSize } from "@/app/typing";
 import {
-  preProcessImageContent,
-  uploadImage,
   base64Image2Blob,
+  preProcessImageContent,
   streamWithThink,
+  uploadImage,
 } from "@/app/utils/chat";
 import { cloudflareAIGatewayUrl } from "@/app/utils/cloudflare";
-import { ModelSize, DalleQuality, DalleStyle } from "@/app/typing";
+import { collectModelsWithDefaultModel } from "@/app/utils/model";
 
+import { getClientConfig } from "@/app/config/client";
+import {
+  isDalle3 as _isDalle3,
+  getMessageTextContent,
+  getTimeoutMSByModel,
+  isVisionModel,
+} from "@/app/utils";
+import { fetch } from "@/app/utils/stream";
+import Locale from "../../locales";
 import {
   ChatOptions,
   getHeaders,
@@ -35,15 +44,6 @@ import {
   MultimodalContent,
   SpeechOptions,
 } from "../api";
-import Locale from "../../locales";
-import { getClientConfig } from "@/app/config/client";
-import {
-  getMessageTextContent,
-  isVisionModel,
-  isDalle3 as _isDalle3,
-  getTimeoutMSByModel,
-} from "@/app/utils";
-import { fetch } from "@/app/utils/stream";
 
 export interface OpenAIListModelResponse {
   object: string;
@@ -233,18 +233,11 @@ export class ChatGPTApi implements LLMApi {
         presence_penalty: !isO1OrO3 ? modelConfig.presence_penalty : 0,
         frequency_penalty: !isO1OrO3 ? modelConfig.frequency_penalty : 0,
         top_p: !isO1OrO3 ? modelConfig.top_p : 1,
-        // max_tokens: Math.max(modelConfig.max_tokens, 1024),
-        // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
       };
 
       // O1 使用 max_completion_tokens 控制token数 (https://platform.openai.com/docs/guides/reasoning#controlling-costs)
       if (isO1OrO3) {
         requestPayload["max_completion_tokens"] = modelConfig.max_tokens;
-      }
-
-      // add max_tokens to vision model
-      if (visionModel) {
-        requestPayload["max_tokens"] = Math.max(modelConfig.max_tokens, 4000);
       }
     }
 
@@ -515,3 +508,4 @@ export class ChatGPTApi implements LLMApi {
   }
 }
 export { OpenaiPath };
+
