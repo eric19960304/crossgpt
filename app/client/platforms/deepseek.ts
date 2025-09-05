@@ -1,14 +1,21 @@
 "use client";
 // azure and openai, using same models. so using same LLMApi.
-import { ApiPath, DEEPSEEK_BASE_URL, DeepSeek } from "@/app/constant";
+import { getClientConfig } from "@/app/config/client";
+import { ApiPath, DeepSeek, DEEPSEEK_BASE_URL } from "@/app/constant";
 import {
+  ChatMessageTool,
   useAccessStore,
   useAppConfig,
   useChatStore,
-  ChatMessageTool,
   usePluginStore,
 } from "@/app/store";
+import {
+  getMessageTextContent,
+  getMessageTextContentWithoutThinking,
+  getTimeoutMSByModel,
+} from "@/app/utils";
 import { streamWithThink } from "@/app/utils/chat";
+import { fetch } from "@/app/utils/stream";
 import {
   ChatOptions,
   getHeaders,
@@ -16,14 +23,7 @@ import {
   LLMModel,
   SpeechOptions,
 } from "../api";
-import { getClientConfig } from "@/app/config/client";
-import {
-  getMessageTextContent,
-  getMessageTextContentWithoutThinking,
-  getTimeoutMSByModel,
-} from "@/app/utils";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
 
 export class DeepSeekApi implements LLMApi {
   private disableListModels = true;
@@ -88,7 +88,6 @@ export class DeepSeekApi implements LLMApi {
       messages,
       stream: options.config.stream,
       model: modelConfig.model,
-      temperature: modelConfig.temperature,
       presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,
