@@ -1,18 +1,25 @@
 "use client";
 // azure and openai, using same models. so using same LLMApi.
+import { getClientConfig } from "@/app/config/client";
 import {
   ApiPath,
-  SILICONFLOW_BASE_URL,
-  SiliconFlow,
   DEFAULT_MODELS,
+  SiliconFlow,
+  SILICONFLOW_BASE_URL,
 } from "@/app/constant";
 import {
+  ChatMessageTool,
   useAccessStore,
   useAppConfig,
   useChatStore,
-  ChatMessageTool,
   usePluginStore,
 } from "@/app/store";
+import {
+  getMessageTextContent,
+  getMessageTextContentWithoutThinking,
+  getTimeoutMSByModel,
+  isVisionModel,
+} from "@/app/utils";
 import { preProcessImageContent, streamWithThink } from "@/app/utils/chat";
 import {
   ChatOptions,
@@ -21,13 +28,6 @@ import {
   LLMModel,
   SpeechOptions,
 } from "../api";
-import { getClientConfig } from "@/app/config/client";
-import {
-  getMessageTextContent,
-  getMessageTextContentWithoutThinking,
-  isVisionModel,
-  getTimeoutMSByModel,
-} from "@/app/utils";
 import { RequestPayload } from "./openai";
 
 import { fetch } from "@/app/utils/stream";
@@ -109,7 +109,6 @@ export class SiliconflowApi implements LLMApi {
       messages,
       stream: options.config.stream,
       model: modelConfig.model,
-      temperature: modelConfig.temperature,
       presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,

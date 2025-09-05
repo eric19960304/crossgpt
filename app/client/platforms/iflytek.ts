@@ -1,12 +1,21 @@
 "use client";
 import {
   ApiPath,
-  IFLYTEK_BASE_URL,
   Iflytek,
+  IFLYTEK_BASE_URL,
   REQUEST_TIMEOUT_MS,
 } from "@/app/constant";
 import { useAccessStore, useAppConfig, useChatStore } from "@/app/store";
 
+import { getClientConfig } from "@/app/config/client";
+import { getMessageTextContent } from "@/app/utils";
+import { prettyObject } from "@/app/utils/format";
+import { fetch } from "@/app/utils/stream";
+import {
+  EventStreamContentType,
+  fetchEventSource,
+} from "@fortaine/fetch-event-source";
+import Locale from "../../locales";
 import {
   ChatOptions,
   getHeaders,
@@ -14,15 +23,6 @@ import {
   LLMModel,
   SpeechOptions,
 } from "../api";
-import Locale from "../../locales";
-import {
-  EventStreamContentType,
-  fetchEventSource,
-} from "@fortaine/fetch-event-source";
-import { prettyObject } from "@/app/utils/format";
-import { getClientConfig } from "@/app/config/client";
-import { getMessageTextContent } from "@/app/utils";
-import { fetch } from "@/app/utils/stream";
 
 import { RequestPayload } from "./openai";
 
@@ -84,7 +84,6 @@ export class SparkApi implements LLMApi {
       messages,
       stream: options.config.stream,
       model: modelConfig.model,
-      temperature: modelConfig.temperature,
       presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,
