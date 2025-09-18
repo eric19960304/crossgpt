@@ -29,6 +29,7 @@
     "@vercel/analytics": "^0.1.11",
     "@vercel/speed-insights": "^1.0.2",
     "axios": "^1.7.5",
+    "caniuse-lite": "^1.0.30001727",
     "clsx": "^2.1.1",
     "emoji-picker-react": "^4.9.2",
     "fuse.js": "^7.0.0",
@@ -91,7 +92,7 @@
     "tsx": "^4.16.0",
     "typescript": "5.2.2",
     "typescript-eslint": "^8.24.1",
-    "watch": "^1.0.2",
+    "watch": "^0.13.0",
     "webpack": "^5.88.1"
   },
   "resolutions": {
