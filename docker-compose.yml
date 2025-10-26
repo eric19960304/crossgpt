@@ -3,6 +3,7 @@ services:
     build:
       context: .
     container_name: crossgpt
+    restart: always
     image: crossgpt:latest
     ports:
       - 3000:3000
