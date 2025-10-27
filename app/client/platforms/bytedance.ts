@@ -1,10 +1,10 @@
 "use client";
 import { ApiPath, ByteDance, BYTEDANCE_BASE_URL } from "@/app/constant";
 import {
+  ChatMessageTool,
   useAccessStore,
   useAppConfig,
   useChatStore,
-  ChatMessageTool,
   usePluginStore,
 } from "@/app/store";
 
@@ -17,13 +17,12 @@ import {
   SpeechOptions,
 } from "../api";
 
-import { streamWithThink } from "@/app/utils/chat";
 import { getClientConfig } from "@/app/config/client";
-import { preProcessImageContent } from "@/app/utils/chat";
 import {
   getMessageTextContentWithoutThinking,
   getTimeoutMSByModel,
 } from "@/app/utils";
+import { preProcessImageContent, streamWithThink } from "@/app/utils/chat";
 import { fetch } from "@/app/utils/stream";
 
 export interface OpenAIListModelResponse {
@@ -43,7 +42,6 @@ interface RequestPayloadForByteDance {
   stream?: boolean;
   model: string;
   temperature: number;
-  presence_penalty: number;
   frequency_penalty: number;
   top_p: number;
   max_tokens?: number;
@@ -108,7 +106,6 @@ export class DoubaoApi implements LLMApi {
       stream: shouldStream,
       model: modelConfig.model,
       temperature: modelConfig.temperature,
-      presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,
     };
@@ -248,3 +245,4 @@ export class DoubaoApi implements LLMApi {
   }
 }
 export { ByteDance };
+

@@ -1,13 +1,20 @@
 "use client";
-import { ApiPath, CHATGLM_BASE_URL, ChatGLM } from "@/app/constant";
+import { getClientConfig } from "@/app/config/client";
+import { ApiPath, ChatGLM, CHATGLM_BASE_URL } from "@/app/constant";
 import {
+  ChatMessageTool,
   useAccessStore,
   useAppConfig,
   useChatStore,
-  ChatMessageTool,
   usePluginStore,
 } from "@/app/store";
-import { stream } from "@/app/utils/chat";
+import {
+  getMessageTextContent,
+  getTimeoutMSByModel,
+  isVisionModel,
+} from "@/app/utils";
+import { preProcessImageContent, stream } from "@/app/utils/chat";
+import { fetch } from "@/app/utils/stream";
 import {
   ChatOptions,
   getHeaders,
@@ -15,15 +22,7 @@ import {
   LLMModel,
   SpeechOptions,
 } from "../api";
-import { getClientConfig } from "@/app/config/client";
-import {
-  getMessageTextContent,
-  isVisionModel,
-  getTimeoutMSByModel,
-} from "@/app/utils";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
-import { preProcessImageContent } from "@/app/utils/chat";
 
 interface BasePayload {
   model: string;
@@ -33,7 +32,6 @@ interface ChatPayload extends BasePayload {
   messages: ChatOptions["messages"];
   stream?: boolean;
   temperature?: number;
-  presence_penalty?: number;
   frequency_penalty?: number;
   top_p?: number;
 }
@@ -98,7 +96,6 @@ export class ChatGLMApi implements LLMApi {
           stream: options.config.stream,
           model: modelConfig.model,
           temperature: modelConfig.temperature,
-          presence_penalty: modelConfig.presence_penalty,
           frequency_penalty: modelConfig.frequency_penalty,
           top_p: modelConfig.top_p,
         } as ChatPayload;

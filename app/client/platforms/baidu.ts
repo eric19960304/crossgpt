@@ -3,6 +3,15 @@ import { ApiPath, Baidu, BAIDU_BASE_URL } from "@/app/constant";
 import { useAccessStore, useAppConfig, useChatStore } from "@/app/store";
 import { getAccessToken } from "@/app/utils/baidu";
 
+import { getClientConfig } from "@/app/config/client";
+import { getMessageTextContent, getTimeoutMSByModel } from "@/app/utils";
+import { prettyObject } from "@/app/utils/format";
+import { fetch } from "@/app/utils/stream";
+import {
+  EventStreamContentType,
+  fetchEventSource,
+} from "@fortaine/fetch-event-source";
+import Locale from "../../locales";
 import {
   ChatOptions,
   getHeaders,
@@ -11,15 +20,6 @@ import {
   MultimodalContent,
   SpeechOptions,
 } from "../api";
-import Locale from "../../locales";
-import {
-  EventStreamContentType,
-  fetchEventSource,
-} from "@fortaine/fetch-event-source";
-import { prettyObject } from "@/app/utils/format";
-import { getClientConfig } from "@/app/config/client";
-import { getMessageTextContent, getTimeoutMSByModel } from "@/app/utils";
-import { fetch } from "@/app/utils/stream";
 
 export interface OpenAIListModelResponse {
   object: string;
@@ -38,7 +38,6 @@ interface RequestPayload {
   stream?: boolean;
   model: string;
   temperature: number;
-  presence_penalty: number;
   frequency_penalty: number;
   top_p: number;
   max_tokens?: number;
@@ -112,7 +111,6 @@ export class ErnieApi implements LLMApi {
       stream: shouldStream,
       model: modelConfig.model,
       temperature: modelConfig.temperature,
-      presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,
     };
@@ -282,3 +280,4 @@ export class ErnieApi implements LLMApi {
   }
 }
 export { Baidu };
+
