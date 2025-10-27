@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
+import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import type { PartialLocaleType } from "./index";
-import { getClientConfig } from "../config/client";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
 const vi: PartialLocaleType = {
@@ -445,11 +445,6 @@ const vi: PartialLocaleType = {
     MaxTokens: {
       Title: "Giới hạn phản hồi (max_tokens)",
       SubTitle: "Số Token tối đa cho mỗi tương tác",
-    },
-    PresencePenalty: {
-      Title: "Độ mới của chủ đề (presence_penalty)",
-      SubTitle:
-        "Giá trị càng lớn, khả năng mở rộng đến các chủ đề mới càng cao",
     },
     FrequencyPenalty: {
       Title: "Hình phạt tần suất (frequency_penalty)",
