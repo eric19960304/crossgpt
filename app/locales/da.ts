@@ -1,6 +1,6 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 import { PartialLocaleType } from "./index";
 
 const isApp = !!getClientConfig()?.isApp;
@@ -534,10 +534,6 @@ const da: PartialLocaleType = {
     MaxTokens: {
       Title: "Maks. længde",
       SubTitle: "Hvor mange tokens (ord/stykker tekst) der kan bruges",
-    },
-    PresencePenalty: {
-      Title: "Nye emner",
-      SubTitle: "Jo højere tal, jo mere nyt indhold",
     },
     FrequencyPenalty: {
       Title: "Gentagelsesstraf",

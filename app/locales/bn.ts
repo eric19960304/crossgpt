@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
+import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import type { PartialLocaleType } from "./index";
-import { getClientConfig } from "../config/client";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
 const bn: PartialLocaleType = {
@@ -446,10 +446,6 @@ const bn: PartialLocaleType = {
     MaxTokens: {
       Title: "একটি উত্তর সীমা (max_tokens)",
       SubTitle: "প্রতি ইন্টারঅ্যাকশনে সর্বাধিক টোকেন সংখ্যা",
-    },
-    PresencePenalty: {
-      Title: "বিষয়বস্তু তাজা (presence_penalty)",
-      SubTitle: "মান বাড়ালে নতুন বিষয়ে প্রসারিত হওয়ার সম্ভাবনা বেশি",
     },
     FrequencyPenalty: {
       Title: "ফ্রিকোয়েন্সি পেনাল্টি (frequency_penalty)",

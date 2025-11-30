@@ -1,7 +1,7 @@
-import { SubmitKey } from "../store/config";
-import { PartialLocaleType } from "../locales/index";
-import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
+import { getClientConfig } from "../config/client";
+import { PartialLocaleType } from "../locales/index";
+import { SubmitKey } from "../store/config";
 const isApp = !!getClientConfig()?.isApp;
 
 const ru: PartialLocaleType = {
@@ -449,11 +449,6 @@ const ru: PartialLocaleType = {
     MaxTokens: {
       Title: "Ограничение на количество токенов за один раз (max_tokens)",
       SubTitle: "Максимальное количество токенов на одно взаимодействие",
-    },
-    PresencePenalty: {
-      Title: "Наказание за новизну тем (presence_penalty)",
-      SubTitle:
-        "Чем больше значение, тем выше вероятность расширения на новые темы",
     },
     FrequencyPenalty: {
       Title: "Наказание за частоту (frequency_penalty)",

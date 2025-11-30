@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
+import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import type { PartialLocaleType } from "./index";
-import { getClientConfig } from "../config/client";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
 const ko: PartialLocaleType = {
@@ -439,10 +439,6 @@ const ko: PartialLocaleType = {
     MaxTokens: {
       Title: "단일 응답 제한 (max_tokens)",
       SubTitle: "단일 상호작용에 사용되는 최대 토큰 수",
-    },
-    PresencePenalty: {
-      Title: "주제 신선도 (presence_penalty)",
-      SubTitle: "값이 클수록 새로운 주제로 확장할 가능성이 높음",
     },
     FrequencyPenalty: {
       Title: "빈도 벌점 (frequency_penalty)",

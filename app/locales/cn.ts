@@ -1,6 +1,6 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 
 const isApp = !!getClientConfig()?.isApp;
 
@@ -556,10 +556,6 @@ const cn = {
     MaxTokens: {
       Title: "单次回复限制 (max_tokens)",
       SubTitle: "单次交互所用的最大 Token 数",
-    },
-    PresencePenalty: {
-      Title: "话题新鲜度 (presence_penalty)",
-      SubTitle: "值越大，越有可能扩展到新话题",
     },
     FrequencyPenalty: {
       Title: "频率惩罚度 (frequency_penalty)",

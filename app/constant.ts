@@ -426,6 +426,7 @@ export const DEFAULT_TTS_VOICES = [
 export const VISION_MODEL_REGEXES = [
   /gpt/,
   /gemini-2\.5/,
+  /gemini-3-pro-preview/,
   /o3-mini/,
 ];
 
@@ -437,7 +438,9 @@ const openaiModels = [
   "gpt-5",
 ];
 
-const googleModels: string[] = [];
+const googleModels: string[] = [
+  "gemini-3-pro-preview"
+];
 
 const anthropicModels: string[] = [];
 

@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import { LocaleType } from "./index";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 // if you are adding a new translation, please use PartialLocaleType instead of LocaleType
 
 const isApp = !!getClientConfig()?.isApp;
@@ -561,11 +561,6 @@ const en: LocaleType = {
     MaxTokens: {
       Title: "Max Tokens",
       SubTitle: "Maximum length of input tokens and generated tokens",
-    },
-    PresencePenalty: {
-      Title: "Presence Penalty",
-      SubTitle:
-        "A larger value increases the likelihood to talk about new topics",
     },
     FrequencyPenalty: {
       Title: "Frequency Penalty",

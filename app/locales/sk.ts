@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import type { PartialLocaleType } from "./index";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 // if you are adding a new translation, please use PartialLocaleType instead of LocaleType
 
 const isApp = !!getClientConfig()?.isApp;
@@ -399,11 +399,6 @@ const sk: PartialLocaleType = {
     MaxTokens: {
       Title: "Maximálny počet tokenov",
       SubTitle: "Maximálna dĺžka vstupných tokenov a generovaných tokenov",
-    },
-    PresencePenalty: {
-      Title: "Penalizácia za prítomnosť",
-      SubTitle:
-        "Vyššia hodnota zvyšuje pravdepodobnosť hovorenia o nových témach",
     },
     FrequencyPenalty: {
       Title: "Penalizácia za frekvenciu",

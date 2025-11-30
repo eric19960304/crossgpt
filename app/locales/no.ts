@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
+import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import type { PartialLocaleType } from "./index";
-import { getClientConfig } from "../config/client";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
 const no: PartialLocaleType = {
@@ -452,11 +452,6 @@ const no: PartialLocaleType = {
     MaxTokens: {
       Title: "Maksimalt antall tokens per svar (max_tokens)",
       SubTitle: "Maksimalt antall tokens brukt i en enkelt interaksjon",
-    },
-    PresencePenalty: {
-      Title: "Emnens ferskhet (presence_penalty)",
-      SubTitle:
-        "Høyere verdi gir større sannsynlighet for å utvide til nye emner",
     },
     FrequencyPenalty: {
       Title: "Frekvensstraff (frequency_penalty)",

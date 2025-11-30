@@ -1,7 +1,7 @@
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
+import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import type { PartialLocaleType } from "./index";
-import { getClientConfig } from "../config/client";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
 const ar: PartialLocaleType = {
@@ -438,10 +438,6 @@ const ar: PartialLocaleType = {
     MaxTokens: {
       Title: "حد أقصى للرموز لكل رد (max_tokens)",
       SubTitle: "أقصى عدد للرموز في تفاعل واحد",
-    },
-    PresencePenalty: {
-      Title: "تجدد الموضوع (presence_penalty)",
-      SubTitle: "كلما زادت القيمة، زادت احتمالية التوسع في مواضيع جديدة",
     },
     FrequencyPenalty: {
       Title: "عقوبة التكرار (frequency_penalty)",
