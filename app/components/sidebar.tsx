@@ -27,6 +27,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { isMcpEnabled } from "../mcp/actions";
 import { isIOS, useMobileScreen } from "../utils";
 import { Selector, showConfirm } from "./ui-lib";
+import { useSession } from "next-auth/react";
+import { UserProfile } from "./user-profile";
 
 const DISCOVERY = [
   { name: "Stable Diffusion", path: Path.Sd },
@@ -207,13 +209,15 @@ export function SideBarBody(props: {
 export function SideBarTail(props: {
   primaryAction?: React.ReactNode;
   secondaryAction?: React.ReactNode;
+  userProfile?: React.ReactNode;
 }) {
-  const { primaryAction, secondaryAction } = props;
+  const { primaryAction, secondaryAction, userProfile } = props;
 
   return (
     <div className={styles["sidebar-tail"]}>
       <div className={styles["sidebar-actions"]}>{primaryAction}</div>
       <div className={styles["sidebar-actions"]}>{secondaryAction}</div>
+      {userProfile}
     </div>
   );
 }
@@ -226,6 +230,7 @@ export function SideBar(props: { className?: string }) {
   const config = useAppConfig();
   const chatStore = useChatStore();
   const [mcpEnabled, setMcpEnabled] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     // 检查 MCP 是否启用
@@ -307,6 +312,9 @@ export function SideBar(props: { className?: string }) {
             }}
             shadow
           />
+        }
+        userProfile={
+          session?.user && <UserProfile user={session.user} />
         }
       />
     </SideBarContainer>

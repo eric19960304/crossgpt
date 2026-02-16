@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { getServerSideConfig } from "./config/server";
 import { SITE_NAME } from "./constant";
+import { SessionProvider } from "./components/session-provider";
 const serverConfig = getServerSideConfig();
 
 export const metadata: Metadata = {
@@ -52,22 +53,24 @@ export default function RootLayout({
         <script src="/serviceWorkerRegister.js" defer></script>
       </head>
       <body>
-        {children}
-        {serverConfig?.isVercel && (
-          <>
-            <SpeedInsights />
-          </>
-        )}
-        {serverConfig?.gtmId && (
-          <>
-            <GoogleTagManager gtmId={serverConfig.gtmId} />
-          </>
-        )}
-        {serverConfig?.gaId && (
-          <>
-            <GoogleAnalytics gaId={serverConfig.gaId} />
-          </>
-        )}
+        <SessionProvider>
+          {children}
+          {serverConfig?.isVercel && (
+            <>
+              <SpeedInsights />
+            </>
+          )}
+          {serverConfig?.gtmId && (
+            <>
+              <GoogleTagManager gtmId={serverConfig.gtmId} />
+            </>
+          )}
+          {serverConfig?.gaId && (
+            <>
+              <GoogleAnalytics gaId={serverConfig.gaId} />
+            </>
+          )}
+        </SessionProvider>
       </body>
     </html>
   );
