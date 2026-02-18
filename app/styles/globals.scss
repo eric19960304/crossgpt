@@ -26,9 +26,9 @@
   --theme: dark;
 
   /* color */
-  --white: rgb(30, 30, 30);
-  --black: rgb(187, 187, 187);
-  --gray: rgb(21, 21, 21);
+  --white: rgb(200, 200, 200);
+  --black: rgb(30, 30, 30);
+  --gray: rgb(100, 100, 100);
   --primary: rgb(47, 101, 159);
   --second: rgb(50, 50, 50);
   --hover-color: #323232;
@@ -90,13 +90,14 @@
 html {
   height: var(--full-height);
 
-  font-family: "Noto Sans", "SF Pro SC", "SF Pro Text", "SF Pro Icons",
-    "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family:
+    "Noto Sans", "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 body {
   background-color: var(--gray);
-  color: var(--black);
+  color: var(--white);
   margin: 0;
   padding: 0;
   height: var(--full-height);
@@ -140,8 +141,8 @@ select {
   border-radius: 10px;
   appearance: none;
   cursor: pointer;
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
   text-align: center;
 }
 
@@ -156,8 +157,8 @@ input {
 
 input[type="checkbox"] {
   cursor: pointer;
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
   appearance: none;
   border: var(--border-in-light);
   border-radius: 5px;
@@ -179,8 +180,8 @@ input[type="checkbox"]:checked::after {
 
 input[type="range"] {
   appearance: none;
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
 }
 
 @mixin thumb() {
@@ -232,8 +233,8 @@ input[type="password"] {
   border: var(--border-in-light);
   min-height: 36px;
   box-sizing: border-box;
-  background: var(--white);
-  color: var(--black);
+  background: var(--black);
+  color: var(--white);
   padding: 0 10px;
   max-width: 50%;
   font-family: inherit;
@@ -272,7 +273,7 @@ div.math {
 
 pre {
   position: relative;
-  
+
   &:hover .copy-code-button {
     pointer-events: all;
     transform: translateX(0px);
@@ -285,8 +286,8 @@ pre {
     top: 1em;
     cursor: pointer;
     padding: 0px 5px;
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--white);
+    color: var(--black);
     border: var(--border-in-light);
     border-radius: 10px;
     transform: translateX(10px);
@@ -315,7 +316,7 @@ pre {
     display: inline-flex;
     justify-content: center;
     pointer-events: none;
-    button{
+    button {
       pointer-events: auto;
       margin-top: 3em;
       margin-bottom: 4em;
@@ -326,14 +327,18 @@ pre {
       text-align: center;
       color: white;
       background: #464e4e;
-    } 
+    }
   }
-  
+
   .expanded {
     background-image: none;
   }
   .collapsed {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.06));
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0.06)
+    );
   }
 }
 
@@ -355,8 +360,8 @@ pre {
   box-shadow: var(--card-shadow);
   padding: 20px;
   overflow: auto;
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
 
   pre {
     overflow: auto;

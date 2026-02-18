@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getServerSideConfig } from "../../config/server";
+import { requireSession } from "../session-guard";
 
 const serverConfig = getServerSideConfig();
 
@@ -22,6 +23,9 @@ declare global {
 }
 
 async function handle() {
+  const denied = await requireSession();
+  if (denied) return denied;
+
   return NextResponse.json(DANGER_CONFIG);
 }
 

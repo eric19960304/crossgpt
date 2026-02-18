@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { STORAGE_KEY, internalAllowedWebDavEndpoints } from "../../../constant";
 import { getServerSideConfig } from "@/app/config/server";
+import { requireSession } from "@/app/api/session-guard";
 
 const config = getServerSideConfig();
 
@@ -24,6 +25,10 @@ async function handle(
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
+
+  const denied = await requireSession();
+  if (denied) return denied;
+
   const folder = STORAGE_KEY;
   const fileName = `${folder}/backup.json`;
 

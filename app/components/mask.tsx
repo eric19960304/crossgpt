@@ -11,8 +11,6 @@ import CopyIcon from "../icons/copy.svg";
 import DeleteIcon from "../icons/delete.svg";
 import DownloadIcon from "../icons/download.svg";
 import DragIcon from "../icons/drag.svg";
-import EditIcon from "../icons/edit.svg";
-import EyeIcon from "../icons/eye.svg";
 import UploadIcon from "../icons/upload.svg";
 
 import { useNavigate } from "react-router-dom";
@@ -28,14 +26,7 @@ import {
 } from "../store";
 import { DEFAULT_MASK_AVATAR, Mask, useMaskStore } from "../store/mask";
 import { Avatar } from "./emoji";
-import {
-  Input,
-  List,
-  ListItem,
-  Modal,
-  Select,
-  showConfirm
-} from "./ui-lib";
+import { Input, List, ListItem, Select, showConfirm } from "./ui-lib";
 
 import {
   DragDropContext,
@@ -46,7 +37,6 @@ import {
 import clsx from "clsx";
 import { useState } from "react";
 import { FileName, Path } from "../constant";
-import { BUILTIN_MASK_STORE } from "../masks";
 import { Updater } from "../typing";
 import {
   copyToClipboard,
@@ -81,7 +71,6 @@ export function MaskConfig(props: {
   readonly?: boolean;
   shouldSyncFromGlobal?: boolean;
 }) {
-
   const updateConfig = (updater: (config: ModelConfig) => void) => {
     if (props.readonly) return;
 
@@ -468,11 +457,6 @@ export function MaskPage() {
     }
   };
 
-  const [editingMaskId, setEditingMaskId] = useState<string | undefined>();
-  const editingMask =
-    maskStore.get(editingMaskId) ?? BUILTIN_MASK_STORE.get(editingMaskId);
-  const closeMaskModal = () => setEditingMaskId(undefined);
-
   const downloadAll = () => {
     downloadAs(JSON.stringify(masks.filter((v) => !v.builtin)), FileName.Masks);
   };
@@ -575,7 +559,6 @@ export function MaskPage() {
               bordered
               onClick={() => {
                 const createdMask = maskStore.create();
-                setEditingMaskId(createdMask.id);
               }}
             />
           </div>
@@ -605,19 +588,6 @@ export function MaskPage() {
                       navigate(Path.Chat);
                     }}
                   />
-                  {m.builtin ? (
-                    <IconButton
-                      icon={<EyeIcon />}
-                      text={Locale.Mask.Item.View}
-                      onClick={() => setEditingMaskId(m.id)}
-                    />
-                  ) : (
-                    <IconButton
-                      icon={<EditIcon />}
-                      text={Locale.Mask.Item.Edit}
-                      onClick={() => setEditingMaskId(m.id)}
-                    />
-                  )}
                   {!m.builtin && (
                     <IconButton
                       icon={<DeleteIcon />}
@@ -635,47 +605,6 @@ export function MaskPage() {
           </div>
         </div>
       </div>
-
-      {editingMask && (
-        <div className="modal-mask">
-          <Modal
-            title={Locale.Mask.EditModal.Title(editingMask?.builtin)}
-            onClose={closeMaskModal}
-            actions={[
-              <IconButton
-                icon={<DownloadIcon />}
-                text={Locale.Mask.EditModal.Download}
-                key="export"
-                bordered
-                onClick={() =>
-                  downloadAs(
-                    JSON.stringify(editingMask),
-                    `${editingMask.name}.json`,
-                  )
-                }
-              />,
-              <IconButton
-                key="copy"
-                icon={<CopyIcon />}
-                bordered
-                text={Locale.Mask.EditModal.Clone}
-                onClick={() => {
-                  maskStore.create(editingMask);
-                  setEditingMaskId(undefined);
-                }}
-              />,
-            ]}
-          >
-            <MaskConfig
-              mask={editingMask}
-              updateMask={(updater) =>
-                maskStore.updateMask(editingMaskId!, updater)
-              }
-              readonly={editingMask.builtin}
-            />
-          </Modal>
-        </div>
-      )}
     </ErrorBoundary>
   );
 }

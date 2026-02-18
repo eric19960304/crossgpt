@@ -3,16 +3,17 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #cecece 0%, #797979 100%);
+  width: 100%;
+  background: linear-gradient(150deg, #cecece 0%, #797979 100%);
   padding: 20px;
 }
 
 .login-container {
-  background: var(--white);
+  background: var(--black);
   border-radius: 16px;
   padding: 48px 40px;
   box-shadow: 0 20px 60px rgba(109, 109, 109, 0.3);
-  width: 100%;
+  width: 50vh;
   text-align: center;
 }
 
@@ -47,18 +48,19 @@
   justify-content: center;
   width: 100%;
   padding: 14px 24px;
-  background: var(--white);
+  background: #f8f9fa;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
-  color: #9f9f9f;
+  color: #2d2d2d;
   cursor: pointer;
   transition: all 0.3s ease;
   gap: 12px;
 
   &:hover {
-    background: #f8f9fa;
+    background: #5c5c5c;
+    color: #ffffff;
     border-color: #d0d0d0;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(105, 105, 105, 0.15);
@@ -73,18 +75,4 @@
 .google-icon {
   width: 24px;
   height: 24px;
-}
-
-@media (max-width: 768px) {
-  .login-container {
-    padding: 36px 24px;
-  }
-
-  .login-title {
-    font-size: 24px;
-  }
-
-  .login-subtitle {
-    font-size: 14px;
-  }
 }

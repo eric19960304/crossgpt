@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireSession } from "@/app/api/session-guard";
 
 async function handle(
   req: NextRequest,
@@ -10,6 +11,9 @@ async function handle(
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
+
+  const denied = await requireSession();
+  if (denied) return denied;
   const [...key] = params.key;
   // only allow to request to *.upstash.io
   if (!endpoint || !new URL(endpoint).hostname.endsWith(".upstash.io")) {

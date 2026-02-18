@@ -1,10 +1,9 @@
-import { BUILTIN_MASKS } from "../masks";
-import { getLang, Lang } from "../locales";
-import { DEFAULT_TOPIC, ChatMessage } from "./chat";
-import { ModelConfig, useAppConfig } from "./config";
-import { StoreKey } from "../constant";
 import { nanoid } from "nanoid";
+import { StoreKey } from "../constant";
+import { getLang, Lang } from "../locales";
 import { createPersistStore } from "../utils/store";
+import { ChatMessage, DEFAULT_TOPIC } from "./chat";
+import { ModelConfig, useAppConfig } from "./config";
 
 export type Mask = {
   id: string;
@@ -85,24 +84,7 @@ export const useMaskStore = createPersistStore(
     get(id?: string) {
       return get().masks[id ?? 1145141919810];
     },
-    getAll() {
-      const userMasks = Object.values(get().masks).sort(
-        (a, b) => b.createdAt - a.createdAt,
-      );
-      const config = useAppConfig.getState();
-      if (config.hideBuiltinMasks) return userMasks;
-      const buildinMasks = BUILTIN_MASKS.map(
-        (m) =>
-          ({
-            ...m,
-            modelConfig: {
-              ...config.modelConfig,
-              ...m.modelConfig,
-            },
-          }) as Mask,
-      );
-      return userMasks.concat(buildinMasks);
-    },
+    getAll() {},
     search(text: string) {
       return Object.values(get().masks);
     },

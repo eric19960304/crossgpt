@@ -1,5 +1,5 @@
 import { ApiPath } from "@/app/constant";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { handle as openaiHandler } from "../../openai";
 import { handle as azureHandler } from "../../azure";
 import { handle as googleHandler } from "../../google";
@@ -15,11 +15,19 @@ import { handle as siliconflowHandler } from "../../siliconflow";
 import { handle as xaiHandler } from "../../xai";
 import { handle as chatglmHandler } from "../../glm";
 import { handle as proxyHandler } from "../../proxy";
+import { requireSession } from "../../session-guard";
 
 async function handle(
   req: NextRequest,
   { params }: { params: { provider: string; path: string[] } },
 ) {
+  if (req.method === "OPTIONS") {
+    return NextResponse.json({ body: "OK" }, { status: 200 });
+  }
+
+  const denied = await requireSession();
+  if (denied) return denied;
+
   const apiPath = `/api/${params.provider}`;
   console.log(`[${params.provider} Route] params `, params);
   switch (apiPath) {

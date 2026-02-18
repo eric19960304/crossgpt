@@ -21,19 +21,31 @@ export const authConfig: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnProtectedRoute =
-        nextUrl.pathname.startsWith("/chat") ||
-        nextUrl.pathname.startsWith("/settings") ||
-        nextUrl.pathname.startsWith("/new-chat") ||
-        nextUrl.pathname.startsWith("/sd") ||
-        nextUrl.pathname.startsWith("/artifacts");
+      const isLoginPage = nextUrl.pathname === "/login";
 
-      if (isOnProtectedRoute) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn && nextUrl.pathname === "/login") {
+      // Redirect root to /chat or /login
+      if (nextUrl.pathname === "/") {
+        if (isLoggedIn) {
+          return Response.redirect(new URL("/chat", nextUrl));
+        }
+        return Response.redirect(new URL("/login", nextUrl));
+      }
+
+      // Logged-in users visiting /login get redirected to /chat
+      if (isLoggedIn && isLoginPage) {
         return Response.redirect(new URL("/chat", nextUrl));
       }
+
+      // Allow /login for unauthenticated users
+      if (isLoginPage) {
+        return true;
+      }
+
+      // Everything else requires authentication
+      if (!isLoggedIn) {
+        return false;
+      }
+
       return true;
     },
     async jwt({ token, user, account, profile }) {

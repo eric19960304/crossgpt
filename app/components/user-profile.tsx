@@ -1,9 +1,9 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import styles from "./user-profile.module.scss";
-import { IconButton } from "./button";
 import LogoutIcon from "../icons/logout.svg";
+import { IconButton } from "./button";
+import styles from "./user-profile.module.scss";
 
 interface UserProfileProps {
   user: {
@@ -29,20 +29,15 @@ export function UserProfile({ user }: UserProfileProps) {
           />
         )}
         <div className={styles["user-details"]}>
-          {user.name && (
-            <div className={styles["user-name"]}>{user.name}</div>
-          )}
+          {user.name && <div className={styles["user-name"]}>{user.name}</div>}
           {user.email && (
             <div className={styles["user-email"]}>{user.email}</div>
           )}
         </div>
+        <div>
+          <IconButton icon={<LogoutIcon />} onClick={handleSignOut} />
+        </div>
       </div>
-      <IconButton
-        icon={<LogoutIcon />}
-        text="Sign Out"
-        className={styles["logout-button"]}
-        onClick={handleSignOut}
-      />
     </div>
   );
 }

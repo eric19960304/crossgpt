@@ -1,12 +1,7 @@
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
-export default async function App() {
-  const session = await auth();
-
-  if (session?.user) {
-    redirect("/chat");
-  }
-
+// Root redirect is handled by middleware auth callback.
+// This is a fallback in case middleware doesn't catch it.
+export default function App() {
   redirect("/login");
 }

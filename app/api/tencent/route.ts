@@ -4,6 +4,7 @@ import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 import { getHeader } from "@/app/utils/tencent";
+import { requireSession } from "@/app/api/session-guard";
 
 const serverConfig = getServerSideConfig();
 
@@ -16,6 +17,9 @@ async function handle(
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
+
+  const denied = await requireSession();
+  if (denied) return denied;
 
   const authResult = auth(req, ModelProvider.Hunyuan);
   if (authResult.error) {

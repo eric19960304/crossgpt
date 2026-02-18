@@ -1,8 +1,12 @@
 import md5 from "spark-md5";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSideConfig } from "@/app/config/server";
+import { requireSession } from "@/app/api/session-guard";
 
 async function handle(req: NextRequest, res: NextResponse) {
+  const denied = await requireSession();
+  if (denied) return denied;
+
   const serverConfig = getServerSideConfig();
   const storeUrl = () =>
     `https://api.cloudflare.com/client/v4/accounts/${serverConfig.cloudflareAccountId}/storage/kv/namespaces/${serverConfig.cloudflareKVNamespaceId}`;

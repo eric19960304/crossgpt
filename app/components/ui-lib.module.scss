@@ -1,7 +1,7 @@
 @import "../styles/animation.scss";
 
 .card {
-  background-color: var(--white);
+  background-color: var(--black);
   border-radius: 10px;
   box-shadow: var(--card-shadow);
   padding: 10px;
@@ -82,7 +82,7 @@
   box-shadow: var(--card-shadow);
   margin-bottom: 20px;
   animation: slide-in ease 0.3s;
-  background: var(--white);
+  background: var(--black);
 }
 
 .list .list-item:last-child {
@@ -91,7 +91,7 @@
 
 .modal-container {
   box-shadow: var(--card-shadow);
-  background-color: var(--white);
+  background-color: var(--black);
   border-radius: 12px;
   width: 80vw;
   max-width: 900px;
@@ -210,10 +210,10 @@
     max-width: 80vw;
     word-break: break-all;
     font-size: 14px;
-    background-color: var(--white);
+    background-color: var(--black);
     box-shadow: var(--card-shadow);
     border: var(--border-in-light);
-    color: var(--black);
+    color: var(--white);
     padding: 10px 20px;
     border-radius: 50px;
     margin-bottom: 20px;
@@ -242,8 +242,8 @@
   border-radius: 10px;
   padding: 10px;
   font-family: inherit;
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
   resize: none;
   min-width: 50px;
 }
@@ -265,8 +265,8 @@
     border-radius: 10px;
     appearance: none;
     cursor: pointer;
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--black);
+    color: var(--white);
     text-align: center;
   }
 
@@ -285,8 +285,8 @@
   border-radius: 10px;
   border: var(--border-in-light);
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.03);
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
   font-family: inherit;
   padding: 10px;
   resize: none;
@@ -323,7 +323,7 @@
 
       .list-item {
         cursor: pointer;
-        background-color: var(--white);
+        background-color: var(--black);
 
         &:hover {
           filter: brightness(0.95);
@@ -336,4 +336,3 @@
     }
   }
 }
-

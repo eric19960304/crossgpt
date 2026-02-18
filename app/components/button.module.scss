@@ -1,5 +1,5 @@
 .icon-button {
-  background-color: var(--white);
+  background-color: var(--black);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -11,7 +11,7 @@
   user-select: none;
   outline: none;
   border: none;
-  color: var(--black);
+  color: var(--white);
 
   &[disabled] {
     cursor: not-allowed;
@@ -62,6 +62,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 5px;
 }
 
 @media only screen and (max-width: 600px) {

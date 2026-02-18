@@ -22,12 +22,12 @@ import {
 } from "../constant";
 
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { Link, useNavigate } from "react-router-dom";
 import { isMcpEnabled } from "../mcp/actions";
 import { isIOS, useMobileScreen } from "../utils";
 import { Selector, showConfirm } from "./ui-lib";
-import { useSession } from "next-auth/react";
 import { UserProfile } from "./user-profile";
 
 const DISCOVERY = [
@@ -167,12 +167,12 @@ export function SideBarContainer(props: {
 
 export function SideBarHeader(props: {
   title?: string | React.ReactNode;
-  subTitle?: string | React.ReactNode;
+  userProfile?: React.ReactNode;
   logo?: React.ReactNode;
   children?: React.ReactNode;
   shouldNarrow?: boolean;
 }) {
-  const { title, subTitle, logo, children, shouldNarrow } = props;
+  const { title, userProfile, logo, children, shouldNarrow } = props;
   return (
     <Fragment>
       <div
@@ -185,9 +185,8 @@ export function SideBarHeader(props: {
           <div className={styles["sidebar-title"]} data-tauri-drag-region>
             {title}
           </div>
-          <div className={styles["sidebar-sub-title"]}>{subTitle}</div>
         </div>
-        <div className={clsx(styles["sidebar-logo"], "no-dark")}>{logo}</div>
+        {userProfile}
       </div>
       {children}
     </Fragment>
@@ -209,15 +208,13 @@ export function SideBarBody(props: {
 export function SideBarTail(props: {
   primaryAction?: React.ReactNode;
   secondaryAction?: React.ReactNode;
-  userProfile?: React.ReactNode;
 }) {
-  const { primaryAction, secondaryAction, userProfile } = props;
+  const { primaryAction, secondaryAction } = props;
 
   return (
     <div className={styles["sidebar-tail"]}>
       <div className={styles["sidebar-actions"]}>{primaryAction}</div>
       <div className={styles["sidebar-actions"]}>{secondaryAction}</div>
-      {userProfile}
     </div>
   );
 }
@@ -250,7 +247,7 @@ export function SideBar(props: { className?: string }) {
     >
       <SideBarHeader
         title={SITE_NAME}
-        subTitle="Ask ChatGPT, Gemini, Grok at once."
+        userProfile={session?.user && <UserProfile user={session.user} />}
       >
         {showDiscoverySelector && (
           <Selector
@@ -304,6 +301,7 @@ export function SideBar(props: { className?: string }) {
         }
         secondaryAction={
           <IconButton
+            style={{ width: 150 }}
             icon={<AddIcon />}
             text={shouldNarrow ? undefined : Locale.Home.NewChat}
             onClick={() => {
@@ -312,9 +310,6 @@ export function SideBar(props: { className?: string }) {
             }}
             shadow
           />
-        }
-        userProfile={
-          session?.user && <UserProfile user={session.user} />
         }
       />
     </SideBarContainer>

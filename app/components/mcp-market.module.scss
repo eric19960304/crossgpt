@@ -24,7 +24,7 @@
       align-items: center;
       min-height: 200px;
       width: 100%;
-      background-color: var(--white);
+      background-color: var(--black);
       border: var(--border-in-light);
       border-radius: 10px;
       animation: slide-in ease 0.3s;
@@ -33,7 +33,7 @@
     .loading-text,
     .empty-text {
       font-size: 14px;
-      color: var(--black);
+      color: var(--white);
       opacity: 0.5;
       text-align: center;
     }
@@ -63,7 +63,7 @@
       padding: 20px;
       border: var(--border-in-light);
       animation: slide-in ease 0.3s;
-      background-color: var(--white);
+      background-color: var(--black);
       transition: all 0.3s ease;
 
       &.disabled {
@@ -208,7 +208,7 @@
 
         .tag {
           background: var(--gray);
-          color: var(--black);
+          color: var(--white);
           padding: 2px 6px;
           border-radius: 4px;
           font-size: 10px;
@@ -216,7 +216,7 @@
         }
 
         .mcp-market-info {
-          color: var(--black);
+          color: var(--white);
           font-size: 12px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -243,7 +243,7 @@
     padding: 16px;
     border: 1px solid var(--gray-200);
     border-radius: 10px;
-    background-color: var(--white);
+    background-color: var(--black);
 
     .array-input-item {
       display: flex;
@@ -267,7 +267,7 @@
         }
 
         &:focus {
-          background-color: var(--white);
+          background-color: var(--black);
           border-color: var(--primary);
           outline: none;
           box-shadow: 0 0 0 2px var(--primary-10);
@@ -326,8 +326,8 @@
         border-radius: 10px;
         box-sizing: border-box;
         font-size: 14px;
-        background-color: var(--white);
-        color: var(--black);
+        background-color: var(--black);
+        color: var(--white);
 
         &:hover {
           border-color: var(--gray-300);
@@ -392,7 +392,7 @@
       background-color: transparent;
       border: var(--border-in-light);
       border-radius: 10px;
-      color: var(--black);
+      color: var(--white);
       font-size: 12px;
       margin-top: 5px;
 
@@ -418,7 +418,7 @@
       .config-title {
         font-size: 14px;
         font-weight: 600;
-        color: var(--black);
+        color: var(--white);
         text-transform: capitalize;
       }
 
@@ -437,7 +437,7 @@
       padding: 16px;
       border: 1px solid var(--gray-200);
       border-radius: 10px;
-      background-color: var(--white);
+      background-color: var(--black);
 
       .array-input-item {
         display: flex;
@@ -461,7 +461,7 @@
           }
 
           &:focus {
-            background-color: var(--white);
+            background-color: var(--black);
             border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 2px var(--primary-10);
@@ -535,8 +535,8 @@
       border-radius: 10px;
       box-sizing: border-box;
       font-size: 14px;
-      background-color: var(--white);
-      color: var(--black);
+      background-color: var(--black);
+      color: var(--white);
 
       &:hover {
         border-color: var(--gray-300);
@@ -573,7 +573,7 @@
       .tool-name {
         font-size: 14px;
         font-weight: 600;
-        color: var(--black);
+        color: var(--white);
         margin-bottom: 8px;
         padding-left: 12px;
         border-left: 3px solid var(--primary);
@@ -602,7 +602,7 @@
     .list {
       padding: 10px;
       margin-bottom: 10px;
-      background-color: var(--white);
+      background-color: var(--black);
     }
 
     .list-item {
@@ -622,7 +622,7 @@
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
-          color: var(--black);
+          color: var(--white);
         }
 
         .list-sub-title {

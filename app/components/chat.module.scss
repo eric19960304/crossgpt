@@ -16,7 +16,7 @@
   margin-right: 10px;
   background-size: cover;
   background-position: center;
-  background-color: var(--white);
+  background-color: var(--black);
 
   .attach-image-mask {
     width: 100%;
@@ -38,7 +38,7 @@
     justify-content: center;
     border-radius: 5px;
     float: right;
-    background-color: var(--white);
+    background-color: var(--black);
   }
 }
 
@@ -59,8 +59,8 @@
     display: inline-flex;
     border-radius: 20px;
     font-size: 12px;
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--black);
+    color: var(--white);
     border: var(--border-in-light);
     padding: 4px 10px;
     box-shadow: var(--card-shadow);
@@ -97,8 +97,8 @@
     justify-content: center;
     align-items: center;
     font-size: 12px;
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--black);
+    color: var(--white);
 
     border: var(--border-in-light);
     box-shadow: var(--card-shadow);
@@ -188,8 +188,8 @@
   margin: 20px 0;
 
   .memory-prompt-content {
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--black);
+    color: var(--white);
     border: var(--border-in-light);
     border-radius: 10px;
     padding: 10px;
@@ -210,7 +210,7 @@
   justify-content: center;
   align-items: center;
 
-  color: var(--black);
+  color: var(--white);
   transition: all ease 0.3s;
   cursor: pointer;
   overflow: hidden;
@@ -339,7 +339,7 @@
 
   .chat-model-name {
     font-size: 12px;
-    color: var(--black);
+    color: var(--white);
     margin-left: 6px;
   }
 }
@@ -519,7 +519,7 @@
   opacity: 0.2;
   white-space: nowrap;
   transition: all ease 0.6s;
-  color: var(--black);
+  color: var(--white);
   text-align: right;
   width: 100%;
   box-sizing: border-box;
@@ -567,14 +567,14 @@
   display: flex;
   flex-direction: column-reverse;
 
-  background-color: var(--white);
+  background-color: var(--black);
   border: var(--border-in-light);
   border-radius: 10px;
   margin-bottom: 10px;
   box-shadow: var(--shadow);
 
   .prompt-hint {
-    color: var(--black);
+    color: var(--white);
     padding: 6px 10px;
     animation: slide-in ease 0.3s;
     cursor: pointer;
@@ -629,8 +629,8 @@
   border-radius: 10px;
   border: none;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.03);
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
   font-family: inherit;
   padding: 10px 90px 10px 14px;
   resize: none;
@@ -680,12 +680,12 @@
   align-items: center;
   overflow: hidden;
   padding: 10px;
-  background-color: var(--white);
+  background-color: var(--black);
 }
 
 .shortcut-key-title {
   font-size: 14px;
-  color: var(--black);
+  color: var(--white);
 }
 
 .shortcut-key-keys {
@@ -706,7 +706,7 @@
 
 .shortcut-key span {
   font-size: 12px;
-  color: var(--black);
+  color: var(--white);
 }
 
 .chat-main {
@@ -725,7 +725,7 @@
   .chat-side-panel {
     position: absolute;
     inset: 0;
-    background: var(--white);
+    background: var(--black);
     overflow: hidden;
     z-index: 10;
     transform: translateX(100%);

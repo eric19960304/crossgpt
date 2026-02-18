@@ -28,7 +28,7 @@
       border: var(--border-in-light);
       box-shadow: var(--card-shadow);
       border-radius: 14px;
-      background-color: var(--white);
+      background-color: var(--black);
       transform: scale(1);
 
       &:first-child {
@@ -101,7 +101,7 @@
         padding: 10px 14px;
         border: var(--border-in-light);
         box-shadow: var(--card-shadow);
-        background-color: var(--white);
+        background-color: var(--black);
         border-radius: 10px;
         margin-right: 10px;
         max-width: 8em;
