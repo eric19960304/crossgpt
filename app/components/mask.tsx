@@ -436,9 +436,7 @@ export function MaskPage() {
 
   const filterLang = maskStore.language;
 
-  const allMasks = maskStore
-    .getAll()
-    .filter((m) => !filterLang || m.lang === filterLang);
+  const allMasks: Mask[] = [];
 
   const [searchMasks, setSearchMasks] = useState<Mask[]>([]);
   const [searchText, setSearchText] = useState("");
