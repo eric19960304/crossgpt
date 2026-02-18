@@ -14,10 +14,6 @@ import { getClientConfig } from "../config/client";
 import { PasswordInput } from "./ui-lib";
 import LeftIcon from "@/app/icons/left.svg";
 import { safeLocalStorage } from "@/app/utils";
-import {
-  trackSettingsPageGuideToCPaymentClick,
-  trackAuthorizationPageButtonToCPaymentClick,
-} from "../utils/auth-settings-events";
 import clsx from "clsx";
 
 const storage = safeLocalStorage();
@@ -28,7 +24,6 @@ export function AuthPage() {
   const goHome = () => navigate(Path.Home);
   const goChat = () => navigate(Path.Chat);
   const goSaas = () => {
-    trackAuthorizationPageButtonToCPaymentClick();
     window.location.href = SAAS_CHAT_URL;
   };
 
@@ -171,9 +166,7 @@ function TopBanner() {
           <a
             href={SAAS_CHAT_URL}
             rel="stylesheet"
-            onClick={() => {
-              trackSettingsPageGuideToCPaymentClick();
-            }}
+            onClick={() => {}}
           >
             <Arrow style={{ marginLeft: "4px" }} />
           </a>

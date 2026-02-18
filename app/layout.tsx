@@ -4,12 +4,8 @@ import "./styles/markdown.scss";
 import "./styles/highlight.scss";
 import { getClientConfig } from "./config/client";
 import type { Metadata, Viewport } from "next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
-import { getServerSideConfig } from "./config/server";
 import { SITE_NAME } from "./constant";
 import { SessionProvider } from "./components/session-provider";
-const serverConfig = getServerSideConfig();
 
 export const metadata: Metadata = {
   title: SITE_NAME,
@@ -35,8 +31,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const serverConfig = getServerSideConfig();
-
   return (
     <html lang="en">
       <head>
@@ -55,21 +49,6 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           {children}
-          {serverConfig?.isVercel && (
-            <>
-              <SpeedInsights />
-            </>
-          )}
-          {serverConfig?.gtmId && (
-            <>
-              <GoogleTagManager gtmId={serverConfig.gtmId} />
-            </>
-          )}
-          {serverConfig?.gaId && (
-            <>
-              <GoogleAnalytics gaId={serverConfig.gaId} />
-            </>
-          )}
         </SessionProvider>
       </body>
     </html>
