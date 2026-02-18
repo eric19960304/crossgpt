@@ -21,7 +21,7 @@ services:
     depends_on:
       - mongo
   mongo:
-    image: mongo:4.4
+    image: mongo:4.4.6
     container_name: crossgpt-mongo
     restart: always
     volumes:
