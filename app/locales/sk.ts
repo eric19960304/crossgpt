@@ -59,7 +59,6 @@ const sk: PartialLocaleType = {
     },
     Commands: {
       new: "Začať nový chat",
-      newm: "Začať nový chat s maskou",
       next: "Ďalší Chat",
       prev: "Predchádzajúci Chat",
       clear: "Vymazať kontext",
@@ -74,7 +73,7 @@ const sk: PartialLocaleType = {
         dark: "Tmavý motív",
       },
       Prompt: "Výzvy",
-      Masks: "Masky",
+
       Clear: "Vymazať kontext",
       Settings: "Nastavenia",
     },
@@ -90,7 +89,7 @@ const sk: PartialLocaleType = {
     Send: "Odoslať",
     Config: {
       Reset: "Resetovať na predvolené",
-      SaveAs: "Uložiť ako masku",
+
     },
     IsContext: "Kontextová výzva",
   },
@@ -239,20 +238,11 @@ const sk: PartialLocaleType = {
 
       LocalState: "Lokálne údaje",
       Overview: (overview: any) => {
-        return `${overview.chat} chaty, ${overview.message} správy, ${overview.prompt} výzvy, ${overview.mask} masky`;
+        return `${overview.chat} chaty, ${overview.message} správy, ${overview.prompt} výzvy`;
       },
       ImportFailed: "Import z súboru zlyhal",
     },
-    Mask: {
-      Splash: {
-        Title: "Úvodná obrazovka masky",
-        SubTitle: "Zobraziť úvodnú obrazovku masky pred začatím nového chatu",
-      },
-      Builtin: {
-        Title: "Skryť vstavané masky",
-        SubTitle: "Skryť vstavané masky v zozname masiek",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Zakázať automatické dopĺňanie",
@@ -455,57 +445,6 @@ const sk: PartialLocaleType = {
     Item: {
       View: "Zobraziť",
     },
-  },
-  Mask: {
-    Name: "Maska",
-    Page: {
-      Title: "Šablóna výziev",
-      SubTitle: (count: number) => `${count} šablón výziev`,
-      Search: "Hľadať šablóny",
-      Create: "Vytvoriť",
-    },
-    Item: {
-      Info: (count: number) => `${count} výziev`,
-      Chat: "Chat",
-      View: "Zobraziť",
-      Edit: "Upraviť",
-      Delete: "Vymazať",
-      DeleteConfirm: "Potvrdiť vymazanie?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Upraviť šablónu výziev ${readonly ? "(iba na čítanie)" : ""}`,
-      Download: "Stiahnuť",
-      Clone: "Klonovať",
-    },
-    Config: {
-      Avatar: "Avatar robota",
-      Name: "Meno robota",
-      Sync: {
-        Title: "Použiť globálne nastavenia",
-        SubTitle: "Použiť globálne nastavenia v tomto chate",
-        Confirm: "Potvrdiť prepísanie vlastného nastavenia globálnym?",
-      },
-      HideContext: {
-        Title: "Skryť kontextové výzvy",
-        SubTitle: "Nezobrazovať kontextové výzvy v chate",
-      },
-      Share: {
-        Title: "Zdieľať túto masku",
-        SubTitle: "Vygenerovať odkaz na túto masku",
-        Action: "Kopírovať odkaz",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Vrátiť sa",
-    Skip: "Len začať",
-    Title: "Vybrať masku",
-    SubTitle: "Chatovať s dušou za maskou",
-    More: "Nájsť viac",
-    NotShow: "Už nezobrazovať",
-    ConfirmNoShow:
-      "Potvrdiť deaktiváciu? Môžete ju neskôr znova povoliť v nastaveniach.",
   },
 
   UI: {

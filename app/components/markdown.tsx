@@ -101,7 +101,7 @@ export function PreCode(props: { children: any }) {
 
   const config = useAppConfig();
   const enableArtifacts =
-    session.mask?.enableArtifacts !== false && config.enableArtifacts;
+    session.enableArtifacts !== false && config.enableArtifacts;
 
   //Wrap the paragraph for plain-text
   useEffect(() => {
@@ -178,7 +178,7 @@ function CustomCode(props: { children: any; className?: string }) {
   const session = chatStore.currentSession();
   const config = useAppConfig();
   const enableCodeFold =
-    session.mask?.enableCodeFold !== false && config.enableCodeFold;
+    session.enableCodeFold !== false && config.enableCodeFold;
 
   const ref = useRef<HTMLPreElement>(null);
   const [collapsed, setCollapsed] = useState(true);
@@ -204,7 +204,7 @@ function CustomCode(props: { children: any; className?: string }) {
             expanded: !collapsed,
           })}
         >
-          <button onClick={toggleCollapsed}>{Locale.NewChat.More}</button>
+          <button onClick={toggleCollapsed}>{"Show More"}</button>
         </div>
       );
     }

@@ -58,7 +58,6 @@ const jp: PartialLocaleType = {
     },
     Commands: {
       new: "新しいチャット",
-      newm: "マスクから新しいチャット",
       next: "次のチャット",
       prev: "前のチャット",
       clear: "コンテキストをクリア",
@@ -73,7 +72,7 @@ const jp: PartialLocaleType = {
         dark: "ダークモード",
       },
       Prompt: "クイックコマンド",
-      Masks: "すべてのマスク",
+
       Clear: "チャットをクリア",
       Settings: "チャット設定",
       UploadImage: "画像をアップロード",
@@ -90,7 +89,7 @@ const jp: PartialLocaleType = {
     Send: "送信",
     Config: {
       Reset: "メモリをクリア",
-      SaveAs: "マスクとして保存",
+
     },
     IsContext: "プリセットプロンプト",
   },
@@ -240,20 +239,11 @@ const jp: PartialLocaleType = {
 
       LocalState: "ローカルデータ",
       Overview: (overview: any) => {
-        return `${overview.chat} 回の対話、${overview.message} 件のメッセージ、${overview.prompt} 件のプロンプト、${overview.mask} 件のマスク`;
+        return `${overview.chat} 回の対話、${overview.message} 件のメッセージ、${overview.prompt} 件のプロンプト`;
       },
       ImportFailed: "インポートに失敗しました",
     },
-    Mask: {
-      Splash: {
-        Title: "マスク起動画面",
-        SubTitle: "新しいチャットを作成する際にマスク起動画面を表示",
-      },
-      Builtin: {
-        Title: "内蔵マスクを非表示",
-        SubTitle: "すべてのマスクリストで内蔵マスクを非表示",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "プロンプトの自動補完を無効化",
@@ -500,59 +490,6 @@ const jp: PartialLocaleType = {
     Item: {
       View: "表示",
     },
-  },
-  Mask: {
-    Name: "マスク",
-    Page: {
-      Title: "プリセットキャラクターマスク",
-      SubTitle: (count: number) => `${count} 件のプリセットキャラクター定義`,
-      Search: "キャラクターマスクを検索",
-      Create: "新規作成",
-    },
-    Item: {
-      Info: (count: number) => `${count} 件のプリセット対話が含まれています`,
-      Chat: "対話",
-      View: "表示",
-      Edit: "編集",
-      Delete: "削除",
-      DeleteConfirm: "削除してもよろしいですか？",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `プリセットマスクの編集 ${readonly ? "（読み取り専用）" : ""}`,
-      Download: "プリセットをダウンロード",
-      Clone: "プリセットをクローン",
-    },
-    Config: {
-      Avatar: "キャラクターアバター",
-      Name: "キャラクター名",
-      Sync: {
-        Title: "グローバル設定を使用",
-        SubTitle: "現在の対話でグローバルモデル設定を使用するかどうか",
-        Confirm:
-          "現在の対話のカスタム設定が自動的に上書きされます。グローバル設定を有効にしてもよろしいですか？",
-      },
-      HideContext: {
-        Title: "プリセット対話を非表示",
-        SubTitle:
-          "非表示にすると、プリセット対話はチャット画面に表示されません",
-      },
-      Share: {
-        Title: "このマスクを共有",
-        SubTitle: "このマスクの直リンクを生成",
-        Action: "リンクをコピー",
-      },
-    },
-  },
-  NewChat: {
-    Return: "戻る",
-    Skip: "直接開始",
-    NotShow: "今後表示しない",
-    ConfirmNoShow:
-      "無効にしてもよろしいですか？無効にした後、設定でいつでも再度有効にできます。",
-    Title: "マスクを選択",
-    SubTitle: "今すぐ始めよう、マスクの背後にある魂と思考の衝突",
-    More: "すべて表示",
   },
 
   URLCommand: {

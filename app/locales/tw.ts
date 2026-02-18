@@ -47,7 +47,6 @@ const tw = {
     },
     Commands: {
       new: "新建聊天",
-      newm: "從角色範本新建聊天",
       next: "下一個聊天",
       prev: "上一個聊天",
       clear: "清除上下文",
@@ -62,7 +61,7 @@ const tw = {
         dark: "深色模式",
       },
       Prompt: "快捷指令",
-      Masks: "所有角色範本",
+
       Clear: "清除聊天",
       Settings: "對話設定",
       UploadImage: "上傳圖片",
@@ -79,7 +78,7 @@ const tw = {
     Send: "傳送",
     Config: {
       Reset: "重設",
-      SaveAs: "另存新檔",
+
     },
     IsContext: "預設提示詞",
     ShortcutKey: {
@@ -235,20 +234,11 @@ const tw = {
 
       LocalState: "本機資料",
       Overview: (overview: any) => {
-        return `${overview.chat} 次對話，${overview.message} 則訊息，${overview.prompt} 條提示詞，${overview.mask} 個角色範本`;
+        return `${overview.chat} 次對話，${overview.message} 則訊息，${overview.prompt} 條提示詞`;
       },
       ImportFailed: "匯入失敗",
     },
-    Mask: {
-      Splash: {
-        Title: "角色範本啟動頁面",
-        SubTitle: "新增聊天時，呈現角色範本啟動頁面",
-      },
-      Builtin: {
-        Title: "隱藏內建角色範本",
-        SubTitle: "在所有角色範本列表中隱藏內建角色範本",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "停用提示詞自動補齊",
@@ -429,47 +419,8 @@ const tw = {
   },
   Plugin: { Name: "外掛" },
   FineTuned: { Sysmessage: "你是一個助手" },
-  Mask: {
-    Name: "角色範本",
-    Page: {
-      Title: "預設角色角色範本",
-      SubTitle: (count: number) => `${count} 個預設角色定義`,
-      Search: "搜尋角色角色範本",
-      Create: "新增",
-    },
-    Item: {
-      Info: (count: number) => `包含 ${count} 條預設對話`,
-      Chat: "對話",
-      View: "檢視",
-      Edit: "編輯",
-      Delete: "刪除",
-      DeleteConfirm: "確認刪除？",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `編輯預設角色範本 ${readonly ? "（唯讀）" : ""}`,
-      Download: "下載預設值",
-      Clone: "以此預設值建立副本",
-    },
-    Config: {
-      Avatar: "角色頭像",
-      Name: "角色名稱",
-      Sync: {
-        Title: "使用全域設定",
-        SubTitle: "目前對話是否使用全域模型設定",
-        Confirm: "目前對話的自訂設定將會被自動覆蓋，確認啟用全域設定？",
-      },
-      HideContext: {
-        Title: "隱藏預設對話",
-        SubTitle: "隱藏後預設對話不會出現在聊天介面",
-      },
-      Share: {
-        Title: "分享此角色範本",
-        SubTitle: "產生此角色範本的直達連結",
-        Action: "複製連結",
-      },
-    },
-  },
+
+
   SearchChat: {
     Name: "搜尋聊天記錄",
     Page: {
@@ -485,15 +436,8 @@ const tw = {
       View: "檢視",
     },
   },
-  NewChat: {
-    Return: "返回",
-    Skip: "跳過",
-    NotShow: "不再顯示",
-    ConfirmNoShow: "確認停用？停用後可以隨時在設定中重新啟用。",
-    Title: "挑選一個角色範本",
-    SubTitle: "現在開始，與角色範本背後的靈魂思維碰撞",
-    More: "搜尋更多",
-  },
+
+
   URLCommand: {
     Code: "偵測到連結中已經包含存取密碼，是否自動填入？",
     Settings: "偵測到連結中包含了預設設定，是否自動填入？",

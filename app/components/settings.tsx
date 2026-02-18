@@ -82,7 +82,6 @@ import { useNavigate } from "react-router-dom";
 import { getClientConfig } from "../config/client";
 import { useSyncStore } from "../store/sync";
 import { nanoid } from "nanoid";
-import { useMaskStore } from "../store/mask";
 import { ProviderType } from "../utils/cloud";
 import { TTSConfigList } from "./tts-config";
 import { RealtimeConfigList } from "./realtime-chat/realtime-config";
@@ -1495,11 +1494,11 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title={Locale.Mask.Config.Artifacts.Title}
-            subTitle={Locale.Mask.Config.Artifacts.SubTitle}
+            title={Locale.Settings.Artifacts.Title}
+            subTitle={Locale.Settings.Artifacts.SubTitle}
           >
             <input
-              aria-label={Locale.Mask.Config.Artifacts.Title}
+              aria-label={Locale.Settings.Artifacts.Title}
               type="checkbox"
               checked={config.enableArtifacts}
               onChange={(e) =>
@@ -1511,11 +1510,11 @@ export function Settings() {
             ></input>
           </ListItem>
           <ListItem
-            title={Locale.Mask.Config.CodeFold.Title}
-            subTitle={Locale.Mask.Config.CodeFold.SubTitle}
+            title={Locale.Settings.CodeFold.Title}
+            subTitle={Locale.Settings.CodeFold.SubTitle}
           >
             <input
-              aria-label={Locale.Mask.Config.CodeFold.Title}
+              aria-label={Locale.Settings.CodeFold.Title}
               type="checkbox"
               checked={config.enableCodeFold}
               data-testid="enable-code-fold-checkbox"

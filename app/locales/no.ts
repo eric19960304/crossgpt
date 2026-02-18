@@ -60,7 +60,6 @@ const no: PartialLocaleType = {
     },
     Commands: {
       new: "Ny samtale",
-      newm: "Start samtale fra maske",
       next: "Neste samtale",
       prev: "Forrige samtale",
       clear: "Rydd kontekst",
@@ -75,7 +74,7 @@ const no: PartialLocaleType = {
         dark: "Mørkt tema",
       },
       Prompt: "Hurtigkommando",
-      Masks: "Alle masker",
+
       Clear: "Rydd samtale",
       Settings: "Samtaleinnstillinger",
       UploadImage: "Last opp bilde",
@@ -94,7 +93,7 @@ const no: PartialLocaleType = {
     Send: "Send",
     Config: {
       Reset: "Fjern minne",
-      SaveAs: "Lagre som maske",
+
     },
     IsContext: "Forhåndsdefinerte oppfordringer",
   },
@@ -246,20 +245,11 @@ const no: PartialLocaleType = {
 
       LocalState: "Lokal data",
       Overview: (overview: any) => {
-        return `${overview.chat} samtaler, ${overview.message} meldinger, ${overview.prompt} oppfordringer, ${overview.mask} masker`;
+        return `${overview.chat} samtaler, ${overview.message} meldinger, ${overview.prompt} oppfordringer`;
       },
       ImportFailed: "Import mislyktes",
     },
-    Mask: {
-      Splash: {
-        Title: "Maskestartside",
-        SubTitle: "Vis maskestartside når du oppretter en ny samtale",
-      },
-      Builtin: {
-        Title: "Skjul innebygde masker",
-        SubTitle: "Skjul innebygde masker i alle maskelister",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Deaktiver automatisk fullføring av oppfordringer",
@@ -508,60 +498,6 @@ const no: PartialLocaleType = {
     Item: {
       View: "Vis",
     },
-  },
-  Mask: {
-    Name: "Maske",
-    Page: {
-      Title: "Forhåndsdefinerte rollemasker",
-      SubTitle: (count: number) =>
-        `${count} forhåndsdefinerte rolledefinisjoner`,
-      Search: "Søk etter rollemasker",
-      Create: "Opprett ny",
-    },
-    Item: {
-      Info: (count: number) => `Inneholder ${count} forhåndsdefinerte samtaler`,
-      Chat: "Samtale",
-      View: "Vis",
-      Edit: "Rediger",
-      Delete: "Slett",
-      DeleteConfirm: "Bekreft sletting?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Rediger forhåndsdefinert maske ${readonly ? "（kun lesing）" : ""}`,
-      Download: "Last ned forhåndsdefinert",
-      Clone: "Kopier forhåndsdefinert",
-    },
-    Config: {
-      Avatar: "Rollebilde",
-      Name: "Rolle navn",
-      Sync: {
-        Title: "Bruk globale innstillinger",
-        SubTitle: "Bruker nåværende samtale globale modellinnstillinger",
-        Confirm:
-          "De tilpassede innstillingene for den nåværende samtalen vil bli overskrevet automatisk. Bekreft at du vil bruke globale innstillinger?",
-      },
-      HideContext: {
-        Title: "Skjul forhåndsdefinerte samtaler",
-        SubTitle:
-          "Når skjult, vil forhåndsdefinerte samtaler ikke vises i chat-grensesnittet",
-      },
-      Share: {
-        Title: "Del denne masken",
-        SubTitle: "Generer en direkte lenke til denne masken",
-        Action: "Kopier lenke",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Tilbake",
-    Skip: "Start direkte",
-    NotShow: "Vis ikke igjen",
-    ConfirmNoShow:
-      "Bekreft deaktivering? Du kan aktivere det igjen i innstillingene når som helst.",
-    Title: "Velg en maske",
-    SubTitle: "Start nå, og få tanker som kolliderer med sjelen bak masken",
-    More: "Se alle",
   },
 
   URLCommand: {

@@ -33,7 +33,6 @@ import { estimateTokenLength } from "../utils/token";
 import { ModelConfig, ModelType, useAppConfig } from "./config";
 import { useAccessStore } from "./access";
 import { collectModelsWithDefaultModel } from "../utils/model";
-import { createEmptyMask, Mask } from "./mask";
 
 const localStorage = safeLocalStorage();
 
@@ -88,7 +87,13 @@ export interface ChatSession {
   lastSummarizeIndex: number;
   clearContextIndex?: number;
 
-  mask: Mask;
+  modelConfig: ModelConfig;
+  context: ChatMessage[];
+  hideContext?: boolean;
+  syncGlobalConfig?: boolean;
+  enableArtifacts?: boolean;
+  enableCodeFold?: boolean;
+  avatar: string;
 }
 
 export const DEFAULT_TOPIC = Locale.Store.DefaultTopic;
@@ -110,7 +115,10 @@ function createEmptySession(): ChatSession {
     },
     lastUpdate: Date.now(),
     lastSummarizeIndex: 0,
-    mask: createEmptyMask(),
+    modelConfig: { ...useAppConfig.getState().modelConfig },
+    context: [],
+    syncGlobalConfig: true,
+    avatar: "gpt-bot",
   };
 }
 
@@ -227,12 +235,13 @@ export const useChatStore = createPersistStore(
           ...msg,
           id: nanoid(), // 生成新的消息 ID
         }));
-        newSession.mask = {
-          ...currentSession.mask,
-          modelConfig: {
-            ...currentSession.mask.modelConfig,
-          },
-        };
+        newSession.modelConfig = { ...currentSession.modelConfig };
+        newSession.context = currentSession.context.slice();
+        newSession.hideContext = currentSession.hideContext;
+        newSession.syncGlobalConfig = currentSession.syncGlobalConfig;
+        newSession.enableArtifacts = currentSession.enableArtifacts;
+        newSession.enableCodeFold = currentSession.enableCodeFold;
+        newSession.avatar = currentSession.avatar;
 
         set((state) => ({
           currentSessionIndex: 0,
@@ -278,22 +287,8 @@ export const useChatStore = createPersistStore(
         });
       },
 
-      newSession(mask?: Mask) {
+      newSession() {
         const session = createEmptySession();
-
-        if (mask) {
-          const config = useAppConfig.getState();
-          const globalModelConfig = config.modelConfig;
-
-          session.mask = {
-            ...mask,
-            modelConfig: {
-              ...globalModelConfig,
-              ...mask.modelConfig,
-            },
-          };
-          session.topic = mask.name;
-        }
 
         set((state) => ({
           currentSessionIndex: 0,
@@ -382,7 +377,7 @@ export const useChatStore = createPersistStore(
         isMcpResponse?: boolean,
       ) {
         const session = get().currentSession();
-        const modelConfig = session.mask.modelConfig;
+        const modelConfig = session.modelConfig;
 
         // MCP Response no need to fill template
         let mContent: string | MultimodalContent[] = isMcpResponse
@@ -513,19 +508,19 @@ export const useChatStore = createPersistStore(
 
       async getMessagesWithMemory() {
         const session = get().currentSession();
-        const modelConfig = session.mask.modelConfig;
+        const modelConfig = session.modelConfig;
         const clearContextIndex = session.clearContextIndex ?? 0;
         const messages = session.messages.slice();
         const totalMessageCount = session.messages.length;
 
         // in-context prompts
-        const contextPrompts = session.mask.context.slice();
+        const contextPrompts = session.context.slice();
 
         // system prompts, to get close to OpenAI Web ChatGPT
         const shouldInjectSystemPrompts =
           modelConfig.enableInjectSystemPrompts &&
-          (session.mask.modelConfig.model.startsWith("gpt-") ||
-            session.mask.modelConfig.model.startsWith("chatgpt-"));
+          (session.modelConfig.model.startsWith("gpt-") ||
+            session.modelConfig.model.startsWith("chatgpt-"));
 
         const systemPrompts: ChatMessage[] = [];
 
@@ -613,7 +608,7 @@ export const useChatStore = createPersistStore(
       ) {
         const config = useAppConfig.getState();
         const session = targetSession;
-        const modelConfig = session.mask.modelConfig;
+        const modelConfig = session.modelConfig;
         // skip summarize when using dalle3?
         if (isDalle3(modelConfig.model)) {
           return;
@@ -623,8 +618,8 @@ export const useChatStore = createPersistStore(
         const [model, providerName] = modelConfig.compressModel
           ? [modelConfig.compressModel, modelConfig.compressProviderName]
           : getSummarizeModel(
-              session.mask.modelConfig.model,
-              session.mask.modelConfig.providerName,
+              session.modelConfig.model,
+              session.modelConfig.providerName,
             );
         const api: ClientApi = getClientApi(providerName as ServiceProvider);
 
@@ -777,7 +772,7 @@ export const useChatStore = createPersistStore(
   },
   {
     name: StoreKey.Chat,
-    version: 3.3,
+    version: 3.4,
     migrate(persistedState, version) {
       const state = persistedState as any;
       const newState = JSON.parse(
@@ -792,9 +787,9 @@ export const useChatStore = createPersistStore(
           const newSession = createEmptySession();
           newSession.topic = oldSession.topic;
           newSession.messages = [...oldSession.messages];
-          newSession.mask.modelConfig.sendMemory = true;
-          newSession.mask.modelConfig.historyMessageCount = 4;
-          newSession.mask.modelConfig.compressMessageLengthThreshold = 1000;
+          newSession.modelConfig.sendMemory = true;
+          newSession.modelConfig.historyMessageCount = 4;
+          newSession.modelConfig.compressMessageLengthThreshold = 1000;
           newState.sessions.push(newSession);
         }
       }
@@ -803,42 +798,65 @@ export const useChatStore = createPersistStore(
         // migrate id to nanoid
         newState.sessions.forEach((s) => {
           s.id = nanoid();
-          s.messages.forEach((m) => (m.id = nanoid()));
+          s.messages.forEach((m: any) => (m.id = nanoid()));
         });
       }
 
       // Enable `enableInjectSystemPrompts` attribute for old sessions.
-      // Resolve issue of old sessions not automatically enabling.
       if (version < 3.1) {
-        newState.sessions.forEach((s) => {
-          if (
-            // Exclude those already set by user
-            !s.mask.modelConfig.hasOwnProperty("enableInjectSystemPrompts")
-          ) {
-            // Because users may have changed this configuration,
-            // the user's current configuration is used instead of the default
+        newState.sessions.forEach((s: any) => {
+          const mc = s.mask?.modelConfig ?? s.modelConfig;
+          if (mc && !mc.hasOwnProperty("enableInjectSystemPrompts")) {
             const config = useAppConfig.getState();
-            s.mask.modelConfig.enableInjectSystemPrompts =
+            mc.enableInjectSystemPrompts =
               config.modelConfig.enableInjectSystemPrompts;
           }
         });
       }
 
-      // add default summarize model for every session
       if (version < 3.2) {
-        newState.sessions.forEach((s) => {
+        newState.sessions.forEach((s: any) => {
           const config = useAppConfig.getState();
-          s.mask.modelConfig.compressModel = config.modelConfig.compressModel;
-          s.mask.modelConfig.compressProviderName =
-            config.modelConfig.compressProviderName;
+          const mc = s.mask?.modelConfig ?? s.modelConfig;
+          if (mc) {
+            mc.compressModel = config.modelConfig.compressModel;
+            mc.compressProviderName = config.modelConfig.compressProviderName;
+          }
         });
       }
-      // revert default summarize model for every session
+
       if (version < 3.3) {
-        newState.sessions.forEach((s) => {
-          const config = useAppConfig.getState();
-          s.mask.modelConfig.compressModel = "";
-          s.mask.modelConfig.compressProviderName = "";
+        newState.sessions.forEach((s: any) => {
+          const mc = s.mask?.modelConfig ?? s.modelConfig;
+          if (mc) {
+            mc.compressModel = "";
+            mc.compressProviderName = "";
+          }
+        });
+      }
+
+      // Migrate mask properties to flat session properties
+      if (version < 3.4) {
+        newState.sessions.forEach((s: any) => {
+          if (s.mask) {
+            s.modelConfig = s.mask.modelConfig ?? s.modelConfig;
+            s.context = s.mask.context ?? s.context ?? [];
+            s.hideContext = s.mask.hideContext ?? s.hideContext;
+            s.syncGlobalConfig = s.mask.syncGlobalConfig ?? s.syncGlobalConfig;
+            s.enableArtifacts = s.mask.enableArtifacts ?? s.enableArtifacts;
+            s.enableCodeFold = s.mask.enableCodeFold ?? s.enableCodeFold;
+            s.avatar = s.mask.avatar ?? s.avatar ?? "gpt-bot";
+            delete s.mask;
+          }
+          if (!s.modelConfig) {
+            s.modelConfig = useAppConfig.getState().modelConfig;
+          }
+          if (!s.context) {
+            s.context = [];
+          }
+          if (!s.avatar) {
+            s.avatar = "gpt-bot";
+          }
         });
       }
 

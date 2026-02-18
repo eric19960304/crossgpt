@@ -77,7 +77,6 @@ export enum SlotID {
 }
 
 export enum FileName {
-  Masks = "masks.json",
   Prompts = "prompts.json",
 }
 
@@ -86,7 +85,7 @@ export enum StoreKey {
   Plugin = "chat-next-web-plugin",
   Access = "access-control",
   Config = "app-config",
-  Mask = "mask-store",
+
   Prompt = "prompt-store",
   Update = "chat-update",
   Sync = "sync",

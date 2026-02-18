@@ -19,7 +19,6 @@ import SpeakStopIcon from "../icons/speak-stop.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import LoadingButtonIcon from "../icons/loading.svg";
 import PromptIcon from "../icons/prompt.svg";
-import MaskIcon from "../icons/mask.svg";
 import MaxIcon from "../icons/max.svg";
 import MinIcon from "../icons/min.svg";
 import ResetIcon from "../icons/reload.svg";
@@ -77,9 +76,19 @@ import {
 
 import { uploadImage as uploadImageRemote } from "@/app/utils/chat";
 
+import DragIcon from "../icons/drag.svg";
+import AddIcon from "../icons/add.svg";
+
 import dynamic from "next/dynamic";
 
 import { ChatControllerPool } from "../client/controller";
+import { ROLES } from "../client/api";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  OnDragEndResponder,
+} from "@hello-pangea/dnd";
 import { DalleQuality, DalleStyle, ModelSize } from "../typing";
 import { Prompt, usePromptStore } from "../store/prompt";
 import Locale from "../locales";
@@ -107,8 +116,6 @@ import {
   UNFINISHED_INPUT,
 } from "../constant";
 import { Avatar } from "./emoji";
-import { ContextPrompts, MaskAvatar, MaskConfig } from "./mask";
-import { useMaskStore } from "../store/mask";
 import { ChatCommandPrefix, useChatCommand, useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { getClientConfig } from "../config/client";
@@ -373,9 +380,9 @@ export function ChatActions(props: {
   const stopAll = () => ChatControllerPool.stopAll();
 
   // switch model
-  const currentModel = session.mask.modelConfig.model;
+  const currentModel = session.modelConfig.model;
   const currentProviderName =
-    session.mask.modelConfig?.providerName || ServiceProvider.OpenAI;
+    session.modelConfig?.providerName || ServiceProvider.OpenAI;
   const allModels = useAllModels();
   const models = useMemo(() => {
     const filteredModels = allModels.filter((m) => m.available);
@@ -411,9 +418,9 @@ export function ChatActions(props: {
   const dalle3Qualitys: DalleQuality[] = ["standard", "hd"];
   const dalle3Styles: DalleStyle[] = ["vivid", "natural"];
   const currentSize =
-    session.mask.modelConfig?.size ?? ("1024x1024" as ModelSize);
-  const currentQuality = session.mask.modelConfig?.quality ?? "standard";
-  const currentStyle = session.mask.modelConfig?.style ?? "vivid";
+    session.modelConfig?.size ?? ("1024x1024" as ModelSize);
+  const currentQuality = session.modelConfig?.quality ?? "standard";
+  const currentStyle = session.modelConfig?.style ?? "vivid";
 
   const isMobileScreen = useMobileScreen();
 
@@ -432,8 +439,8 @@ export function ChatActions(props: {
       // show next model to default model if exist
       const nextModel = models.find((model) => model.isDefault) || models[0];
       chatStore.updateTargetSession(session, (session) => {
-        session.mask.modelConfig.model = nextModel.name;
-        session.mask.modelConfig.providerName = nextModel?.provider
+        session.modelConfig.model = nextModel.name;
+        session.modelConfig.providerName = nextModel?.provider
           ?.providerName as ServiceProvider;
       });
       showToast(
@@ -509,10 +516,10 @@ export function ChatActions(props: {
               if (s.length === 0) return;
               const [model, providerName] = getModelProvider(s[0]);
               chatStore.updateTargetSession(session, (session) => {
-                session.mask.modelConfig.model = model as ModelType;
-                session.mask.modelConfig.providerName =
+                session.modelConfig.model = model as ModelType;
+                session.modelConfig.providerName =
                   providerName as ServiceProvider;
-                session.mask.syncGlobalConfig = false;
+                session.syncGlobalConfig = false;
               });
               if (providerName == "ByteDance") {
                 const selectedModel = models.find(
@@ -548,7 +555,7 @@ export function ChatActions(props: {
               if (s.length === 0) return;
               const size = s[0];
               chatStore.updateTargetSession(session, (session) => {
-                session.mask.modelConfig.size = size;
+                session.modelConfig.size = size;
               });
               showToast(size);
             }}
@@ -565,6 +572,192 @@ export function ChatActions(props: {
         )}
       </div>
     </div>
+  );
+}
+
+function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
+  const result = [...list];
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+}
+
+function ContextPromptItem(props: {
+  index: number;
+  prompt: ChatMessage;
+  update: (prompt: ChatMessage) => void;
+  remove: () => void;
+}) {
+  const [focusingInput, setFocusingInput] = useState(false);
+
+  return (
+    <div className={styles["context-prompt-row"]}>
+      {!focusingInput && (
+        <>
+          <div className={styles["context-drag"]}>
+            <DragIcon />
+          </div>
+          <select
+            value={props.prompt.role}
+            className={styles["context-role"]}
+            onChange={(e) =>
+              props.update({
+                ...props.prompt,
+                role: e.target.value as any,
+              })
+            }
+          >
+            {ROLES.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
+      <textarea
+        value={getMessageTextContent(props.prompt)}
+        className={styles["context-content"]}
+        rows={focusingInput ? 5 : 1}
+        onFocus={() => setFocusingInput(true)}
+        onBlur={() => {
+          setFocusingInput(false);
+          window?.getSelection()?.removeAllRanges();
+        }}
+        onInput={(e) =>
+          props.update({
+            ...props.prompt,
+            content: e.currentTarget.value as any,
+          })
+        }
+      />
+      {!focusingInput && (
+        <IconButton
+          icon={<DeleteIcon />}
+          className={styles["context-delete-button"]}
+          onClick={() => props.remove()}
+          bordered
+        />
+      )}
+    </div>
+  );
+}
+
+function ContextPrompts(props: {
+  context: ChatMessage[];
+  updateContext: (updater: (context: ChatMessage[]) => void) => void;
+}) {
+  const context = props.context;
+
+  const addContextPrompt = (prompt: ChatMessage, i: number) => {
+    props.updateContext((context) => context.splice(i, 0, prompt));
+  };
+
+  const removeContextPrompt = (i: number) => {
+    props.updateContext((context) => context.splice(i, 1));
+  };
+
+  const updateContextPrompt = (i: number, prompt: ChatMessage) => {
+    props.updateContext((context) => {
+      const images = getMessageImages(context[i]);
+      context[i] = prompt;
+      if (images.length > 0) {
+        const text = getMessageTextContent(context[i]);
+        const newContext: MultimodalContent[] = [{ type: "text", text }];
+        for (const img of images) {
+          newContext.push({ type: "image_url", image_url: { url: img } });
+        }
+        context[i].content = newContext;
+      }
+    });
+  };
+
+  const onDragEnd: OnDragEndResponder = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    const newContext = reorder(
+      context,
+      result.source.index,
+      result.destination.index,
+    );
+    props.updateContext((context) => {
+      context.splice(0, context.length, ...newContext);
+    });
+  };
+
+  return (
+    <>
+      <div className={styles["context-prompt"]} style={{ marginBottom: 20 }}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="context-prompt-list">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {context.map((c, i) => (
+                  <Draggable
+                    draggableId={c.id || i.toString()}
+                    index={i}
+                    key={c.id}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <ContextPromptItem
+                          index={i}
+                          prompt={c}
+                          update={(prompt) => updateContextPrompt(i, prompt)}
+                          remove={() => removeContextPrompt(i)}
+                        />
+                        <div
+                          className={styles["context-prompt-insert"]}
+                          onClick={() => {
+                            addContextPrompt(
+                              createMessage({
+                                role: "user",
+                                content: "",
+                                date: new Date().toLocaleString(),
+                              }),
+                              i + 1,
+                            );
+                          }}
+                        >
+                          <AddIcon />
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
+        {props.context.length === 0 && (
+          <div className={styles["context-prompt-row"]}>
+            <IconButton
+              icon={<AddIcon />}
+              text={Locale.Context.Add}
+              bordered
+              className={styles["context-prompt-button"]}
+              onClick={() =>
+                addContextPrompt(
+                  createMessage({
+                    role: "user",
+                    content: "",
+                    date: "",
+                  }),
+                  props.context.length,
+                )
+              }
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -791,7 +984,6 @@ function _Chat() {
   // chat commands shortcuts
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
-    newm: () => navigate(Path.Chat),
     prev: () => chatStore.nextSession(-1),
     next: () => chatStore.nextSession(1),
     clear: () =>
@@ -886,10 +1078,9 @@ function _Chat() {
         }
       });
 
-      // auto sync mask config from global config
-      if (session.mask.syncGlobalConfig) {
-        console.log("[Mask] syncing from global, name = ", session.mask.name);
-        session.mask.modelConfig = { ...config.modelConfig };
+      // auto sync config from global config
+      if (session.syncGlobalConfig) {
+        session.modelConfig = { ...config.modelConfig };
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -993,7 +1184,7 @@ function _Chat() {
 
   const onPinMessage = (message: ChatMessage) => {
     chatStore.updateTargetSession(session, (session) =>
-      session.mask.context.push(message),
+      session.context.push(message),
     );
 
     showToast(Locale.Chat.Actions.PinToastContent, {
@@ -1052,8 +1243,8 @@ function _Chat() {
   }
 
   const context: RenderMessage[] = useMemo(() => {
-    return session.mask.hideContext ? [] : session.mask.context.slice();
-  }, [session.mask.context, session.mask.hideContext]);
+    return session.hideContext ? [] : session.context.slice();
+  }, [session.context, session.hideContext]);
 
   if (
     context.length === 0 &&
@@ -1232,7 +1423,7 @@ function _Chat() {
 
   const handlePaste = useCallback(
     async (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
-      const currentModel = chatStore.currentSession().mask.modelConfig.model;
+      const currentModel = chatStore.currentSession().modelConfig.model;
       if (!isVisionModel(currentModel)) {
         return;
       }
@@ -1543,7 +1734,7 @@ function _Chat() {
                                     chatStore.updateTargetSession(
                                       session,
                                       (session) => {
-                                        const m = session.mask.context
+                                        const m = session.context
                                           .concat(session.messages)
                                           .find((m) => m.id === message.id);
                                         if (m) {

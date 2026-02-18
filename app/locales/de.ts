@@ -59,7 +59,6 @@ const de: PartialLocaleType = {
     },
     Commands: {
       new: "Neues Gespräch",
-      newm: "Neues Gespräch aus Maske erstellen",
       next: "Nächstes Gespräch",
       prev: "Vorheriges Gespräch",
       clear: "Kontext löschen",
@@ -74,7 +73,7 @@ const de: PartialLocaleType = {
         dark: "Dunkles Thema",
       },
       Prompt: "Schnellbefehle",
-      Masks: "Alle Masken",
+
       Clear: "Chat löschen",
       Settings: "Gesprächseinstellungen",
       UploadImage: "Bild hochladen",
@@ -91,7 +90,7 @@ const de: PartialLocaleType = {
     Send: "Senden",
     Config: {
       Reset: "Erinnerung löschen",
-      SaveAs: "Als Maske speichern",
+
     },
     IsContext: "Voreingestellter Prompt",
   },
@@ -245,21 +244,11 @@ const de: PartialLocaleType = {
 
       LocalState: "Lokale Daten",
       Overview: (overview: any) => {
-        return `${overview.chat} Chats, ${overview.message} Nachrichten, ${overview.prompt} Eingabeaufforderungen, ${overview.mask} Masken`;
+        return `${overview.chat} Chats, ${overview.message} Nachrichten, ${overview.prompt} Eingabeaufforderungen`;
       },
       ImportFailed: "Import fehlgeschlagen",
     },
-    Mask: {
-      Splash: {
-        Title: "Masken-Startseite",
-        SubTitle:
-          "Zeige die Masken-Startseite beim Erstellen eines neuen Chats",
-      },
-      Builtin: {
-        Title: "Eingebaute Masken ausblenden",
-        SubTitle: "Blendet eingebaute Masken in allen Maskenlisten aus",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Automatische Eingabeaufforderung deaktivieren",
@@ -516,62 +505,6 @@ const de: PartialLocaleType = {
     Item: {
       View: "Ansehen",
     },
-  },
-  Mask: {
-    Name: "Masken",
-    Page: {
-      Title: "Vordefinierte Rollenmasken",
-      SubTitle: (count: number) =>
-        `${count} vordefinierte Rollenbeschreibungen`,
-      Search: "Rollenmasken suchen",
-      Create: "Neu erstellen",
-    },
-    Item: {
-      Info: (count: number) => `Beinhaltet ${count} vordefinierte Gespräche`,
-      Chat: "Gespräch",
-      View: "Anzeigen",
-      Edit: "Bearbeiten",
-      Delete: "Löschen",
-      DeleteConfirm: "Bestätigen Sie das Löschen?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Vordefinierte Maske bearbeiten ${readonly ? "（Nur lesen）" : ""}`,
-      Download: "Vorgabe herunterladen",
-      Clone: "Vorgabe klonen",
-    },
-    Config: {
-      Avatar: "Rollen-Avatar",
-      Name: "Rollenname",
-      Sync: {
-        Title: "Globale Einstellungen verwenden",
-        SubTitle:
-          "Soll das aktuelle Gespräch die globalen Modelleinstellungen verwenden?",
-        Confirm:
-          "Die benutzerdefinierten Einstellungen des aktuellen Gesprächs werden automatisch überschrieben. Bestätigen Sie, dass Sie die globalen Einstellungen aktivieren möchten?",
-      },
-      HideContext: {
-        Title: "Vordefinierte Gespräche ausblenden",
-        SubTitle:
-          "Nach dem Ausblenden werden vordefinierte Gespräche nicht mehr im Chat angezeigt",
-      },
-      Share: {
-        Title: "Diese Maske teilen",
-        SubTitle: "Generieren Sie einen Direktlink zu dieser Maske",
-        Action: "Link kopieren",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Zurück",
-    Skip: "Direkt beginnen",
-    NotShow: "Nicht mehr anzeigen",
-    ConfirmNoShow:
-      "Bestätigen Sie die Deaktivierung? Nach der Deaktivierung können Sie jederzeit in den Einstellungen wieder aktivieren.",
-    Title: "Wählen Sie eine Maske aus",
-    SubTitle:
-      "Starten Sie jetzt und lassen Sie sich von den Gedanken hinter der Maske inspirieren",
-    More: "Alle anzeigen",
   },
 
   URLCommand: {

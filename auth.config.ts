@@ -51,9 +51,9 @@ export const authConfig: NextAuthConfig = {
     async jwt({ token, user, account, profile }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-        token.picture = user.image;
+        token.email = user.email ?? "";
+        token.name = user.name ?? "";
+        token.picture = user.image ?? "";
       }
       if (account) {
         token.accessToken = account.access_token;

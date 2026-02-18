@@ -94,7 +94,7 @@ export class DoubaoApi implements LLMApi {
 
     const modelConfig = {
       ...useAppConfig.getState().modelConfig,
-      ...useChatStore.getState().currentSession().mask.modelConfig,
+      ...useChatStore.getState().currentSession().modelConfig,
       ...{
         model: options.config.model,
       },
@@ -132,7 +132,7 @@ export class DoubaoApi implements LLMApi {
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
-            useChatStore.getState().currentSession().mask?.plugin || [],
+            [],
           );
         return streamWithThink(
           chatPath,

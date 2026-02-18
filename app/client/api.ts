@@ -176,7 +176,6 @@ export class ClientApi {
 
   prompts() {}
 
-  masks() {}
 
   async share(messages: ChatMessage[], avatarUrl: string | null = null) {}
 }
@@ -208,7 +207,7 @@ export function getHeaders(ignoreHeaders: boolean = false) {
   const clientConfig = getClientConfig();
 
   function getConfig() {
-    const modelConfig = chatStore.currentSession().mask.modelConfig;
+    const modelConfig = chatStore.currentSession().modelConfig;
     const isGoogle = modelConfig.providerName === ServiceProvider.Google;
     const isAzure = modelConfig.providerName === ServiceProvider.Azure;
     const isAnthropic = modelConfig.providerName === ServiceProvider.Anthropic;

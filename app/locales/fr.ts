@@ -59,7 +59,6 @@ const fr: PartialLocaleType = {
     },
     Commands: {
       new: "Nouvelle discussion",
-      newm: "Créer une discussion à partir du masque",
       next: "Discussion suivante",
       prev: "Discussion précédente",
       clear: "Effacer le contexte",
@@ -74,7 +73,7 @@ const fr: PartialLocaleType = {
         dark: "Mode sombre",
       },
       Prompt: "Commandes rapides",
-      Masks: "Tous les masques",
+
       Clear: "Effacer la discussion",
       Settings: "Paramètres de la discussion",
       UploadImage: "Télécharger une image",
@@ -91,7 +90,7 @@ const fr: PartialLocaleType = {
     Send: "Envoyer",
     Config: {
       Reset: "Effacer la mémoire",
-      SaveAs: "Enregistrer comme masque",
+
     },
     IsContext: "Prompt prédéfini",
   },
@@ -248,22 +247,11 @@ const fr: PartialLocaleType = {
 
       LocalState: "Données locales",
       Overview: (overview: any) => {
-        return `${overview.chat} discussions, ${overview.message} messages, ${overview.prompt} invites, ${overview.mask} masques`;
+        return `${overview.chat} discussions, ${overview.message} messages, ${overview.prompt} invites`;
       },
       ImportFailed: "Échec de l'importation",
     },
-    Mask: {
-      Splash: {
-        Title: "Page de démarrage du masque",
-        SubTitle:
-          "Afficher la page de démarrage du masque lors de la création d'une nouvelle discussion",
-      },
-      Builtin: {
-        Title: "Masquer les masques intégrés",
-        SubTitle:
-          "Masquer les masques intégrés dans toutes les listes de masques",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Désactiver la complétion automatique des invites",
@@ -514,60 +502,6 @@ const fr: PartialLocaleType = {
     Item: {
       View: "Voir",
     },
-  },
-  Mask: {
-    Name: "Masque",
-    Page: {
-      Title: "Masques de rôle prédéfinis",
-      SubTitle: (count: number) => `${count} définitions de rôle prédéfinies`,
-      Search: "Rechercher des masques de rôle",
-      Create: "Créer",
-    },
-    Item: {
-      Info: (count: number) => `Contient ${count} discussions prédéfinies`,
-      Chat: "Discussion",
-      View: "Voir",
-      Edit: "Modifier",
-      Delete: "Supprimer",
-      DeleteConfirm: "Confirmer la suppression ?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Modifier le masque prédéfini ${readonly ? " (lecture seule)" : ""}`,
-      Download: "Télécharger le masque",
-      Clone: "Cloner le masque",
-    },
-    Config: {
-      Avatar: "Avatar du rôle",
-      Name: "Nom du rôle",
-      Sync: {
-        Title: "Utiliser les paramètres globaux",
-        SubTitle:
-          "Cette discussion utilise-t-elle les paramètres du modèle globaux ?",
-        Confirm:
-          "Les paramètres personnalisés de cette discussion seront automatiquement remplacés. Confirmer l'activation des paramètres globaux ?",
-      },
-      HideContext: {
-        Title: "Masquer les discussions prédéfinies",
-        SubTitle:
-          "Les discussions prédéfinies ne seront pas affichées dans l'interface de discussion après masquage",
-      },
-      Share: {
-        Title: "Partager ce masque",
-        SubTitle: "Générer un lien direct pour ce masque",
-        Action: "Copier le lien",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Retour",
-    Skip: "Commencer directement",
-    NotShow: "Ne plus afficher",
-    ConfirmNoShow:
-      "Confirmer la désactivation ? Vous pourrez réactiver cette option à tout moment dans les paramètres.",
-    Title: "Choisir un masque",
-    SubTitle: "Commencez maintenant, rencontrez les pensées derrière le masque",
-    More: "Voir tout",
   },
 
   URLCommand: {

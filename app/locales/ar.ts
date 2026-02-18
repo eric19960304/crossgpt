@@ -58,7 +58,6 @@ const ar: PartialLocaleType = {
     },
     Commands: {
       new: "دردشة جديدة",
-      newm: "إنشاء دردشة من القناع",
       next: "الدردشة التالية",
       prev: "الدردشة السابقة",
       clear: "مسح السياق",
@@ -73,7 +72,7 @@ const ar: PartialLocaleType = {
         dark: "الوضع الداكن",
       },
       Prompt: "الأوامر السريعة",
-      Masks: "جميع الأقنعة",
+
       Clear: "مسح الدردشة",
       Settings: "إعدادات الدردشة",
       UploadImage: "تحميل صورة",
@@ -90,7 +89,7 @@ const ar: PartialLocaleType = {
     Send: "إرسال",
     Config: {
       Reset: "مسح الذاكرة",
-      SaveAs: "حفظ كقناع",
+
     },
     IsContext: "الإشعارات المسبقة",
   },
@@ -238,20 +237,11 @@ const ar: PartialLocaleType = {
 
       LocalState: "بيانات محلية",
       Overview: (overview: any) => {
-        return `${overview.chat} دردشة، ${overview.message} رسالة، ${overview.prompt} إشعار، ${overview.mask} قناع`;
+        return `${overview.chat} دردشة، ${overview.message} رسالة، ${overview.prompt} إشعار`;
       },
       ImportFailed: "فشل الاستيراد",
     },
-    Mask: {
-      Splash: {
-        Title: "صفحة بدء القناع",
-        SubTitle: "عرض صفحة بدء القناع عند بدء دردشة جديدة",
-      },
-      Builtin: {
-        Title: "إخفاء الأقنعة المدمجة",
-        SubTitle: "إخفاء الأقنعة المدمجة في قائمة الأقنعة",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "تعطيل الإكمال التلقائي للإشعارات",
@@ -492,58 +482,6 @@ const ar: PartialLocaleType = {
     Item: {
       View: "عرض",
     },
-  },
-  Mask: {
-    Name: "القناع",
-    Page: {
-      Title: "أقنعة الأدوار المخصصة",
-      SubTitle: (count: number) => `${count} تعريف لدور مخصص`,
-      Search: "بحث عن قناع الدور",
-      Create: "إنشاء جديد",
-    },
-    Item: {
-      Info: (count: number) => `يحتوي على ${count} محادثات مخصصة`,
-      Chat: "الدردشة",
-      View: "عرض",
-      Edit: "تحرير",
-      Delete: "حذف",
-      DeleteConfirm: "تأكيد الحذف؟",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `تحرير القناع المخصص ${readonly ? " (للقراءة فقط)" : ""}`,
-      Download: "تنزيل القناع المخصص",
-      Clone: "استنساخ القناع",
-    },
-    Config: {
-      Avatar: "صورة الدور",
-      Name: "اسم الدور",
-      Sync: {
-        Title: "استخدام الإعدادات العالمية",
-        SubTitle: "هل تستخدم الدردشة الحالية الإعدادات العالمية للنموذج",
-        Confirm:
-          "ستتم الكتابة فوق الإعدادات المخصصة للدردشة الحالية تلقائيًا، تأكيد تفعيل الإعدادات العالمية؟",
-      },
-      HideContext: {
-        Title: "إخفاء المحادثات المخصصة",
-        SubTitle: "بعد الإخفاء، لن تظهر المحادثات المخصصة في واجهة الدردشة",
-      },
-      Share: {
-        Title: "مشاركة هذا القناع",
-        SubTitle: "إنشاء رابط مباشر لهذا القناع",
-        Action: "نسخ الرابط",
-      },
-    },
-  },
-  NewChat: {
-    Return: "العودة",
-    Skip: "بدء الآن",
-    NotShow: "عدم العرض مرة أخرى",
-    ConfirmNoShow:
-      "تأكيد إلغاء العرض؟ بعد الإلغاء، يمكنك إعادة تفعيله في الإعدادات في أي وقت.",
-    Title: "اختر قناعًا",
-    SubTitle: "ابدأ الآن وتفاعل مع الأفكار خلف القناع",
-    More: "عرض الكل",
   },
 
   URLCommand: {

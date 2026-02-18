@@ -58,7 +58,6 @@ const ko: PartialLocaleType = {
     },
     Commands: {
       new: "새 채팅",
-      newm: "마스크에서 새 채팅",
       next: "다음 채팅",
       prev: "이전 채팅",
       clear: "컨텍스트 지우기",
@@ -73,7 +72,7 @@ const ko: PartialLocaleType = {
         dark: "다크 모드",
       },
       Prompt: "빠른 명령",
-      Masks: "모든 마스크",
+
       Clear: "채팅 지우기",
       Settings: "채팅 설정",
       UploadImage: "이미지 업로드",
@@ -90,7 +89,7 @@ const ko: PartialLocaleType = {
     Send: "전송",
     Config: {
       Reset: "기억 지우기",
-      SaveAs: "마스크로 저장",
+
     },
     IsContext: "프롬프트 설정",
   },
@@ -239,20 +238,11 @@ const ko: PartialLocaleType = {
 
       LocalState: "로컬 데이터",
       Overview: (overview: any) => {
-        return `${overview.chat} 회의 대화, ${overview.message} 개의 메시지, ${overview.prompt} 개의 프롬프트, ${overview.mask} 개의 마스크`;
+        return `${overview.chat} 회의 대화, ${overview.message} 개의 메시지, ${overview.prompt} 개의 프롬프트`;
       },
       ImportFailed: "가져오기 실패",
     },
-    Mask: {
-      Splash: {
-        Title: "마스크 시작 페이지",
-        SubTitle: "새 채팅 시 마스크 시작 페이지 표시",
-      },
-      Builtin: {
-        Title: "내장 마스크 숨기기",
-        SubTitle: "모든 마스크 목록에서 내장 마스크 숨기기",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "프롬프트 자동 완성 비활성화",
@@ -492,58 +482,6 @@ const ko: PartialLocaleType = {
     Item: {
       View: "보기",
     },
-  },
-  Mask: {
-    Name: "마스크",
-    Page: {
-      Title: "프리셋 캐릭터 마스크",
-      SubTitle: (count: number) => `${count} 개의 프리셋 캐릭터 정의`,
-      Search: "캐릭터 마스크 검색",
-      Create: "새로 만들기",
-    },
-    Item: {
-      Info: (count: number) => ` ${count} 개의 프리셋 대화 포함`,
-      Chat: "대화",
-      View: "보기",
-      Edit: "편집",
-      Delete: "삭제",
-      DeleteConfirm: "삭제를 확인하시겠습니까?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `프리셋 마스크 편집 ${readonly ? "（읽기 전용）" : ""}`,
-      Download: "프리셋 다운로드",
-      Clone: "프리셋 복제",
-    },
-    Config: {
-      Avatar: "캐릭터 아바타",
-      Name: "캐릭터 이름",
-      Sync: {
-        Title: "전역 설정 사용",
-        SubTitle: "현재 대화가 전역 모델 설정을 사용하는지 여부",
-        Confirm:
-          "현재 대화의 사용자 정의 설정이 자동으로 덮어쓰여질 것입니다. 전역 설정을 활성화하시겠습니까?",
-      },
-      HideContext: {
-        Title: "프리셋 대화 숨기기",
-        SubTitle: "숨기면 프리셋 대화가 채팅 화면에 나타나지 않습니다.",
-      },
-      Share: {
-        Title: "이 마스크 공유하기",
-        SubTitle: "이 마스크의 직접 링크 생성",
-        Action: "링크 복사",
-      },
-    },
-  },
-  NewChat: {
-    Return: "돌아가기",
-    Skip: "바로 시작",
-    NotShow: "다시 보지 않기",
-    ConfirmNoShow:
-      "비활성화하시겠습니까? 비활성화 후 언제든지 설정에서 다시 활성화할 수 있습니다.",
-    Title: "마스크 선택",
-    SubTitle: "지금 시작하여 마스크 뒤의 사고와 교류해보세요.",
-    More: "모두 보기",
   },
 
   URLCommand: {

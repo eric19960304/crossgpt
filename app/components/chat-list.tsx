@@ -15,9 +15,9 @@ import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Path } from "../constant";
 import Locale from "../locales";
-import { Mask } from "../store/mask";
+import { ModelType } from "../store/config";
 import { useMobileScreen } from "../utils";
-import { MaskAvatar } from "./mask";
+import { Avatar } from "./emoji";
 import { showConfirm } from "./ui-lib";
 
 export function ChatItem(props: {
@@ -30,7 +30,8 @@ export function ChatItem(props: {
   id: string;
   index: number;
   narrow?: boolean;
-  mask: Mask;
+  avatar: string;
+  model: ModelType;
 }) {
   const draggableRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -65,9 +66,9 @@ export function ChatItem(props: {
           {props.narrow ? (
             <div className={styles["chat-item-narrow"]}>
               <div className={clsx(styles["chat-item-avatar"], "no-dark")}>
-                <MaskAvatar
-                  avatar={props.mask.avatar}
-                  model={props.mask.modelConfig.model}
+                <Avatar
+                  avatar={props.avatar !== "gpt-bot" ? props.avatar : undefined}
+                  model={props.avatar === "gpt-bot" ? props.model : undefined}
                 />
               </div>
               <div className={styles["chat-item-narrow-count"]}>
@@ -163,7 +164,8 @@ export function ChatList(props: { narrow?: boolean }) {
                   }
                 }}
                 narrow={props.narrow}
-                mask={item.mask}
+                avatar={item.avatar}
+                model={item.modelConfig.model}
               />
             ))}
             {provided.placeholder}

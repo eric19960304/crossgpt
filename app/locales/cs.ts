@@ -58,7 +58,6 @@ const cs: PartialLocaleType = {
     },
     Commands: {
       new: "Nová konverzace",
-      newm: "Nová konverzace z masky",
       next: "Další konverzace",
       prev: "Předchozí konverzace",
       clear: "Vymazat kontext",
@@ -73,7 +72,7 @@ const cs: PartialLocaleType = {
         dark: "Tmavý režim",
       },
       Prompt: "Rychlé příkazy",
-      Masks: "Všechny masky",
+
       Clear: "Vymazat konverzaci",
       Settings: "Nastavení konverzace",
       UploadImage: "Nahrát obrázek",
@@ -90,7 +89,7 @@ const cs: PartialLocaleType = {
     Send: "Odeslat",
     Config: {
       Reset: "Vymazat paměť",
-      SaveAs: "Uložit jako masku",
+
     },
     IsContext: "Přednastavené prompty",
   },
@@ -240,20 +239,11 @@ const cs: PartialLocaleType = {
 
       LocalState: "Lokální data",
       Overview: (overview: any) => {
-        return `${overview.chat} konverzací, ${overview.message} zpráv, ${overview.prompt} promptů, ${overview.mask} masek`;
+        return `${overview.chat} konverzací, ${overview.message} zpráv, ${overview.prompt} promptů`;
       },
       ImportFailed: "Import selhal",
     },
-    Mask: {
-      Splash: {
-        Title: "Úvodní stránka masky",
-        SubTitle: "Při zahájení nové konverzace zobrazit úvodní stránku masky",
-      },
-      Builtin: {
-        Title: "Skrýt vestavěné masky",
-        SubTitle: "Skrýt vestavěné masky v seznamu všech masek",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Zakázat automatické doplňování promptů",
@@ -500,59 +490,6 @@ const cs: PartialLocaleType = {
     Item: {
       View: "Zobrazit",
     },
-  },
-  Mask: {
-    Name: "Maska",
-    Page: {
-      Title: "Přednastavené role masky",
-      SubTitle: (count: number) => `${count} definovaných rolí`,
-      Search: "Hledat role masky",
-      Create: "Nový",
-    },
-    Item: {
-      Info: (count: number) => `Obsahuje ${count} přednastavených konverzací`,
-      Chat: "Chat",
-      View: "Zobrazit",
-      Edit: "Upravit",
-      Delete: "Smazat",
-      DeleteConfirm: "Opravdu chcete smazat?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Upravit přednastavenou masku ${readonly ? " (jen pro čtení)" : ""}`,
-      Download: "Stáhnout přednastavení",
-      Clone: "Klonovat přednastavení",
-    },
-    Config: {
-      Avatar: "Profilový obrázek",
-      Name: "Název role",
-      Sync: {
-        Title: "Použít globální nastavení",
-        SubTitle: "Použít globální modelová nastavení pro aktuální konverzaci",
-        Confirm:
-          "Vaše vlastní nastavení konverzace bude automaticky přepsáno, opravdu chcete použít globální nastavení?",
-      },
-      HideContext: {
-        Title: "Skrýt přednastavené konverzace",
-        SubTitle:
-          "Po skrytí se přednastavené konverzace nebudou zobrazovat v chatovém rozhraní",
-      },
-      Share: {
-        Title: "Sdílet tuto masku",
-        SubTitle: "Generovat přímý odkaz na tuto masku",
-        Action: "Kopírovat odkaz",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Zpět",
-    Skip: "Začít hned",
-    NotShow: "Zobrazit už nikdy",
-    ConfirmNoShow:
-      "Opravdu chcete zakázat? Zakázání můžete kdykoli znovu povolit v nastavení.",
-    Title: "Vyberte masku",
-    SubTitle: "Začněte nyní a konfrontujte se s myslí za maskou",
-    More: "Zobrazit vše",
   },
 
   URLCommand: {

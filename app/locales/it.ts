@@ -59,7 +59,6 @@ const it: PartialLocaleType = {
     },
     Commands: {
       new: "Nuova chat",
-      newm: "Nuova chat da maschera",
       next: "Chat successiva",
       prev: "Chat precedente",
       clear: "Pulisci contesto",
@@ -74,7 +73,7 @@ const it: PartialLocaleType = {
         dark: "Tema scuro",
       },
       Prompt: "Comandi rapidi",
-      Masks: "Tutte le maschere",
+
       Clear: "Pulisci chat",
       Settings: "Impostazioni conversazione",
       UploadImage: "Carica immagine",
@@ -94,7 +93,7 @@ const it: PartialLocaleType = {
     Send: "Invia",
     Config: {
       Reset: "Pulisci memoria",
-      SaveAs: "Salva come maschera",
+
     },
     IsContext: "Suggerimenti predefiniti",
   },
@@ -249,22 +248,11 @@ const it: PartialLocaleType = {
 
       LocalState: "Dati locali",
       Overview: (overview: any) => {
-        return `${overview.chat} chat, ${overview.message} messaggi, ${overview.prompt} suggerimenti, ${overview.mask} maschere`;
+        return `${overview.chat} chat, ${overview.message} messaggi, ${overview.prompt} suggerimenti`;
       },
       ImportFailed: "Importazione fallita",
     },
-    Mask: {
-      Splash: {
-        Title: "Pagina di avvio delle maschere",
-        SubTitle:
-          "Mostra la pagina di avvio delle maschere quando si avvia una nuova chat",
-      },
-      Builtin: {
-        Title: "Nascondi maschere predefinite",
-        SubTitle:
-          "Nascondi le maschere predefinite in tutte le liste delle maschere",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Disabilita completamento automatico dei suggerimenti",
@@ -515,60 +503,6 @@ const it: PartialLocaleType = {
     Item: {
       View: "Visualizza",
     },
-  },
-  Mask: {
-    Name: "Maschera",
-    Page: {
-      Title: "Maschere dei ruoli predefiniti",
-      SubTitle: (count: number) => `${count} definizioni di ruoli predefiniti`,
-      Search: "Cerca maschere di ruolo",
-      Create: "Crea nuovo",
-    },
-    Item: {
-      Info: (count: number) => `Include ${count} conversazioni predefinite`,
-      Chat: "Conversazione",
-      View: "Visualizza",
-      Edit: "Modifica",
-      Delete: "Elimina",
-      DeleteConfirm: "Confermi eliminazione?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Modifica maschera predefinita ${readonly ? "(sola lettura)" : ""}`,
-      Download: "Scarica predefinito",
-      Clone: "Clona predefinito",
-    },
-    Config: {
-      Avatar: "Avatar del ruolo",
-      Name: "Nome del ruolo",
-      Sync: {
-        Title: "Utilizza impostazioni globali",
-        SubTitle:
-          "La conversazione attuale utilizzerà le impostazioni globali del modello",
-        Confirm:
-          "Le impostazioni personalizzate della conversazione attuale verranno sovrascritte automaticamente, confermi l'attivazione delle impostazioni globali?",
-      },
-      HideContext: {
-        Title: "Nascondi conversazioni predefinite",
-        SubTitle:
-          "Le conversazioni predefinite non appariranno nella finestra della chat dopo averle nascoste",
-      },
-      Share: {
-        Title: "Condividi questa maschera",
-        SubTitle: "Genera un link diretto a questa maschera",
-        Action: "Copia link",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Torna",
-    Skip: "Inizia subito",
-    NotShow: "Non mostrare più",
-    ConfirmNoShow:
-      "Confermi di disabilitare? Dopo la disabilitazione, puoi riattivare in qualsiasi momento dalle impostazioni.",
-    Title: "Scegli una maschera",
-    SubTitle: "Inizia ora e interagisci con il pensiero dietro la maschera",
-    More: "Vedi tutto",
   },
 
   URLCommand: {

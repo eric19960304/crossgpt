@@ -58,7 +58,6 @@ const pt: PartialLocaleType = {
     },
     Commands: {
       new: "Iniciar um novo chat",
-      newm: "Iniciar um novo chat com máscara",
       next: "Próximo Chat",
       prev: "Chat Anterior",
       clear: "Limpar Contexto",
@@ -73,7 +72,7 @@ const pt: PartialLocaleType = {
         dark: "Tema Escuro",
       },
       Prompt: "Prompts",
-      Masks: "Máscaras",
+
       Clear: "Limpar Contexto",
       Settings: "Configurações",
     },
@@ -89,7 +88,7 @@ const pt: PartialLocaleType = {
     Send: "Enviar",
     Config: {
       Reset: "Redefinir para Padrão",
-      SaveAs: "Salvar como Máscara",
+
     },
     IsContext: "Prompt Contextual",
   },
@@ -238,21 +237,11 @@ const pt: PartialLocaleType = {
 
       LocalState: "Dados Locais",
       Overview: (overview: any) => {
-        return `${overview.chat} chats，${overview.message} mensagens，${overview.prompt} prompts，${overview.mask} máscaras`;
+        return `${overview.chat} chats，${overview.message} mensagens，${overview.prompt} prompts`;
       },
       ImportFailed: "Falha ao importar do arquivo",
     },
-    Mask: {
-      Splash: {
-        Title: "Tela de Início da Máscara",
-        SubTitle:
-          "Mostrar uma tela de início da máscara antes de iniciar novo chat",
-      },
-      Builtin: {
-        Title: "Esconder Máscaras Embutidas",
-        SubTitle: "Esconder máscaras embutidas na lista de máscaras",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Desabilitar auto-completar",
@@ -438,58 +427,6 @@ const pt: PartialLocaleType = {
     Item: {
       View: "Ver",
     },
-  },
-  Mask: {
-    Name: "Máscara",
-    Page: {
-      Title: "Template de Prompt",
-      SubTitle: (count: number) => `${count} templates de prompt`,
-      Search: "Buscar Templates",
-      Create: "Criar",
-    },
-    Item: {
-      Info: (count: number) => `${count} prompts`,
-      Chat: "Chat",
-      View: "Visualizar",
-      Edit: "Editar",
-      Delete: "Deletar",
-      DeleteConfirm: "Confirmar para deletar?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Editar Template de Prompt ${readonly ? "(somente leitura)" : ""}`,
-      Download: "Baixar",
-      Clone: "Clonar",
-    },
-    Config: {
-      Avatar: "Avatar do Bot",
-      Name: "Nome do Bot",
-      Sync: {
-        Title: "Usar Configuração Global",
-        SubTitle: "Usar configuração global neste chat",
-        Confirm:
-          "Confirmar para substituir a configuração personalizada pela configuração global?",
-      },
-      HideContext: {
-        Title: "Esconder Prompts de Contexto",
-        SubTitle: "Não mostrar prompts de contexto no chat",
-      },
-      Share: {
-        Title: "Compartilhar Esta Máscara",
-        SubTitle: "Gerar um link para esta máscara",
-        Action: "Copiar Link",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Retornar",
-    Skip: "Apenas Começar",
-    Title: "Escolher uma Máscara",
-    SubTitle: "Converse com a Alma por trás da Máscara",
-    More: "Encontre Mais",
-    NotShow: "Nunca Mostrar Novamente",
-    ConfirmNoShow:
-      "Confirmar para desabilitar？Você pode habilitar nas configurações depois.",
   },
 
   UI: {

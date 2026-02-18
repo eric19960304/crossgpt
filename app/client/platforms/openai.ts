@@ -184,7 +184,7 @@ export class ChatGPTApi implements LLMApi {
   async chat(options: ChatOptions) {
     const modelConfig = {
       ...useAppConfig.getState().modelConfig,
-      ...useChatStore.getState().currentSession().mask.modelConfig,
+      ...useChatStore.getState().currentSession().modelConfig,
       ...{
         model: options.config.model,
         providerName: options.config.providerName,
@@ -280,7 +280,7 @@ export class ChatGPTApi implements LLMApi {
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
-            useChatStore.getState().currentSession().mask?.plugin || [],
+            [],
           );
         // console.log("getAsTools", tools, funcs);
         streamWithThink(

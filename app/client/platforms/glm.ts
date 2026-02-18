@@ -162,7 +162,7 @@ export class ChatGLMApi implements LLMApi {
 
     const modelConfig = {
       ...useAppConfig.getState().modelConfig,
-      ...useChatStore.getState().currentSession().mask.modelConfig,
+      ...useChatStore.getState().currentSession().modelConfig,
       ...{
         model: options.config.model,
         providerName: options.config.providerName,
@@ -206,7 +206,7 @@ export class ChatGLMApi implements LLMApi {
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
-            useChatStore.getState().currentSession().mask?.plugin || [],
+            [],
           );
         return stream(
           path,

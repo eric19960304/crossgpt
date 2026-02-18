@@ -59,7 +59,6 @@ const da: PartialLocaleType = {
     },
     Commands: {
       new: "Ny chat",
-      newm: "Ny chat med persona",
       next: "Næste chat",
       prev: "Forrige chat",
       clear: "Ryd alt før",
@@ -75,7 +74,7 @@ const da: PartialLocaleType = {
         dark: "Mørkt tema",
       },
       Prompt: "Prompts",
-      Masks: "Personaer",
+
       Clear: "Ryd kontekst",
       Settings: "Indstillinger",
       UploadImage: "Upload billeder",
@@ -96,7 +95,7 @@ const da: PartialLocaleType = {
     StopSpeak: "Stop oplæsning",
     Config: {
       Reset: "Nulstil til standard",
-      SaveAs: "Gem som persona",
+
     },
     IsContext: "Ekstra prompt til baggrund",
     ShortcutKey: {
@@ -254,19 +253,10 @@ const da: PartialLocaleType = {
       },
       LocalState: "Lokale data",
       Overview: (overview: any) =>
-        `${overview.chat} chats, ${overview.message} beskeder, ${overview.prompt} prompts, ${overview.mask} personaer`,
+        `${overview.chat} chats, ${overview.message} beskeder, ${overview.prompt} prompts`,
       ImportFailed: "Import mislykkedes",
     },
-    Mask: {
-      Splash: {
-        Title: "Persona-forside",
-        SubTitle: "Vis denne side, når du opretter ny chat",
-      },
-      Builtin: {
-        Title: "Skjul indbyggede personaer",
-        SubTitle: "Vis ikke de indbyggede personaer i listen",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Slå auto-forslag fra",
@@ -685,65 +675,7 @@ const da: PartialLocaleType = {
       Error: "Fejl i OpenAPI Schema",
     },
   },
-  Mask: {
-    Name: "Persona",
-    Page: {
-      Title: "Prompts som personaer",
-      SubTitle: (count: number) => `${count} skabeloner`,
-      Search: "Søg skabeloner",
-      Create: "Opret ny",
-    },
-    Item: {
-      Info: (count: number) => `${count} prompts`,
-      Chat: "Chat",
-      View: "Vis",
-      Edit: "Rediger",
-      Delete: "Slet",
-      DeleteConfirm: "Vil du slette?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Rediger skabelon ${readonly ? "(skrivebeskyttet)" : ""}`,
-      Download: "Download",
-      Clone: "Klon",
-    },
-    Config: {
-      Avatar: "Chat-avatar",
-      Name: "Chat-navn",
-      Sync: {
-        Title: "Brug globale indstillinger",
-        SubTitle: "Gældende for denne chat",
-        Confirm: "Erstat nuværende indstillinger med globale?",
-      },
-      HideContext: {
-        Title: "Skjul ekstra prompts",
-        SubTitle: "Vis dem ikke på chat-skærmen",
-      },
-      Artifacts: {
-        Title: "Brug Artefakter",
-        SubTitle: "Gør det muligt at vise HTML-sider",
-      },
-      CodeFold: {
-        Title: "Fold kode sammen",
-        SubTitle: "Luk/åbn lange kodestykker automatisk",
-      },
-      Share: {
-        Title: "Del denne persona",
-        SubTitle: "Få et link til denne skabelon",
-        Action: "Kopiér link",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Tilbage",
-    Skip: "Start straks",
-    Title: "Vælg en persona",
-    SubTitle: "Chat med den persona, du vælger",
-    More: "Se flere",
-    NotShow: "Vis ikke igen",
-    ConfirmNoShow:
-      "Er du sikker på, at du ikke vil se det igen? Du kan altid slå det til under indstillinger.",
-  },
+
   UI: {
     Confirm: "OK",
     Cancel: "Fortryd",

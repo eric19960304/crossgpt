@@ -53,7 +53,6 @@ const en: LocaleType = {
     },
     Commands: {
       new: "Start a new chat",
-      newm: "Start a new chat with mask",
       next: "Next Chat",
       prev: "Previous Chat",
       clear: "Clear Context",
@@ -69,7 +68,6 @@ const en: LocaleType = {
         dark: "Dark Theme",
       },
       Prompt: "Prompts",
-      Masks: "Masks",
       Clear: "Clear Context",
       Settings: "Settings",
       UploadImage: "Upload Images",
@@ -88,7 +86,6 @@ const en: LocaleType = {
     StopSpeak: "Stop Speak",
     Config: {
       Reset: "Reset to Default",
-      SaveAs: "Save as Mask",
     },
     IsContext: "Contextual Prompt",
     ShortcutKey: {
@@ -253,19 +250,18 @@ const en: LocaleType = {
 
       LocalState: "Local Data",
       Overview: (overview: any) => {
-        return `${overview.chat} chats，${overview.message} messages，${overview.prompt} prompts，${overview.mask} masks`;
+        return `${overview.chat} chats, ${overview.message} messages, ${overview.prompt} prompts`;
       },
       ImportFailed: "Failed to import from file",
     },
-    Mask: {
-      Splash: {
-        Title: "Mask Splash Screen",
-        SubTitle: "Show a mask splash screen before starting new chat",
-      },
-      Builtin: {
-        Title: "Hide Builtin Masks",
-        SubTitle: "Hide builtin masks in mask list",
-      },
+    Artifacts: {
+      Title: "Enable Artifacts",
+      SubTitle: "Can render HTML page when enable artifacts.",
+    },
+    CodeFold: {
+      Title: "Enable CodeFold",
+      SubTitle:
+        "Automatically collapse/expand overly long code blocks when CodeFold is enabled",
     },
     Prompt: {
       Disable: {
@@ -706,66 +702,6 @@ const en: LocaleType = {
       Error: "OpenAPI Schema Error",
     },
   },
-  Mask: {
-    Name: "Mask",
-    Page: {
-      Title: "Prompt Template",
-      SubTitle: (count: number) => `${count} prompt templates`,
-      Search: "Search Templates",
-      Create: "Create",
-    },
-    Item: {
-      Info: (count: number) => `${count} prompts`,
-      Chat: "Chat",
-      View: "View",
-      Edit: "Edit",
-      Delete: "Delete",
-      DeleteConfirm: "Confirm to delete?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Edit Prompt Template ${readonly ? "(readonly)" : ""}`,
-      Download: "Download",
-      Clone: "Clone",
-    },
-    Config: {
-      Avatar: "Bot Avatar",
-      Name: "Bot Name",
-      Sync: {
-        Title: "Use Global Config",
-        SubTitle: "Use global config in this chat",
-        Confirm: "Confirm to override custom config with global config?",
-      },
-      HideContext: {
-        Title: "Hide Context Prompts",
-        SubTitle: "Do not show in-context prompts in chat",
-      },
-      Artifacts: {
-        Title: "Enable Artifacts",
-        SubTitle: "Can render HTML page when enable artifacts.",
-      },
-      CodeFold: {
-        Title: "Enable CodeFold",
-        SubTitle:
-          "Automatically collapse/expand overly long code blocks when CodeFold is enabled",
-      },
-      Share: {
-        Title: "Share This Mask",
-        SubTitle: "Generate a link to this mask",
-        Action: "Copy Link",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Return",
-    Skip: "Just Start",
-    Title: "Pick a Mask",
-    SubTitle: "Chat with the Soul behind the Mask",
-    More: "Find More",
-    NotShow: "Never Show Again",
-    ConfirmNoShow: "Confirm to disable？You can enable it in settings later.",
-  },
-
   UI: {
     Confirm: "Confirm",
     Cancel: "Cancel",

@@ -58,7 +58,6 @@ const vi: PartialLocaleType = {
     },
     Commands: {
       new: "Tạo cuộc trò chuyện mới",
-      newm: "Tạo cuộc trò chuyện từ mặt nạ",
       next: "Cuộc trò chuyện tiếp theo",
       prev: "Cuộc trò chuyện trước đó",
       clear: "Xóa ngữ cảnh",
@@ -73,7 +72,7 @@ const vi: PartialLocaleType = {
         dark: "Chế độ tối",
       },
       Prompt: "Lệnh tắt",
-      Masks: "Tất cả mặt nạ",
+
       Clear: "Xóa cuộc trò chuyện",
       Settings: "Cài đặt trò chuyện",
       UploadImage: "Tải lên hình ảnh",
@@ -90,7 +89,7 @@ const vi: PartialLocaleType = {
     Send: "Gửi",
     Config: {
       Reset: "Xóa trí nhớ",
-      SaveAs: "Lưu dưới dạng mặt nạ",
+
     },
     IsContext: "Lời nhắc đã đặt sẵn",
   },
@@ -240,20 +239,11 @@ const vi: PartialLocaleType = {
 
       LocalState: "Dữ liệu cục bộ",
       Overview: (overview: any) => {
-        return `${overview.chat} cuộc trò chuyện, ${overview.message} tin nhắn, ${overview.prompt} lệnh, ${overview.mask} mặt nạ`;
+        return `${overview.chat} cuộc trò chuyện, ${overview.message} tin nhắn, ${overview.prompt} lệnh`;
       },
       ImportFailed: "Nhập không thành công",
     },
-    Mask: {
-      Splash: {
-        Title: "Trang khởi động mặt nạ",
-        SubTitle: "Hiển thị trang khởi động mặt nạ khi tạo cuộc trò chuyện mới",
-      },
-      Builtin: {
-        Title: "Ẩn mặt nạ tích hợp",
-        SubTitle: "Ẩn mặt nạ tích hợp trong danh sách tất cả mặt nạ",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Vô hiệu hóa tự động hoàn thành lệnh",
@@ -499,60 +489,6 @@ const vi: PartialLocaleType = {
     Item: {
       View: "Xem",
     },
-  },
-  Mask: {
-    Name: "Mặt nạ",
-    Page: {
-      Title: "Mặt nạ vai trò đã định sẵn",
-      SubTitle: (count: number) => `${count} định nghĩa vai trò đã định sẵn`,
-      Search: "Tìm kiếm mặt nạ vai trò",
-      Create: "Tạo mới",
-    },
-    Item: {
-      Info: (count: number) => `Bao gồm ${count} cuộc trò chuyện đã định sẵn`,
-      Chat: "Trò chuyện",
-      View: "Xem",
-      Edit: "Chỉnh sửa",
-      Delete: "Xóa",
-      DeleteConfirm: "Xác nhận xóa?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Chỉnh sửa mặt nạ định sẵn ${readonly ? "(chỉ đọc)" : ""}`,
-      Download: "Tải xuống mặt nạ",
-      Clone: "Nhân bản mặt nạ",
-    },
-    Config: {
-      Avatar: "Hình đại diện vai trò",
-      Name: "Tên vai trò",
-      Sync: {
-        Title: "Sử dụng cài đặt toàn cục",
-        SubTitle:
-          "Cuộc trò chuyện hiện tại có sử dụng cài đặt mô hình toàn cục không",
-        Confirm:
-          "Cài đặt tùy chỉnh của cuộc trò chuyện hiện tại sẽ bị ghi đè tự động, xác nhận bật cài đặt toàn cục?",
-      },
-      HideContext: {
-        Title: "Ẩn cuộc trò chuyện đã định sẵn",
-        SubTitle:
-          "Sau khi ẩn, cuộc trò chuyện đã định sẵn sẽ không xuất hiện trong giao diện trò chuyện",
-      },
-      Share: {
-        Title: "Chia sẻ mặt nạ này",
-        SubTitle: "Tạo liên kết trực tiếp đến mặt nạ này",
-        Action: "Sao chép liên kết",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Trở lại",
-    Skip: "Bắt đầu ngay",
-    NotShow: "Không hiển thị nữa",
-    ConfirmNoShow:
-      "Xác nhận vô hiệu hóa? Sau khi vô hiệu hóa, bạn có thể bật lại bất cứ lúc nào trong cài đặt.",
-    Title: "Chọn một mặt nạ",
-    SubTitle: "Bắt đầu ngay, va chạm với suy nghĩ của linh hồn đứng sau mặt nạ",
-    More: "Xem tất cả",
   },
 
   URLCommand: {

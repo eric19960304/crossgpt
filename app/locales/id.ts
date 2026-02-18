@@ -58,7 +58,6 @@ const id: PartialLocaleType = {
     },
     Commands: {
       new: "Obrolan Baru",
-      newm: "Buat Obrolan Baru dari Masker",
       next: "Obrolan Berikutnya",
       prev: "Obrolan Sebelumnya",
       clear: "Hapus Konteks",
@@ -73,7 +72,7 @@ const id: PartialLocaleType = {
         dark: "Mode Gelap",
       },
       Prompt: "Perintah Cepat",
-      Masks: "Semua Masker",
+
       Clear: "Hapus Obrolan",
       Settings: "Pengaturan Obrolan",
       UploadImage: "Unggah Gambar",
@@ -90,7 +89,7 @@ const id: PartialLocaleType = {
     Send: "Kirim",
     Config: {
       Reset: "Hapus Memori",
-      SaveAs: "Simpan sebagai Masker",
+
     },
     IsContext: "Prompt Default",
   },
@@ -241,20 +240,11 @@ const id: PartialLocaleType = {
 
       LocalState: "Data Lokal",
       Overview: (overview: any) => {
-        return `${overview.chat} percakapan, ${overview.message} pesan, ${overview.prompt} prompt, ${overview.mask} masker`;
+        return `${overview.chat} percakapan, ${overview.message} pesan, ${overview.prompt} prompt`;
       },
       ImportFailed: "Impor Gagal",
     },
-    Mask: {
-      Splash: {
-        Title: "Halaman Awal Masker",
-        SubTitle: "Tampilkan halaman awal masker saat memulai obrolan baru",
-      },
-      Builtin: {
-        Title: "Sembunyikan Masker Bawaan",
-        SubTitle: "Sembunyikan masker bawaan dari semua daftar masker",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "Nonaktifkan Pelengkapan Prompt Otomatis",
@@ -503,60 +493,6 @@ const id: PartialLocaleType = {
     Item: {
       View: "Lihat",
     },
-  },
-  Mask: {
-    Name: "Masker",
-    Page: {
-      Title: "Preset Karakter Masker",
-      SubTitle: (count: number) => `${count} definisi karakter preset`,
-      Search: "Cari Masker Karakter",
-      Create: "Buat Baru",
-    },
-    Item: {
-      Info: (count: number) => `Berisi ${count} obrolan preset`,
-      Chat: "Obrolan",
-      View: "Lihat",
-      Edit: "Edit",
-      Delete: "Hapus",
-      DeleteConfirm: "Konfirmasi penghapusan?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Edit Masker Preset ${readonly ? "(Hanya Baca)" : ""}`,
-      Download: "Unduh Preset",
-      Clone: "Klon Preset",
-    },
-    Config: {
-      Avatar: "Avatar Karakter",
-      Name: "Nama Karakter",
-      Sync: {
-        Title: "Gunakan Pengaturan Global",
-        SubTitle:
-          "Apakah obrolan saat ini akan menggunakan pengaturan model global?",
-        Confirm:
-          "Pengaturan kustom obrolan saat ini akan ditimpa secara otomatis, konfirmasi untuk mengaktifkan pengaturan global?",
-      },
-      HideContext: {
-        Title: "Sembunyikan Obrolan Preset",
-        SubTitle:
-          "Setelah disembunyikan, obrolan preset tidak akan muncul di antarmuka obrolan",
-      },
-      Share: {
-        Title: "Bagikan Masker Ini",
-        SubTitle: "Hasilkan tautan langsung ke masker ini",
-        Action: "Salin Tautan",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Kembali",
-    Skip: "Mulai Sekarang",
-    NotShow: "Jangan Tampilkan Lagi",
-    ConfirmNoShow:
-      "Konfirmasi untuk menonaktifkan? Setelah dinonaktifkan, Anda dapat mengaktifkannya kembali kapan saja di pengaturan.",
-    Title: "Pilih Masker",
-    SubTitle: "Mulai sekarang, berinteraksi dengan pemikiran di balik masker",
-    More: "Lihat Semua",
   },
 
   URLCommand: {

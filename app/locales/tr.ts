@@ -58,7 +58,6 @@ const tr: PartialLocaleType = {
     },
     Commands: {
       new: "Yeni sohbet",
-      newm: "Maske ile yeni sohbet oluştur",
       next: "Sonraki sohbet",
       prev: "Önceki sohbet",
       clear: "Konteksti temizle",
@@ -73,7 +72,7 @@ const tr: PartialLocaleType = {
         dark: "Koyu mod",
       },
       Prompt: "Kısayol komutu",
-      Masks: "Tüm maskeler",
+
       Clear: "Sohbeti temizle",
       Settings: "Sohbet ayarları",
       UploadImage: "Resim yükle",
@@ -90,7 +89,7 @@ const tr: PartialLocaleType = {
     Send: "Gönder",
     Config: {
       Reset: "Hafızayı temizle",
-      SaveAs: "Maske olarak kaydet",
+
     },
     IsContext: "Varsayılan ifade",
   },
@@ -240,21 +239,11 @@ const tr: PartialLocaleType = {
 
       LocalState: "Yerel Veri",
       Overview: (overview: any) => {
-        return `${overview.chat} konuşma, ${overview.message} mesaj, ${overview.prompt} ipucu, ${overview.mask} maske`;
+        return `${overview.chat} konuşma, ${overview.message} mesaj, ${overview.prompt} ipucu`;
       },
       ImportFailed: "İçeri aktarma başarısız",
     },
-    Mask: {
-      Splash: {
-        Title: "Maske Başlangıç Sayfası",
-        SubTitle:
-          "Yeni sohbet başlatıldığında maske başlangıç sayfasını göster",
-      },
-      Builtin: {
-        Title: "Yerleşik Maskeleri Gizle",
-        SubTitle: "Tüm maskeler listesindeki yerleşik maskeleri gizle",
-      },
-    },
+
     Prompt: {
       Disable: {
         Title: "İpucu Tamamlamayı Devre Dışı Bırak",
@@ -504,61 +493,6 @@ const tr: PartialLocaleType = {
     Item: {
       View: "Görüntüle",
     },
-  },
-  Mask: {
-    Name: "Maske",
-    Page: {
-      Title: "Önceden Tanımlı Karakter Maskeleri",
-      SubTitle: (count: number) =>
-        `${count} tane önceden tanımlı karakter tanımı`,
-      Search: "Karakter maskesi ara",
-      Create: "Yeni oluştur",
-    },
-    Item: {
-      Info: (count: number) => `${count} tane önceden tanımlı sohbet içeriyor`,
-      Chat: "Sohbet",
-      View: "Görüntüle",
-      Edit: "Düzenle",
-      Delete: "Sil",
-      DeleteConfirm: "Silmek istediğinizden emin misiniz?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Önceden Tanımlı Maskeyi Düzenle ${readonly ? " (Salt Okunur)" : ""}`,
-      Download: "Önceden Tanımlı Maskeyi İndir",
-      Clone: "Önceden Tanımlı Maskeyi Kopyala",
-    },
-    Config: {
-      Avatar: "Karakter Profil Resmi",
-      Name: "Karakter Adı",
-      Sync: {
-        Title: "Küresel Ayarları Kullan",
-        SubTitle: "Mevcut sohbet küresel model ayarlarını mı kullanacak?",
-        Confirm:
-          "Mevcut sohbetin özelleştirilmiş ayarları otomatik olarak üzerine yazılacaktır, küresel ayarları etkinleştirmek istediğinizden emin misiniz?",
-      },
-      HideContext: {
-        Title: "Önceden Tanımlı Sohbetleri Gizle",
-        SubTitle:
-          "Gizlendiğinde, önceden tanımlı sohbetler sohbet ekranında görünmeyecek",
-      },
-      Share: {
-        Title: "Bu Maskeyi Paylaş",
-        SubTitle: "Bu maskenin doğrudan bağlantısını oluştur",
-        Action: "Bağlantıyı Kopyala",
-      },
-    },
-  },
-  NewChat: {
-    Return: "Geri dön",
-    Skip: "Doğrudan başla",
-    NotShow: "Bir daha gösterme",
-    ConfirmNoShow:
-      "Devre dışı bırakmak istediğinizden emin misiniz? Devre dışı bıraktıktan sonra ayarlardan tekrar etkinleştirebilirsiniz.",
-    Title: "Bir Maske Seçin",
-    SubTitle:
-      "Şimdi başlayın ve maskenin arkasındaki zihinle etkileşimde bulunun",
-    More: "Tümünü Gör",
   },
 
   URLCommand: {
