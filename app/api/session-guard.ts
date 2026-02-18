@@ -10,7 +10,15 @@ import { NextRequest, NextResponse } from "next/server";
  *   if (denied) return denied;
  */
 export async function requireSession(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const isSecure = req.url.startsWith("https://");
+  const cookieName = isSecure
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+    cookieName,
+  });
   if (!token) {
     return NextResponse.json(
       { error: true, msg: "Unauthorized - please sign in" },
