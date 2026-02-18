@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { getServerSideConfig } from "../../config/server";
 import { requireSession } from "../session-guard";
@@ -22,8 +22,8 @@ declare global {
   type DangerConfig = typeof DANGER_CONFIG;
 }
 
-async function handle() {
-  const denied = await requireSession();
+async function handle(req: NextRequest) {
+  const denied = await requireSession(req);
   if (denied) return denied;
 
   return NextResponse.json(DANGER_CONFIG);

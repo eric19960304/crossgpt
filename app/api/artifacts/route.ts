@@ -4,7 +4,7 @@ import { getServerSideConfig } from "@/app/config/server";
 import { requireSession } from "@/app/api/session-guard";
 
 async function handle(req: NextRequest, res: NextResponse) {
-  const denied = await requireSession();
+  const denied = await requireSession(req);
   if (denied) return denied;
 
   const serverConfig = getServerSideConfig();

@@ -1,6 +1,9 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 
+// This file must stay Edge-compatible (no Node.js-only imports like mongoose).
+// Database callbacks live in auth.ts instead.
+
 export const authConfig: NextAuthConfig = {
   providers: [
     Google({
@@ -47,27 +50,6 @@ export const authConfig: NextAuthConfig = {
       }
 
       return true;
-    },
-    async jwt({ token, user, account, profile }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email ?? "";
-        token.name = user.name ?? "";
-        token.picture = user.image ?? "";
-      }
-      if (account) {
-        token.accessToken = account.access_token;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id as string;
-        session.user.email = token.email as string;
-        session.user.name = token.name as string;
-        session.user.image = token.picture as string;
-      }
-      return session;
     },
   },
   session: {

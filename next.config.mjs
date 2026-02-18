@@ -28,6 +28,24 @@ const nextConfig = {
 
     config.resolve.fallback = {
       child_process: false,
+      fs: false,
+      tls: false,
+      net: false,
+      dns: false,
+      os: false,
+      path: false,
+      crypto: false,
+      timers: false,
+      stream: false,
+      zlib: false,
+      "mongodb-client-encryption": false,
+      aws4: false,
+      snappy: false,
+      "@mongodb-js/zstd": false,
+      kerberos: false,
+      "@aws-sdk/credential-providers": false,
+      "gcp-metadata": false,
+      socks: false,
     };
 
     return config;

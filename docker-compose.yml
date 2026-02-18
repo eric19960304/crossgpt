@@ -17,3 +17,12 @@ services:
       - NEXTAUTH_URL=$NEXTAUTH_URL
       - NEXTAUTH_SECRET=$NEXTAUTH_SECRET
       - AUTH_TRUST_HOST=true
+      - MONGODB_URI=mongodb://mongo:27017/crossgpt
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:7
+    container_name: crossgpt-mongo
+    restart: always
+    volumes:
+      - ${CROSSGPT_DB_DATA_PATH}:/data/db

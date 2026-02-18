@@ -12,7 +12,7 @@ async function handle(
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
 
-  const denied = await requireSession();
+  const denied = await requireSession(req);
   if (denied) return denied;
   const [...key] = params.key;
   // only allow to request to *.upstash.io
