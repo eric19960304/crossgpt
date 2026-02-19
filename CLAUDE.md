@@ -40,6 +40,29 @@ Google OAuth redirect URI must be set to `https://localhost:3000/api/auth/callba
 
 ## Architecture
 
+## Models Constant
+
+All the avaliable models are defined at [app/constant.ts](/app/constant.ts), for example:
+```ts
+const openaiModels = [
+  "gpt-5-nano",
+  "gpt-5-mini",
+  "gpt-5",
+];
+
+const googleModels: string[] = [
+  "gemini-3-pro-preview"
+];
+
+const xAIModes = [
+  "grok-4-0709",
+  "grok-fast-reasoning",
+  "grok-code-fast-1",
+];
+```
+
+When adding/removing models, the app need to modify this file and re-deploy.
+
 **Next.js 14 App Router** with MongoDB (Mongoose) for user tracking and NextAuth.js v5 for auth.
 
 ### Key Directories
