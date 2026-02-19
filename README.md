@@ -11,7 +11,7 @@ The modification I made to this project are as following:
 
 ## Deployment Information
 
-Currently the website is hosted at https://chat.ericlauchiho.me/ on my personal Raspberry Pi 4B (running Raspberry Pi OS, a Debian GNU/Linux system).
+Currently the website is hosted at my personal Raspberry Pi 4B (running Raspberry Pi OS, a Debian GNU/Linux system).
 
 The website is deployed using docker compose with configuration file located at [docker-compose.yml](/docker-compose.yml).
 The bash script used at my Raspberry Pi 4B to deploy and execute the website is following:
@@ -22,7 +22,6 @@ docker compose -f /home/eric/projects/crossgpt/docker-compose.yml up -d --build
 ```
 
 All the API Key for accessing the LLM chatbot API are stored at the environment variables at the Raspberry Pi 4B.
-
 
 # Deployment
 
@@ -72,7 +71,7 @@ CROSSGPT_DB_DATA_PATH='specifying data path at the host machine, only required w
 1. **Get Google OAuth Credentials**:
    - Go to Google Cloud Console
    - Create OAuth 2.0 Client ID
-   - Add redirect URI: `https://chat.ericlauchiho.me/api/auth/callback/google`
+   - Add redirect URI: `https://your_side_url/api/auth/callback/google`
 2. config env vars in `~/.bash_profile` or `~/.bashrc` or other shell config files. 
 3. build and Deploy on Serverside:
    ```bash
@@ -176,7 +175,7 @@ The session provides these user properties:
 
 This app has integrated with Google Single Sign-On (SSO) authentication. Here's a complete overview:
 
-### Files involved
+### Files explained
 
 1. **Authentication Configuration**
    - [auth.config.ts](/auth.config.ts) - NextAuth configuration with Google provider
@@ -198,11 +197,3 @@ This app has integrated with Google Single Sign-On (SSO) authentication. Here's 
 4. **API Routes**
    - [app/api/auth/[...nextauth]/route.ts`](/app/api/auth/[...nextauth]/route.ts) - NextAuth API handler
    - [app/api/user/route.ts`](/app/api/user/route.ts) - User session info endpoint
-
-### Modified Files:
-
-1. **package.json** - Added `next-auth` dependency
-2. **.env.template** - Added Google OAuth and NextAuth environment variables
-3. **app/layout.tsx** - Wrapped app with SessionProvider
-4. **app/page.tsx** - Added authentication redirect logic
-5. **app/components/sidebar.tsx** - Integrated user profile display

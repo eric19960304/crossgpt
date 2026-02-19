@@ -93,7 +93,7 @@ export function McpMarketPage() {
       if (!mcpEnabled) return;
       try {
         setLoadingPresets(true);
-        const response = await fetch("https://ericlauchiho.me/mcp/list");
+        const response = await fetch("https://example.com/mcp/list");
         if (!response.ok) {
           throw new Error("Failed to load preset servers");
         }

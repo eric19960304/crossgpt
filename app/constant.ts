@@ -622,5 +622,5 @@ export const internalAllowedWebDavEndpoints = [
 
 export const DEFAULT_GA_ID = "";
 
-export const SAAS_CHAT_URL = "https://ericlauchiho.me";
-export const SAAS_CHAT_UTM_URL = "https://ericlauchiho.me?utm=github";
+export const SAAS_CHAT_URL = "https://example.com";
+export const SAAS_CHAT_UTM_URL = "https://example.com?utm=github";
