@@ -9,7 +9,7 @@ The modification I made to this project are as following:
 - removed unwanted models, only keeping OpenAI, Gemini, and Grok.
 - added Google SSO login
 
-## Deployment Information
+## Production Information
 
 Currently the website is hosted at my personal Raspberry Pi 4B (running Raspberry Pi OS, a Debian GNU/Linux system).
 
@@ -27,7 +27,18 @@ All the API Key for accessing the LLM chatbot API are stored at the environment 
 
 ## Requirements
 
-See [Dockerfile](/Dockerfile) and [docker-compose.yml](/docker-compose.yml).
+### Docker
+
+Requires `docker` and `docker compose` commands, verified that the setup is working for following versions:
+- Docker version 28.3.1,
+- Docker Compose version v2.38.1
+
+See [Dockerfile](/Dockerfile) and [docker-compose.yml](/docker-compose.yml) for more information.
+
+### Running with Yarn
+
+Requires Node.js v20, verified that the setup is with following versions on Windows 11 terminal (not WSL):
+- v24.13.1
 
 ### Environment Variables
 
@@ -52,7 +63,7 @@ DEFAULT_MODEL='default model to use, e.g. gpt-5-nano'
 CROSSGPT_DB_DATA_PATH='specifying data path at the host machine, only required when running via Docker Compose'
 ```
 
-## Setup for Local Development
+## Local Development
 
 1. **Get Google OAuth Credentials**:
    - Go to Google Cloud Console
@@ -66,7 +77,7 @@ CROSSGPT_DB_DATA_PATH='specifying data path at the host machine, only required w
     yarn dev
     ```
 
-## Setup for Production
+## Production Deployment
 
 1. **Get Google OAuth Credentials**:
    - Go to Google Cloud Console
