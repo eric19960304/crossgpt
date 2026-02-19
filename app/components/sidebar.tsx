@@ -323,7 +323,7 @@ export function SideBar(props: { className?: string }) {
           }
           secondaryAction={
             <IconButton
-              style={{ width: 150 }}
+              style={{ width: 120, marginLeft: 10 }}
               icon={<AddIcon />}
               text={shouldNarrow ? undefined : Locale.Home.NewChat}
               onClick={() => {
