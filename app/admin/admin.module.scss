@@ -136,3 +136,187 @@
     color: #c5221f;
   }
 }
+
+// Tab navigation
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab {
+  padding: 0.6rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.tabActive {
+  color: #0070f3;
+  border-bottom-color: #0070f3;
+}
+
+// Models tab
+.modelsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.addModelForm {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.modelInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+
+  &:focus {
+    outline: none;
+    border-color: #0070f3;
+  }
+}
+
+.modelSelect {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #fff;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #0070f3;
+  }
+}
+
+.addBtn {
+  padding: 0.45rem 1rem;
+  background: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: #005fcc;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.errorMsg {
+  color: #c5221f;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.modelsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+    color: #444;
+  }
+
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+}
+
+.disabledRow {
+  opacity: 0.5;
+}
+
+.modelName {
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.providerBadge {
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.statusBadge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.enabled {
+    background: #e6f4ea;
+    color: #1e7e34;
+  }
+
+  &.disabled {
+    background: #f0f0f0;
+    color: #888;
+  }
+}
+
+.modelActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.toggleBtn {
+  padding: 3px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.deleteBtn {
+  padding: 3px 10px;
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+  background: #fff;
+  color: #c5221f;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #fce8e6;
+  }
+}

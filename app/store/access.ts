@@ -144,6 +144,9 @@ const DEFAULT_ACCESS_STATE = {
 
   // tts config
   edgeTTSVoiceName: "zh-CN-YunxiNeural",
+
+  // db-managed model list
+  dbModels: [] as import("../client/api").LLMModel[],
 };
 
 export const useAccessStore = createPersistStore(
@@ -245,27 +248,28 @@ export const useAccessStore = createPersistStore(
     fetch() {
       if (fetchState > 0 || getClientConfig()?.buildMode === "export") return;
       fetchState = 1;
-      fetch("/api/config", {
-        method: "post",
-        body: null,
-        headers: {
-          ...getHeaders(),
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          const defaultModel = res.defaultModel ?? "";
+
+      const headers = { ...getHeaders() };
+
+      Promise.all([
+        fetch("/api/config", { method: "post", body: null, headers }).then(
+          (r) => r.json(),
+        ),
+        fetch("/api/models", { method: "get", headers }).then((r) =>
+          r.json().catch(() => []),
+        ),
+      ])
+        .then(([config, models]: [DangerConfig, any[]]) => {
+          const defaultModel = config.defaultModel ?? "";
           if (defaultModel !== "") {
             const [model, providerName] = getModelProvider(defaultModel);
             DEFAULT_CONFIG.modelConfig.model = model;
             DEFAULT_CONFIG.modelConfig.providerName = providerName as any;
           }
 
-          return res;
-        })
-        .then((res: DangerConfig) => {
-          console.log("[Config] got config from server", res);
-          set(() => ({ ...res }));
+          console.log("[Config] got config from server", config);
+          console.log("[Models] got", models.length, "models from DB");
+          set(() => ({ ...config, dbModels: Array.isArray(models) ? models : [] }));
         })
         .catch(() => {
           console.error("[Config] failed to fetch config");

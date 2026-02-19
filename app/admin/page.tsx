@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import { connectToDatabase } from "@/app/lib/mongodb";
 import { User } from "@/app/models/User";
 import { Activity } from "@/app/models/Activity";
+import { LLMModelDoc } from "@/app/models/LLMModel";
 import { AdminPage } from "./admin-page";
-
-const ADMIN_EMAIL = "ericlauchiho@gmail.com";
+import { ADMIN_EMAIL } from "./config";
 
 export default async function Admin() {
   const session = await auth();
@@ -20,6 +20,7 @@ export default async function Admin() {
   const activities = await Activity.find()
     .sort({ timestamp: -1 })
     .lean();
+  const models = await LLMModelDoc.find().sort({ sorted: 1 }).lean();
 
   // Serialize for client component
   const serializedUsers = users.map((u: any) => ({
@@ -35,7 +36,24 @@ export default async function Admin() {
     timestamp: a.timestamp?.toISOString() || "",
   }));
 
+  const serializedModels = models.map((m: any) => ({
+    _id: m._id.toString(),
+    name: m.name,
+    available: m.available,
+    sorted: m.sorted,
+    provider: {
+      id: m.provider.id,
+      providerName: m.provider.providerName,
+      providerType: m.provider.providerType,
+      sorted: m.provider.sorted,
+    },
+  }));
+
   return (
-    <AdminPage users={serializedUsers} activities={serializedActivities} />
+    <AdminPage
+      users={serializedUsers}
+      activities={serializedActivities}
+      models={serializedModels}
+    />
   );
 }
