@@ -41,16 +41,7 @@ const PROVIDER_OPTIONS: ModelProviderData[] = [
   { id: "openai", providerName: "OpenAI", providerType: "openai", sorted: 1 },
   { id: "google", providerName: "Google", providerType: "google", sorted: 3 },
   { id: "anthropic", providerName: "Anthropic", providerType: "anthropic", sorted: 4 },
-  { id: "baidu", providerName: "Baidu", providerType: "baidu", sorted: 5 },
-  { id: "bytedance", providerName: "ByteDance", providerType: "bytedance", sorted: 6 },
-  { id: "alibaba", providerName: "Alibaba", providerType: "alibaba", sorted: 7 },
-  { id: "tencent", providerName: "Tencent", providerType: "tencent", sorted: 8 },
-  { id: "moonshot", providerName: "Moonshot", providerType: "moonshot", sorted: 9 },
-  { id: "iflytek", providerName: "Iflytek", providerType: "iflytek", sorted: 10 },
   { id: "xai", providerName: "XAI", providerType: "xai", sorted: 11 },
-  { id: "chatglm", providerName: "ChatGLM", providerType: "chatglm", sorted: 12 },
-  { id: "deepseek", providerName: "DeepSeek", providerType: "deepseek", sorted: 13 },
-  { id: "siliconflow", providerName: "SiliconFlow", providerType: "siliconflow", sorted: 14 },
 ];
 
 export function AdminPage({ users, activities, models: initialModels }: AdminPageProps) {
@@ -277,7 +268,12 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
               </tr>
             </thead>
             <tbody>
-              {models.map((model) => (
+              {[...models]
+                .sort((a, b) => {
+                  const p = a.provider.providerName.localeCompare(b.provider.providerName);
+                  return p !== 0 ? p : a.name.localeCompare(b.name);
+                })
+                .map((model) => (
                 <tr
                   key={model._id}
                   className={!model.available ? styles.disabledRow : ""}

@@ -154,10 +154,10 @@
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #666;
+  color: #111;
 
   &:hover {
-    color: #333;
+    color: #000;
   }
 }
 
@@ -299,6 +299,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background: #fff;
+  color: #333;
   font-size: 0.8rem;
   cursor: pointer;
 
