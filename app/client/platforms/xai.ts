@@ -79,7 +79,6 @@ export class XAIApi implements LLMApi {
       messages,
       stream: options.config.stream,
       model: modelConfig.model,
-      frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,
     };
 
