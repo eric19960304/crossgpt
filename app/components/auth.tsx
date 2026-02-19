@@ -7,7 +7,6 @@ import { useAccessStore } from "../store";
 import Locale from "../locales";
 import Delete from "../icons/close.svg";
 import Arrow from "../icons/arrow.svg";
-import Logo from "../icons/logo.svg";
 import { useMobileScreen } from "@/app/utils";
 import BotIcon from "../icons/bot.svg";
 import { getClientConfig } from "../config/client";
@@ -160,7 +159,6 @@ function TopBanner() {
       onMouseLeave={handleMouseLeave}
     >
       <div className={clsx(styles["top-banner-inner"], "no-dark")}>
-        <Logo className={styles["top-banner-logo"]}></Logo>
         <span>
           {Locale.Auth.TopTips}
           <a
