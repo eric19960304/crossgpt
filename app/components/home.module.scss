@@ -194,6 +194,15 @@
   border-color: var(--primary);
 }
 
+.chat-item-delete-mode {
+  border-color: rgba(220, 53, 69, 0.25);
+
+  &:hover {
+    border-color: rgba(220, 53, 69, 0.7);
+    background-color: rgba(220, 53, 69, 0.06);
+  }
+}
+
 .chat-item-title {
   font-size: 14px;
   font-weight: bolder;
@@ -321,6 +330,12 @@
       }
     }
   }
+}
+
+.sidebar-delete-tail {
+  display: flex;
+  justify-content: center;
+  padding: 20px 15px;
 }
 
 .sidebar-tail {

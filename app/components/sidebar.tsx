@@ -3,6 +3,8 @@ import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./home.module.scss";
 
 import AddIcon from "../icons/add.svg";
+import CancelIcon from "../icons/cancel.svg";
+import ClearIcon from "../icons/clear.svg";
 import DeleteIcon from "../icons/delete.svg";
 import DragIcon from "../icons/drag.svg";
 import SettingsIcon from "../icons/settings.svg";
@@ -223,6 +225,7 @@ export function SideBar(props: { className?: string }) {
   useHotKey();
   const { onDragStart, shouldNarrow } = useDragSideBar();
   const [showDiscoverySelector, setshowDiscoverySelector] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
   const navigate = useNavigate();
   const config = useAppConfig();
   const chatStore = useChatStore();
@@ -273,45 +276,65 @@ export function SideBar(props: { className?: string }) {
           }
         }}
       >
-        <ChatList narrow={shouldNarrow} />
+        <ChatList narrow={shouldNarrow} deleteMode={deleteMode} />
       </SideBarBody>
-      <SideBarTail
-        primaryAction={
-          <>
-            <div className={clsx(styles["sidebar-action"], styles.mobile)}>
-              <IconButton
-                icon={<DeleteIcon />}
-                onClick={async () => {
-                  if (await showConfirm(Locale.Home.DeleteChat)) {
-                    chatStore.deleteSession(chatStore.currentSessionIndex);
-                  }
-                }}
-              />
-            </div>
-            <div className={styles["sidebar-action"]}>
-              <Link to={Path.Settings}>
+      {deleteMode ? (
+        <div className={styles["sidebar-delete-tail"]}>
+          <IconButton
+            icon={<CancelIcon />}
+            text={shouldNarrow ? undefined : "Exit Delete Mode"}
+            onClick={() => setDeleteMode(false)}
+            shadow
+            bordered
+          />
+        </div>
+      ) : (
+        <SideBarTail
+          primaryAction={
+            <>
+              <div className={clsx(styles["sidebar-action"], styles.mobile)}>
                 <IconButton
-                  aria={Locale.Settings.Title}
-                  icon={<SettingsIcon />}
+                  icon={<DeleteIcon />}
+                  onClick={async () => {
+                    if (await showConfirm(Locale.Home.DeleteChat)) {
+                      chatStore.deleteSession(chatStore.currentSessionIndex);
+                    }
+                  }}
+                />
+              </div>
+              <div className={styles["sidebar-action"]}>
+                <Link to={Path.Settings}>
+                  <IconButton
+                    aria={Locale.Settings.Title}
+                    icon={<SettingsIcon />}
+                    shadow
+                  />
+                </Link>
+              </div>
+              <div className={styles["sidebar-action"]}>
+                <IconButton
+                  aria="Delete Chats"
+                  icon={<ClearIcon />}
+                  onClick={() => setDeleteMode(true)}
                   shadow
                 />
-              </Link>
-            </div>
-          </>
-        }
-        secondaryAction={
-          <IconButton
-            style={{ width: 150 }}
-            icon={<AddIcon />}
-            text={shouldNarrow ? undefined : Locale.Home.NewChat}
-            onClick={() => {
-              chatStore.newSession();
-              navigate(Path.Chat);
-            }}
-            shadow
-          />
-        }
-      />
+              </div>
+            </>
+          }
+          secondaryAction={
+            <IconButton
+              style={{ width: 150 }}
+              icon={<AddIcon />}
+              text={shouldNarrow ? undefined : Locale.Home.NewChat}
+              onClick={() => {
+                chatStore.newSession();
+                navigate(Path.Chat);
+              }}
+              shadow
+            />
+          }
+        />
+      )}
     </SideBarContainer>
   );
 }

@@ -32,6 +32,7 @@ export function ChatItem(props: {
   narrow?: boolean;
   avatar: string;
   model: ModelType;
+  deleteMode?: boolean;
 }) {
   const draggableRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -51,6 +52,7 @@ export function ChatItem(props: {
             [styles["chat-item-selected"]]:
               props.selected &&
               (currentPath === Path.Chat || currentPath === Path.Home),
+            [styles["chat-item-delete-mode"]]: props.deleteMode,
           })}
           onClick={props.onClick}
           ref={(ele) => {
@@ -87,24 +89,26 @@ export function ChatItem(props: {
             </>
           )}
 
-          <div
-            className={styles["chat-item-delete"]}
-            title="delete chat"
-            onClickCapture={(e) => {
-              props.onDelete?.();
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >
-            <DeleteIcon />
-          </div>
+          {!props.deleteMode && (
+            <div
+              className={styles["chat-item-delete"]}
+              title="delete chat"
+              onClickCapture={(e) => {
+                props.onDelete?.();
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <DeleteIcon />
+            </div>
+          )}
         </div>
       )}
     </Draggable>
   );
 }
 
-export function ChatList(props: { narrow?: boolean }) {
+export function ChatList(props: { narrow?: boolean; deleteMode?: boolean }) {
   const [sessions, selectedIndex, selectSession, moveSession] = useChatStore(
     (state) => [
       state.sessions,
@@ -151,10 +155,18 @@ export function ChatList(props: { narrow?: boolean }) {
                 id={item.id}
                 index={i}
                 selected={i === selectedIndex}
-                onClick={() => {
-                  navigate(Path.Chat);
-                  selectSession(i);
-                }}
+                onClick={
+                  props.deleteMode
+                    ? async () => {
+                        if (await showConfirm(Locale.Home.DeleteChat)) {
+                          chatStore.deleteSession(i);
+                        }
+                      }
+                    : () => {
+                        navigate(Path.Chat);
+                        selectSession(i);
+                      }
+                }
                 onDelete={async () => {
                   if (
                     (!props.narrow && !isMobileScreen) ||
@@ -166,6 +178,7 @@ export function ChatList(props: { narrow?: boolean }) {
                 narrow={props.narrow}
                 avatar={item.avatar}
                 model={item.modelConfig.model}
+                deleteMode={props.deleteMode}
               />
             ))}
             {provided.placeholder}
