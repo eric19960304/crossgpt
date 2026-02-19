@@ -58,7 +58,7 @@ export function McpMarketPage() {
     {},
   );
 
-  // 检查 MCP 是否启用
+  // Check whether MCP is enabled
   useEffect(() => {
     const checkMcpStatus = async () => {
       const enabled = await isMcpEnabled();
@@ -70,7 +70,7 @@ export function McpMarketPage() {
     checkMcpStatus();
   }, [navigate]);
 
-  // 添加状态轮询
+  // Add status polling
   useEffect(() => {
     if (!mcpEnabled || !config) return;
 
@@ -79,15 +79,15 @@ export function McpMarketPage() {
       setClientStatuses(statuses);
     };
 
-    // 立即执行一次
+    // Run once immediately
     updateStatuses();
-    // 每 1000ms 轮询一次
+    // Poll every 1000ms
     const timer = setInterval(updateStatuses, 1000);
 
     return () => clearInterval(timer);
   }, [mcpEnabled, config]);
 
-  // 加载预设服务器
+  // Load preset servers
   useEffect(() => {
     const loadPresetServers = async () => {
       if (!mcpEnabled) return;
@@ -109,7 +109,7 @@ export function McpMarketPage() {
     loadPresetServers();
   }, [mcpEnabled]);
 
-  // 加载初始状态
+  // Load initial state
   useEffect(() => {
     const loadInitialState = async () => {
       if (!mcpEnabled) return;
@@ -118,7 +118,7 @@ export function McpMarketPage() {
         const config = await getMcpConfigFromFile();
         setConfig(config);
 
-        // 获取所有客户端的状态
+        // Get statuses of all clients
         const statuses = await getClientsStatus();
         setClientStatuses(statuses);
       } catch (error) {
@@ -131,12 +131,12 @@ export function McpMarketPage() {
     loadInitialState();
   }, [mcpEnabled]);
 
-  // 加载当前编辑服务器的配置
+  // Load config for the currently edited server
   useEffect(() => {
     if (!editingServerId || !config) return;
     const currentConfig = config.mcpServers[editingServerId];
     if (currentConfig) {
-      // 从当前配置中提取用户配置
+      // Extract user config from the current configuration
       const preset = presetServers.find((s) => s.id === editingServerId);
       if (preset?.configSchema) {
         const userConfig: Record<string, any> = {};
@@ -168,12 +168,12 @@ export function McpMarketPage() {
     return null;
   }
 
-  // 检查服务器是否已添加
+  // Check whether the server has been added
   const isServerAdded = (id: string) => {
     return id in (config?.mcpServers ?? {});
   };
 
-  // 保存服务器配置
+  // Save server configuration
   const saveServerConfig = async () => {
     const preset = presetServers.find((s) => s.id === editingServerId);
     if (!preset || !preset.configSchema || !editingServerId) return;
@@ -183,7 +183,7 @@ export function McpMarketPage() {
 
     try {
       updateLoadingState(savingServerId, "Updating configuration...");
-      // 构建服务器配置
+      // Build server configuration
       const args = [...preset.baseArgs];
       const env: Record<string, string> = {};
 
@@ -224,7 +224,7 @@ export function McpMarketPage() {
     }
   };
 
-  // 获取服务器支持的 Tools
+  // Get tools supported by the server
   const loadTools = async (id: string) => {
     try {
       const result = await getClientTools(id);
@@ -240,7 +240,7 @@ export function McpMarketPage() {
     }
   };
 
-  // 更新加载状态的辅助函数
+  // Helper to update loading state
   const updateLoadingState = (id: string, message: string | null) => {
     setLoadingStates((prev) => {
       if (message === null) {
@@ -251,7 +251,7 @@ export function McpMarketPage() {
     });
   };
 
-  // 修改添加服务器函数
+  // Modified add-server function
   const addServer = async (preset: PresetServer) => {
     if (!preset.configurable) {
       try {
@@ -265,20 +265,20 @@ export function McpMarketPage() {
         const newConfig = await addMcpServer(preset.id, serverConfig);
         setConfig(newConfig);
 
-        // 更新状态
+        // Update statuses
         const statuses = await getClientsStatus();
         setClientStatuses(statuses);
       } finally {
         updateLoadingState(preset.id, null);
       }
     } else {
-      // 如果需要配置，打开配置对话框
+      // If configuration is required, open the configuration modal
       setEditingServerId(preset.id);
       setUserConfig({});
     }
   };
 
-  // 修改暂停服务器函数
+  // Modified pause-server function
   const pauseServer = async (id: string) => {
     try {
       updateLoadingState(id, "Stopping server...");
@@ -413,8 +413,8 @@ export function McpMarketPage() {
     const status = checkServerStatus(clientId);
 
     const statusMap = {
-      undefined: null, // 未配置/未找到不显示
-      // 添加初始化状态
+      undefined: null, // Do not display if not configured/not found
+      // Add initializing status
       initializing: (
         <span className={clsx(styles["server-status"], styles["initializing"])}>
           Initializing
@@ -445,7 +445,7 @@ export function McpMarketPage() {
     return "default";
   };
 
-  // 渲染服务器列表
+  // Render server list
   const renderServerList = () => {
     if (loadingPresets) {
       return (
@@ -481,7 +481,7 @@ export function McpMarketPage() {
         const aLoading = loadingStates[a.id];
         const bLoading = loadingStates[b.id];
 
-        // 定义状态优先级
+        // Define status priority
         const statusPriority: Record<string, number> = {
           error: 0, // Highest priority for error status
           active: 1, // Second for active
@@ -509,7 +509,7 @@ export function McpMarketPage() {
         const aEffectiveStatus = getEffectiveStatus(aStatus, aLoading);
         const bEffectiveStatus = getEffectiveStatus(bStatus, bLoading);
 
-        // 首先按状态排序
+        // Sort by status first
         if (aEffectiveStatus !== bEffectiveStatus) {
           return (
             (statusPriority[aEffectiveStatus] ?? 6) -

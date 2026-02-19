@@ -124,14 +124,14 @@ function TopBanner() {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useMobileScreen();
   useEffect(() => {
-    // 检查 localStorage 中是否有标记
+    // Check whether a flag exists in localStorage
     const bannerDismissed = storage.getItem("bannerDismissed");
-    // 如果标记不存在，存储默认值并显示横幅
+    // If the flag does not exist, store the default value and show the banner
     if (!bannerDismissed) {
       storage.setItem("bannerDismissed", "false");
-      setIsVisible(true); // 显示横幅
+      setIsVisible(true); // Show banner
     } else if (bannerDismissed === "true") {
-      // 如果标记为 "true"，则隐藏横幅
+      // If the flag is "true", hide the banner
       setIsVisible(false);
     }
   }, []);

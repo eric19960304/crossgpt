@@ -1509,12 +1509,12 @@ function _Chat() {
     setAttachImages(images);
   }
 
-  // 快捷键 shortcut keys
+  // Shortcut keys
   const [showShortcutKeyModal, setShowShortcutKeyModal] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // 打开新聊天 command + shift + o
+      // Open new chat: command + shift + o
       if (
         (event.metaKey || event.ctrlKey) &&
         event.shiftKey &&
@@ -1526,12 +1526,12 @@ function _Chat() {
           navigate(Path.Chat);
         }, 10);
       }
-      // 聚焦聊天输入 shift + esc
+      // Focus chat input: shift + esc
       else if (event.shiftKey && event.key.toLowerCase() === "escape") {
         event.preventDefault();
         inputRef.current?.focus();
       }
-      // 复制最后一个代码块 command + shift + ;
+      // Copy last code block: command + shift + ;
       else if (
         (event.metaKey || event.ctrlKey) &&
         event.shiftKey &&
@@ -1544,7 +1544,7 @@ function _Chat() {
           copyCodeButton[copyCodeButton.length - 1].click();
         }
       }
-      // 复制最后一个回复 command + shift + c
+      // Copy last reply: command + shift + c
       else if (
         (event.metaKey || event.ctrlKey) &&
         event.shiftKey &&
@@ -1559,12 +1559,12 @@ function _Chat() {
           copyToClipboard(lastMessageContent);
         }
       }
-      // 展示快捷键 command + /
+      // Show shortcuts: command + /
       else if ((event.metaKey || event.ctrlKey) && event.key === "/") {
         event.preventDefault();
         setShowShortcutKeyModal(true);
       }
-      // 清除上下文 command + shift + backspace
+      // Clear context: command + shift + backspace
       else if (
         (event.metaKey || event.ctrlKey) &&
         event.shiftKey &&

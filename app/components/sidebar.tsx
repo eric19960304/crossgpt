@@ -233,7 +233,7 @@ export function SideBar(props: { className?: string }) {
   const { data: session } = useSession();
 
   useEffect(() => {
-    // 检查 MCP 是否启用
+    // Check whether MCP is enabled
     const checkMcpStatus = async () => {
       const enabled = await isMcpEnabled();
       setMcpEnabled(enabled);

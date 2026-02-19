@@ -7,18 +7,18 @@ interface VoicePrintProps {
 }
 
 export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
-  // Canvas引用，用于获取绘图上下文
+  // Canvas reference, used to access the drawing context
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // 存储历史频率数据，用于平滑处理
+  // Store historical frequency data for smoothing
   const historyRef = useRef<number[][]>([]);
-  // 控制保留的历史数据帧数，影响平滑度
+  // Control the number of retained history frames to affect smoothness
   const historyLengthRef = useRef(10);
-  // 存储动画帧ID，用于清理
+  // Store animation frame ID for cleanup
   const animationFrameRef = useRef<number>();
 
   /**
-   * 更新频率历史数据
-   * 使用FIFO队列维护固定长度的历史记录
+   * Update frequency history data
+   * Maintain fixed-length history with a FIFO queue
    */
   const updateHistory = useCallback((freqArray: number[]) => {
     historyRef.current.push(freqArray);
@@ -35,8 +35,8 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
     if (!ctx) return;
 
     /**
-     * 处理高DPI屏幕显示
-     * 根据设备像素比例调整canvas实际渲染分辨率
+     * Handle high-DPI screen rendering
+     * Adjust canvas render resolution based on device pixel ratio
      */
     const dpr = window.devicePixelRatio || 1;
     canvas.width = canvas.offsetWidth * dpr;
@@ -44,16 +44,16 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
     ctx.scale(dpr, dpr);
 
     /**
-     * 主要绘制函数
-     * 使用requestAnimationFrame实现平滑动画
-     * 包含以下步骤：
-     * 1. 清空画布
-     * 2. 更新历史数据
-     * 3. 计算波形点
-     * 4. 绘制上下对称的声纹
+     * Main drawing function
+     * Use requestAnimationFrame for smooth animation
+     * Includes the following steps:
+     * 1. Clear the canvas
+     * 2. Update history data
+     * 3. Compute waveform points
+     * 4. Draw the vertically symmetric voiceprint
      */
     const draw = () => {
-      // 清空画布
+      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (!frequencies || !isActive) {
@@ -64,32 +64,32 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
       const freqArray = Array.from(frequencies);
       updateHistory(freqArray);
 
-      // 绘制声纹
+      // Draw voiceprint
       const points: [number, number][] = [];
       const centerY = canvas.height / 2;
       const width = canvas.width;
       const sliceWidth = width / (frequencies.length - 1);
 
-      // 绘制主波形
+      // Draw main waveform
       ctx.beginPath();
       ctx.moveTo(0, centerY);
 
       /**
-       * 声纹绘制算法：
-       * 1. 使用历史数据平均值实现平滑过渡
-       * 2. 通过正弦函数添加自然波动
-       * 3. 使用贝塞尔曲线连接点，使曲线更平滑
-       * 4. 绘制对称部分形成完整声纹
+       * Voiceprint drawing algorithm:
+       * 1. Use historical averages for smooth transitions
+       * 2. Add natural oscillation using a sine function
+       * 3. Connect points with Bezier curves for smoother lines
+       * 4. Draw symmetric parts to form the full voiceprint
        */
       for (let i = 0; i < frequencies.length; i++) {
         const x = i * sliceWidth;
         let avgFrequency = frequencies[i];
 
         /**
-         * 波形平滑处理：
-         * 1. 收集历史数据中对应位置的频率值
-         * 2. 计算当前值与历史值的加权平均
-         * 3. 根据平均值计算实际显示高度
+         * Waveform smoothing:
+         * 1. Collect frequency values at the same position from history
+         * 2. Compute a weighted average of current and historical values
+         * 3. Compute displayed height from the averaged value
          */
         if (historyRef.current.length > 0) {
           const historicalValues = historyRef.current.map((h) => h[i] || 0);
@@ -99,10 +99,10 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
         }
 
         /**
-         * 波形变换：
-         * 1. 归一化频率值到0-1范围
-         * 2. 添加时间相关的正弦变换
-         * 3. 使用贝塞尔曲线平滑连接点
+         * Waveform transform:
+         * 1. Normalize frequency values to the 0-1 range
+         * 2. Add time-dependent sine transformation
+         * 3. Smoothly connect points with Bezier curves
          */
         const normalized = avgFrequency / 255.0;
         const height = normalized * (canvas.height / 2);
@@ -113,7 +113,7 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
         if (i === 0) {
           ctx.moveTo(x, y);
         } else {
-          // 使用贝塞尔曲线使波形更平滑
+          // Use Bezier curves to smooth the waveform
           const prevPoint = points[i - 1];
           const midX = (prevPoint[0] + x) / 2;
           ctx.quadraticCurveTo(
@@ -125,7 +125,7 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
         }
       }
 
-      // 绘制对称的下半部分
+      // Draw the symmetric lower half
       for (let i = points.length - 1; i >= 0; i--) {
         const [x, y] = points[i];
         const symmetricY = centerY - (y - centerY);
@@ -146,9 +146,9 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
       ctx.closePath();
 
       /**
-       * 渐变效果：
-       * 从左到右应用三色渐变，带透明度
-       * 使用蓝色系配色提升视觉效果
+       * Gradient effect:
+       * Apply a three-color gradient with transparency from left to right
+       * Use a blue palette to improve visual effect
        */
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
       gradient.addColorStop(0, "rgba(100, 180, 255, 0.95)");
@@ -161,10 +161,10 @@ export function VoicePrint({ frequencies, isActive }: VoicePrintProps) {
       animationFrameRef.current = requestAnimationFrame(draw);
     };
 
-    // 启动动画循环
+    // Start animation loop
     draw();
 
-    // 清理函数：在组件卸载时取消动画
+    // Cleanup: cancel animation when component unmounts
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);

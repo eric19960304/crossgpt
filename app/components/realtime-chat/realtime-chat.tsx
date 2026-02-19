@@ -258,7 +258,7 @@ export function RealtimeChat({
   };
 
   useEffect(() => {
-    // 防止重复初始化
+    // Prevent duplicate initialization
     if (initRef.current) return;
     initRef.current = true;
 
