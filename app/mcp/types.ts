@@ -96,7 +96,7 @@ interface McpErrorClient {
   errorMsg: string;
 }
 
-// 服务器状态类型
+// Server status type
 export type ServerStatus =
   | "undefined"
   | "active"
@@ -109,7 +109,7 @@ export interface ServerStatusResponse {
   errorMsg: string | null;
 }
 
-// MCP 服务器配置相关类型
+// Types related to MCP server configuration
 export interface ServerConfig {
   command: string;
   args: string[];
@@ -118,7 +118,7 @@ export interface ServerConfig {
 }
 
 export interface McpConfigData {
-  // MCP Server 的配置
+  // MCP server configuration
   mcpServers: Record<string, ServerConfig>;
 }
 
@@ -127,42 +127,42 @@ export const DEFAULT_MCP_CONFIG: McpConfigData = {
 };
 
 export interface ArgsMapping {
-  // 参数映射的类型
+  // Parameter mapping type
   type: "spread" | "single" | "env";
 
-  // 参数映射的位置
+  // Parameter mapping position
   position?: number;
 
-  // 参数映射的 key
+  // Parameter mapping key
   key?: string;
 }
 
 export interface PresetServer {
-  // MCP Server 的唯一标识，作为最终配置文件 Json 的 key
+  // Unique MCP server identifier, used as the key in the final JSON config file
   id: string;
 
-  // MCP Server 的显示名称
+  // Display name of the MCP server
   name: string;
 
-  // MCP Server 的描述
+  // Description of the MCP server
   description: string;
 
-  // MCP Server 的仓库地址
+  // Repository URL of the MCP server
   repo: string;
 
-  // MCP Server 的标签
+  // Tags of the MCP server
   tags: string[];
 
-  // MCP Server 的命令
+  // Command of the MCP server
   command: string;
 
-  // MCP Server 的参数
+  // Arguments of the MCP server
   baseArgs: string[];
 
-  // MCP Server 是否需要配置
+  // Whether the MCP server requires configuration
   configurable: boolean;
 
-  // MCP Server 的配置 schema
+  // MCP server configuration schema
   configSchema?: {
     properties: Record<
       string,
@@ -175,6 +175,6 @@ export interface PresetServer {
     >;
   };
 
-  // MCP Server 的参数映射
+  // Argument mapping of the MCP server
   argsMapping?: Record<string, ArgsMapping>;
 }

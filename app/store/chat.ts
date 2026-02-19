@@ -223,17 +223,17 @@ export const useChatStore = createPersistStore(
 
     const methods = {
       forkSession() {
-        // 获取当前会话
+        // Get current session
         const currentSession = get().currentSession();
         if (!currentSession) return;
 
         const newSession = createEmptySession();
 
         newSession.topic = currentSession.topic;
-        // 深拷贝消息
+        // Deep copy messages
         newSession.messages = currentSession.messages.map((msg) => ({
           ...msg,
-          id: nanoid(), // 生成新的消息 ID
+          id: nanoid(), // Generate a new message ID
         }));
         newSession.modelConfig = { ...currentSession.modelConfig };
         newSession.context = currentSession.context.slice();

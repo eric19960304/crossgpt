@@ -6,7 +6,7 @@ import { requireSession } from "../session-guard";
 const serverConfig = getServerSideConfig();
 
 // Danger! Do not hard code any secret value here!
-// 警告！不要在这里写入任何敏感信息！
+// Warning! Do not write any sensitive information here!
 const DANGER_CONFIG = {
   needCode: serverConfig.needCode,
   hideUserApiKey: serverConfig.hideUserApiKey,

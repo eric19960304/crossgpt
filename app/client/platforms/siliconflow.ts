@@ -269,7 +269,7 @@ export class SiliconflowApi implements LLMApi {
       return [];
     }
 
-    let seq = 1000; //同 Constant.ts 中的排序保持一致
+    let seq = 1000; // Keep the same ordering as in Constant.ts
     return chatModels.map((m) => ({
       name: m.id,
       available: true,

@@ -231,7 +231,7 @@ export class ChatGPTApi implements LLMApi {
         top_p: !isO1OrO3 ? modelConfig.top_p : 1,
       };
 
-      // O1 使用 max_completion_tokens 控制token数 (https://platform.openai.com/docs/guides/reasoning#controlling-costs)
+      // O1 uses max_completion_tokens to control token count (https://platform.openai.com/docs/guides/reasoning#controlling-costs)
       if (isO1OrO3) {
         requestPayload["max_completion_tokens"] = modelConfig.max_tokens;
       }
@@ -488,8 +488,8 @@ export class ChatGPTApi implements LLMApi {
       return [];
     }
 
-    //由于目前 OpenAI 的 disableListModels 默认为 true，所以当前实际不会运行到这场
-    let seq = 1000; //同 Constant.ts 中的排序保持一致
+    // Since OpenAI disableListModels currently defaults to true, this path will not actually run for now
+    let seq = 1000; // Keep the same ordering as in Constant.ts
     return chatModels.map((m) => ({
       name: m.id,
       available: true,

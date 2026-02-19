@@ -466,7 +466,7 @@ const chatglmModels: string[] = [];
 
 const siliconflowModels: string[] = [];
 
-let seq = 1000; // 内置的模型序号生成器从1000开始
+let seq = 1000; // Built-in model sequence generator starts at 1000
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({
     name,
@@ -476,7 +476,7 @@ export const DEFAULT_MODELS = [
       id: "openai",
       providerName: "OpenAI",
       providerType: "openai",
-      sorted: 1, // 这里是固定的，确保顺序与之前内置的版本一致
+      sorted: 1, // This is fixed to keep the same order as previous built-in versions
     },
   })),
   ...googleModels.map((name) => ({

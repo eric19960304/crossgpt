@@ -273,7 +273,7 @@ export function stream(
       }
       console.debug("[ChatAPI] end");
       finished = true;
-      options.onFinish(responseText + remainText, responseRes); // 将res传递给onFinish
+      options.onFinish(responseText + remainText, responseRes); // Pass res to onFinish
     }
   };
 
