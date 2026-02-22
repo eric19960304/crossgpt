@@ -405,7 +405,15 @@ export function ChatActions(props: {
         m.name == currentModel &&
         m?.provider?.providerName == currentProviderName,
     );
-    return model?.displayName ?? "";
+    if (!model) return "";
+    const displayName = model.displayName ?? model.name;
+    const inputCost = model.inputCostPerMillion ?? 0;
+    const outputCost = model.outputCostPerMillion ?? 0;
+    const costLabel =
+      inputCost > 0 || outputCost > 0
+        ? ` (input．output cost per 1M tokens: $${inputCost.toFixed(2)}．$${outputCost.toFixed(2)})`
+        : "";
+    return `${currentProviderName}: ${displayName}${costLabel}`;
   }, [models, currentModel, currentProviderName]);
   const [showModelSelector, setShowModelSelector] = useState(false);
   const [showPluginSelector, setShowPluginSelector] = useState(false);

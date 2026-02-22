@@ -1,13 +1,21 @@
-## Background
+# CrossGPT
 
-This project is built on top of an open source project https://github.com/ChatGPTNextWeb/NextChat, where it combine several LLM chatbot api into one platform.
+A centralized AI chat platform, supporting ChatGPT, Gemini, XAI, and more, allows you to manage your conversation and budget in one places.
 
-The modification I made to this project are as following:
+This personal project is built on top of an open source project https://github.com/ChatGPTNextWeb/NextChat.
 
-- remove unwanted components, like Mask and NewChat screen, and Vercel deployment features created by the original authors to their partnership vendors, etc.
-- change the UI look and feel.
-- removed unwanted models, only keeping OpenAI, Gemini, and Grok.
-- added Google SSO login
+## Screenshots
+
+
+
+## Disclaimer
+This website is a non-commercial, personal learning project and is provided "as-is" under the MIT License. I am not a business or service provider, and I hold zero accountability or liability for any bugs, logical errors, or unintended behavior.
+
+Regarding "Credits" & Currency:
+- Any "credits," "points," or "balances" displayed on this website are strictly for simulation and educational purposes only.
+- They hold no real-world value and cannot be exchanged for cash, crypto, or any other assets.
+- There is no functionality to "charge" or "top-up" accounts using real money (including credit cards, cash, or cryptocurrency).
+- Do not attempt to use real financial information on this site.
 
 ## Production Information
 

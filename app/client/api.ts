@@ -96,6 +96,8 @@ export interface LLMModel {
   available: boolean;
   provider: LLMModelProvider;
   sorted: number;
+  inputCostPerMillion?: number;
+  outputCostPerMillion?: number;
 }
 
 export interface LLMModelProvider {
