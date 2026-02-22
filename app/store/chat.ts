@@ -446,6 +446,17 @@ export const useChatStore = createPersistStore(
             }
             ChatControllerPool.remove(session.id, botMessage.id);
           },
+          onUsage(usage) {
+            fetch("/api/credits/deduct", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                modelName: modelConfig.model,
+                providerName: modelConfig.providerName,
+                totalTokens: usage.totalTokens,
+              }),
+            }).catch((e) => console.error("[Credits] deduct failed", e));
+          },
           onBeforeTool(tool: ChatMessageTool) {
             (botMessage.tools = botMessage?.tools || []).push(tool);
             get().updateTargetSession(session, (session) => {

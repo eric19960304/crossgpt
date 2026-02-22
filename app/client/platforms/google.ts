@@ -227,6 +227,15 @@ export class GeminiProApi implements LLMApi {
             // console.log("parseSSE", text, runTools);
             const chunkJson = JSON.parse(text);
 
+            // Extract token usage from usageMetadata (present in final chunk)
+            if (chunkJson.usageMetadata) {
+              options.onUsage?.({
+                promptTokens: chunkJson.usageMetadata.promptTokenCount ?? 0,
+                completionTokens: chunkJson.usageMetadata.candidatesTokenCount ?? 0,
+                totalTokens: chunkJson.usageMetadata.totalTokenCount ?? 0,
+              });
+            }
+
             const functionCall = chunkJson?.candidates
               ?.at(0)
               ?.content.parts.at(0)?.functionCall;
@@ -299,6 +308,13 @@ export class GeminiProApi implements LLMApi {
                 resJson.promptFeedback.blockReason,
             ),
           );
+        }
+        if (resJson.usageMetadata) {
+          options.onUsage?.({
+            promptTokens: resJson.usageMetadata.promptTokenCount ?? 0,
+            completionTokens: resJson.usageMetadata.candidatesTokenCount ?? 0,
+            totalTokens: resJson.usageMetadata.totalTokenCount ?? 0,
+          });
         }
         const message = apiClient.extractMessage(resJson);
         options.onFinish(message, res);

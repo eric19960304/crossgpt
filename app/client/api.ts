@@ -66,6 +66,12 @@ export interface SpeechOptions {
   onController?: (controller: AbortController) => void;
 }
 
+export interface LLMUsageTokens {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+}
+
 export interface ChatOptions {
   messages: RequestMessage[];
   config: LLMConfig;
@@ -76,6 +82,7 @@ export interface ChatOptions {
   onController?: (controller: AbortController) => void;
   onBeforeTool?: (tool: ChatMessageTool) => void;
   onAfterTool?: (tool: ChatMessageTool) => void;
+  onUsage?: (usage: LLMUsageTokens) => void;
 }
 
 export interface LLMUsage {

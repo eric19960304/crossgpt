@@ -104,6 +104,9 @@ export class XAIApi implements LLMApi {
       );
 
       if (shouldStream) {
+        // Request usage data in the final streaming chunk
+        (requestPayload as any).stream_options = { include_usage: true };
+
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
@@ -120,6 +123,16 @@ export class XAIApi implements LLMApi {
           (text: string, runTools: ChatMessageTool[]) => {
             // console.log("parseSSE", text, runTools);
             const json = JSON.parse(text);
+
+            // Extract token usage from the final usage chunk
+            if (json.usage) {
+              options.onUsage?.({
+                promptTokens: json.usage.prompt_tokens ?? 0,
+                completionTokens: json.usage.completion_tokens ?? 0,
+                totalTokens: json.usage.total_tokens ?? 0,
+              });
+            }
+
             const choices = json.choices as Array<{
               delta: {
                 content: string;
@@ -169,6 +182,13 @@ export class XAIApi implements LLMApi {
         clearTimeout(requestTimeoutId);
 
         const resJson = await res.json();
+        if (resJson.usage) {
+          options.onUsage?.({
+            promptTokens: resJson.usage.prompt_tokens ?? 0,
+            completionTokens: resJson.usage.completion_tokens ?? 0,
+            totalTokens: resJson.usage.total_tokens ?? 0,
+          });
+        }
         const message = this.extractMessage(resJson);
         options.onFinish(message, res);
       }

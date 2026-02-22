@@ -321,3 +321,104 @@
     background: #fce8e6;
   }
 }
+
+// Credit badge in user row
+.creditBadge {
+  background: #e8f4fd;
+  color: #0070f3;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+// Cost display / edit in models table
+.costDisplay {
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.85rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px dashed #ccc;
+
+  &:hover {
+    background: #f0f7ff;
+    border-color: #0070f3;
+  }
+}
+
+.costEditCell {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.costInput {
+  width: 90px;
+  padding: 3px 6px;
+  border: 1px solid #0070f3;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: monospace;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+  }
+}
+
+.saveCostBtn {
+  padding: 2px 8px;
+  border: 1px solid #0070f3;
+  border-radius: 4px;
+  background: #0070f3;
+  color: #fff;
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #005fcc;
+  }
+}
+
+.cancelCostBtn {
+  padding: 2px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  color: #666;
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+// Credits tab
+.creditsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 520px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.grantForm {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.successMsg {
+  color: #1e7e34;
+  font-size: 0.85rem;
+  margin: 0;
+}

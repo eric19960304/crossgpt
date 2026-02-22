@@ -5,6 +5,7 @@ const UserSchema = new Schema({
   name: { type: String },
   image: { type: String },
   createdAt: { type: Date, default: Date.now },
+  creditUSD: { type: Number, default: 0 },
 });
 
 export const User = models.User || model("User", UserSchema, "users");

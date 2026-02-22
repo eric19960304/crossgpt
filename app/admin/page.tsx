@@ -28,6 +28,7 @@ export default async function Admin() {
     name: u.name || "",
     image: u.image || "",
     createdAt: u.createdAt?.toISOString() || "",
+    creditUSD: Math.round((u.creditUSD ?? 0) * 100) / 100,
   }));
 
   const serializedActivities = activities.map((a: any) => ({
@@ -41,6 +42,7 @@ export default async function Admin() {
     name: m.name,
     available: m.available,
     sorted: m.sorted,
+    costPerMillion: m.costPerMillion ?? 0,
     provider: {
       id: m.provider.id,
       providerName: m.provider.providerName,

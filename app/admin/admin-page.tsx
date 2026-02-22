@@ -8,6 +8,7 @@ interface UserData {
   name: string;
   image: string;
   createdAt: string;
+  creditUSD: number;
 }
 
 interface ActivityData {
@@ -28,6 +29,7 @@ interface ModelData {
   name: string;
   available: boolean;
   sorted: number;
+  costPerMillion: number;
   provider: ModelProviderData;
 }
 
@@ -45,7 +47,7 @@ const PROVIDER_OPTIONS: ModelProviderData[] = [
 ];
 
 export function AdminPage({ users, activities, models: initialModels }: AdminPageProps) {
-  const [activeTab, setActiveTab] = useState<"users" | "models">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "models" | "credits">("users");
   const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
 
   // Models state
@@ -54,6 +56,15 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
   const [newModelProvider, setNewModelProvider] = useState(PROVIDER_OPTIONS[0].id);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState("");
+
+  // Inline cost editing state: modelId -> draft value string
+  const [editingCost, setEditingCost] = useState<Record<string, string>>({});
+
+  // Credits grant state
+  const [grantEmail, setGrantEmail] = useState("");
+  const [grantAmount, setGrantAmount] = useState("");
+  const [granting, setGranting] = useState(false);
+  const [grantResult, setGrantResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   const activitiesByEmail = activities.reduce(
     (acc, a) => {
@@ -111,6 +122,7 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
           name: created.name,
           available: created.available,
           sorted: created.sorted,
+          costPerMillion: created.costPerMillion ?? 0,
           provider: created.provider,
         },
       ]);
@@ -120,6 +132,57 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
       setAddError(err.error || "Failed to add model");
     }
     setAdding(false);
+  }
+
+  async function handleCostSave(model: ModelData) {
+    const raw = editingCost[model._id];
+    if (raw === undefined) return;
+    const cost = parseFloat(raw);
+    if (isNaN(cost) || cost < 0) return;
+    const res = await fetch(`/api/admin/models/${model._id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ costPerMillion: cost }),
+    });
+    if (res.ok) {
+      setModels((prev) =>
+        prev.map((m) => (m._id === model._id ? { ...m, costPerMillion: cost } : m)),
+      );
+      setEditingCost((prev) => {
+        const next = { ...prev };
+        delete next[model._id];
+        return next;
+      });
+    }
+  }
+
+  async function handleGrantCredit(e: React.FormEvent) {
+    e.preventDefault();
+    setGranting(true);
+    setGrantResult(null);
+    const amount = parseFloat(grantAmount);
+    if (!grantEmail.trim() || isNaN(amount)) {
+      setGrantResult({ ok: false, message: "Invalid email or amount" });
+      setGranting(false);
+      return;
+    }
+    const res = await fetch("/api/admin/credits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: grantEmail.trim(), amount }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      setGrantResult({
+        ok: true,
+        message: `Granted $${amount.toFixed(2)} to ${grantEmail.trim()}. New balance: $${data.balance?.toFixed(2) ?? "?"}`,
+      });
+      setGrantEmail("");
+      setGrantAmount("");
+    } else {
+      setGrantResult({ ok: false, message: data.error || "Failed to grant credit" });
+    }
+    setGranting(false);
   }
 
   return (
@@ -138,6 +201,12 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
           onClick={() => setActiveTab("models")}
         >
           Models ({models.length})
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === "credits" ? styles.tabActive : ""}`}
+          onClick={() => setActiveTab("credits")}
+        >
+          Credits
         </button>
       </div>
 
@@ -172,6 +241,9 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                       <div className={styles.userEmail}>{user.email}</div>
                     </div>
                     <div className={styles.userMeta}>
+                      <span className={styles.creditBadge}>
+                        ${user.creditUSD.toFixed(2)}
+                      </span>
                       <span className={styles.badge}>
                         {userActivities.length} events
                       </span>
@@ -263,6 +335,7 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
               <tr>
                 <th>Model</th>
                 <th>Provider</th>
+                <th>Cost / 1M tokens</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -273,44 +346,146 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                   const p = a.provider.providerName.localeCompare(b.provider.providerName);
                   return p !== 0 ? p : a.name.localeCompare(b.name);
                 })
-                .map((model) => (
-                <tr
-                  key={model._id}
-                  className={!model.available ? styles.disabledRow : ""}
-                >
-                  <td className={styles.modelName}>{model.name}</td>
-                  <td>
-                    <span className={styles.providerBadge}>
-                      {model.provider.providerName}
-                    </span>
-                  </td>
-                  <td>
-                    <span
-                      className={`${styles.statusBadge} ${
-                        model.available ? styles.enabled : styles.disabled
-                      }`}
+                .map((model) => {
+                  const draftCost = editingCost[model._id];
+                  const isEditing = draftCost !== undefined;
+                  return (
+                    <tr
+                      key={model._id}
+                      className={!model.available ? styles.disabledRow : ""}
                     >
-                      {model.available ? "enabled" : "disabled"}
-                    </span>
-                  </td>
-                  <td className={styles.modelActions}>
-                    <button
-                      className={styles.toggleBtn}
-                      onClick={() => handleToggle(model)}
-                    >
-                      {model.available ? "Disable" : "Enable"}
-                    </button>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => handleDelete(model)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                      <td className={styles.modelName}>{model.name}</td>
+                      <td>
+                        <span className={styles.providerBadge}>
+                          {model.provider.providerName}
+                        </span>
+                      </td>
+                      <td>
+                        {isEditing ? (
+                          <span className={styles.costEditCell}>
+                            <input
+                              className={styles.costInput}
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              value={draftCost}
+                              onChange={(e) =>
+                                setEditingCost((prev) => ({
+                                  ...prev,
+                                  [model._id]: e.target.value,
+                                }))
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") handleCostSave(model);
+                                if (e.key === "Escape")
+                                  setEditingCost((prev) => {
+                                    const next = { ...prev };
+                                    delete next[model._id];
+                                    return next;
+                                  });
+                              }}
+                              autoFocus
+                            />
+                            <button
+                              className={styles.saveCostBtn}
+                              onClick={() => handleCostSave(model)}
+                            >
+                              Save
+                            </button>
+                            <button
+                              className={styles.cancelCostBtn}
+                              onClick={() =>
+                                setEditingCost((prev) => {
+                                  const next = { ...prev };
+                                  delete next[model._id];
+                                  return next;
+                                })
+                              }
+                            >
+                              Cancel
+                            </button>
+                          </span>
+                        ) : (
+                          <span
+                            className={styles.costDisplay}
+                            onClick={() =>
+                              setEditingCost((prev) => ({
+                                ...prev,
+                                [model._id]: String(model.costPerMillion),
+                              }))
+                            }
+                            title="Click to edit"
+                          >
+                            ${model.costPerMillion.toFixed(2)}
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <span
+                          className={`${styles.statusBadge} ${
+                            model.available ? styles.enabled : styles.disabled
+                          }`}
+                        >
+                          {model.available ? "enabled" : "disabled"}
+                        </span>
+                      </td>
+                      <td className={styles.modelActions}>
+                        <button
+                          className={styles.toggleBtn}
+                          onClick={() => handleToggle(model)}
+                        >
+                          {model.available ? "Disable" : "Enable"}
+                        </button>
+                        <button
+                          className={styles.deleteBtn}
+                          onClick={() => handleDelete(model)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {activeTab === "credits" && (
+        <div className={styles.creditsSection}>
+          <h2 className={styles.sectionTitle}>Grant Credit</h2>
+          <p className={styles.subtitle}>Add credit balance to a user&apos;s account.</p>
+          <form className={styles.grantForm} onSubmit={handleGrantCredit}>
+            <input
+              className={styles.modelInput}
+              type="email"
+              placeholder="User email"
+              value={grantEmail}
+              onChange={(e) => setGrantEmail(e.target.value)}
+              required
+            />
+            <input
+              className={styles.costInput}
+              type="number"
+              step="0.01"
+              placeholder="Amount (USD)"
+              value={grantAmount}
+              onChange={(e) => setGrantAmount(e.target.value)}
+              required
+            />
+            <button className={styles.addBtn} type="submit" disabled={granting}>
+              {granting ? "Granting…" : "Grant Credit"}
+            </button>
+          </form>
+          {grantResult && (
+            <p
+              className={
+                grantResult.ok ? styles.successMsg : styles.errorMsg
+              }
+            >
+              {grantResult.message}
+            </p>
+          )}
         </div>
       )}
     </div>
