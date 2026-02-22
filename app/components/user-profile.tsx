@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { signOut } from "next-auth/react";
 import LogoutIcon from "../icons/logout.svg";
 import { IconButton } from "./button";
 import styles from "./user-profile.module.scss";
+import { useCreditStore } from "../store/credit";
 
 interface UserProfileProps {
   user: {
@@ -15,7 +16,8 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ user }: UserProfileProps) {
-  const [creditUSD, setCreditUSD] = useState<number | null>(null);
+  const creditUSD = useCreditStore((s) => s.creditUSD);
+  const setCreditUSD = useCreditStore((s) => s.setCreditUSD);
 
   useEffect(() => {
     fetch("/api/user/credit")

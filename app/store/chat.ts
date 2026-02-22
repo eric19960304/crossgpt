@@ -6,6 +6,7 @@ import {
 } from "../utils";
 
 import { indexedDBStorage } from "@/app/utils/indexedDB-storage";
+import { useCreditStore } from "./credit";
 import { nanoid } from "nanoid";
 import type {
   ClientApi,
@@ -456,7 +457,14 @@ export const useChatStore = createPersistStore(
                 promptTokens: usage.promptTokens,
                 completionTokens: usage.completionTokens,
               }),
-            }).catch((e) => console.error("[Credits] deduct failed", e));
+            })
+              .then((r) => r.json())
+              .then((data) => {
+                if (typeof data.balance === "number") {
+                  useCreditStore.getState().setCreditUSD(data.balance);
+                }
+              })
+              .catch((e) => console.error("[Credits] deduct failed", e));
           },
           onBeforeTool(tool: ChatMessageTool) {
             (botMessage.tools = botMessage?.tools || []).push(tool);
