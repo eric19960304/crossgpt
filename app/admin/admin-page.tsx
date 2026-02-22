@@ -29,7 +29,8 @@ interface ModelData {
   name: string;
   available: boolean;
   sorted: number;
-  costPerMillion: number;
+  inputCostPerMillion: number;
+  outputCostPerMillion: number;
   provider: ModelProviderData;
 }
 
@@ -97,7 +98,8 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
   const [addError, setAddError] = useState("");
 
   // Inline cost editing state: modelId -> draft value string
-  const [editingCost, setEditingCost] = useState<Record<string, string>>({});
+  const [editingInputCost, setEditingInputCost] = useState<Record<string, string>>({});
+  const [editingOutputCost, setEditingOutputCost] = useState<Record<string, string>>({});
 
   // Credits grant state
   const [grantEmail, setGrantEmail] = useState("");
@@ -161,7 +163,8 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
           name: created.name,
           available: created.available,
           sorted: created.sorted,
-          costPerMillion: created.costPerMillion ?? 0,
+          inputCostPerMillion: created.inputCostPerMillion ?? 0,
+          outputCostPerMillion: created.outputCostPerMillion ?? 0,
           provider: created.provider,
         },
       ]);
@@ -173,21 +176,43 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
     setAdding(false);
   }
 
-  async function handleCostSave(model: ModelData) {
-    const raw = editingCost[model._id];
+  async function handleInputCostSave(model: ModelData) {
+    const raw = editingInputCost[model._id];
     if (raw === undefined) return;
     const cost = parseFloat(raw);
     if (isNaN(cost) || cost < 0) return;
     const res = await fetch(`/api/admin/models/${model._id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ costPerMillion: cost }),
+      body: JSON.stringify({ inputCostPerMillion: cost }),
     });
     if (res.ok) {
       setModels((prev) =>
-        prev.map((m) => (m._id === model._id ? { ...m, costPerMillion: cost } : m)),
+        prev.map((m) => (m._id === model._id ? { ...m, inputCostPerMillion: cost } : m)),
       );
-      setEditingCost((prev) => {
+      setEditingInputCost((prev) => {
+        const next = { ...prev };
+        delete next[model._id];
+        return next;
+      });
+    }
+  }
+
+  async function handleOutputCostSave(model: ModelData) {
+    const raw = editingOutputCost[model._id];
+    if (raw === undefined) return;
+    const cost = parseFloat(raw);
+    if (isNaN(cost) || cost < 0) return;
+    const res = await fetch(`/api/admin/models/${model._id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ outputCostPerMillion: cost }),
+    });
+    if (res.ok) {
+      setModels((prev) =>
+        prev.map((m) => (m._id === model._id ? { ...m, outputCostPerMillion: cost } : m)),
+      );
+      setEditingOutputCost((prev) => {
         const next = { ...prev };
         delete next[model._id];
         return next;
@@ -412,7 +437,8 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
               <tr>
                 <th>Model</th>
                 <th>Provider</th>
-                <th>Cost / 1M tokens</th>
+                <th>Input $/1M</th>
+                <th>Output $/1M</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -424,8 +450,8 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                   return p !== 0 ? p : a.name.localeCompare(b.name);
                 })
                 .map((model) => {
-                  const draftCost = editingCost[model._id];
-                  const isEditing = draftCost !== undefined;
+                  const draftInput = editingInputCost[model._id];
+                  const draftOutput = editingOutputCost[model._id];
                   return (
                     <tr
                       key={model._id}
@@ -438,24 +464,24 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                         </span>
                       </td>
                       <td>
-                        {isEditing ? (
+                        {draftInput !== undefined ? (
                           <span className={styles.costEditCell}>
                             <input
                               className={styles.costInput}
                               type="number"
                               min="0"
                               step="0.01"
-                              value={draftCost}
+                              value={draftInput}
                               onChange={(e) =>
-                                setEditingCost((prev) => ({
+                                setEditingInputCost((prev) => ({
                                   ...prev,
                                   [model._id]: e.target.value,
                                 }))
                               }
                               onKeyDown={(e) => {
-                                if (e.key === "Enter") handleCostSave(model);
+                                if (e.key === "Enter") handleInputCostSave(model);
                                 if (e.key === "Escape")
-                                  setEditingCost((prev) => {
+                                  setEditingInputCost((prev) => {
                                     const next = { ...prev };
                                     delete next[model._id];
                                     return next;
@@ -465,14 +491,14 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                             />
                             <button
                               className={styles.saveCostBtn}
-                              onClick={() => handleCostSave(model)}
+                              onClick={() => handleInputCostSave(model)}
                             >
                               Save
                             </button>
                             <button
                               className={styles.cancelCostBtn}
                               onClick={() =>
-                                setEditingCost((prev) => {
+                                setEditingInputCost((prev) => {
                                   const next = { ...prev };
                                   delete next[model._id];
                                   return next;
@@ -486,14 +512,74 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                           <span
                             className={styles.costDisplay}
                             onClick={() =>
-                              setEditingCost((prev) => ({
+                              setEditingInputCost((prev) => ({
                                 ...prev,
-                                [model._id]: String(model.costPerMillion),
+                                [model._id]: String(model.inputCostPerMillion),
                               }))
                             }
                             title="Click to edit"
                           >
-                            ${model.costPerMillion.toFixed(2)}
+                            ${model.inputCostPerMillion.toFixed(4)}
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        {draftOutput !== undefined ? (
+                          <span className={styles.costEditCell}>
+                            <input
+                              className={styles.costInput}
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              value={draftOutput}
+                              onChange={(e) =>
+                                setEditingOutputCost((prev) => ({
+                                  ...prev,
+                                  [model._id]: e.target.value,
+                                }))
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") handleOutputCostSave(model);
+                                if (e.key === "Escape")
+                                  setEditingOutputCost((prev) => {
+                                    const next = { ...prev };
+                                    delete next[model._id];
+                                    return next;
+                                  });
+                              }}
+                              autoFocus
+                            />
+                            <button
+                              className={styles.saveCostBtn}
+                              onClick={() => handleOutputCostSave(model)}
+                            >
+                              Save
+                            </button>
+                            <button
+                              className={styles.cancelCostBtn}
+                              onClick={() =>
+                                setEditingOutputCost((prev) => {
+                                  const next = { ...prev };
+                                  delete next[model._id];
+                                  return next;
+                                })
+                              }
+                            >
+                              Cancel
+                            </button>
+                          </span>
+                        ) : (
+                          <span
+                            className={styles.costDisplay}
+                            onClick={() =>
+                              setEditingOutputCost((prev) => ({
+                                ...prev,
+                                [model._id]: String(model.outputCostPerMillion),
+                              }))
+                            }
+                            title="Click to edit"
+                          >
+                            ${model.outputCostPerMillion.toFixed(4)}
                           </span>
                         )}
                       </td>

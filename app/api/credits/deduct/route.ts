@@ -11,10 +11,20 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { modelName, providerName, totalTokens } = body;
+  const { modelName, providerName, promptTokens, completionTokens } = body;
 
-  if (!modelName || typeof totalTokens !== "number" || totalTokens <= 0) {
+  if (
+    !modelName ||
+    typeof promptTokens !== "number" ||
+    typeof completionTokens !== "number" ||
+    promptTokens < 0 ||
+    completionTokens < 0
+  ) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+
+  if (promptTokens === 0 && completionTokens === 0) {
+    return NextResponse.json({ ok: true, deducted: 0 });
   }
 
   await connectToDatabase();
@@ -25,12 +35,23 @@ export async function POST(req: NextRequest) {
     "provider.providerName": providerName,
   }).lean() as any;
 
-  if (!model || !model.costPerMillion || model.costPerMillion <= 0) {
+  if (
+    !model ||
+    ((!model.inputCostPerMillion || model.inputCostPerMillion <= 0) &&
+      (!model.outputCostPerMillion || model.outputCostPerMillion <= 0))
+  ) {
     // No cost configured — nothing to deduct
     return NextResponse.json({ ok: true, deducted: 0 });
   }
 
-  const cost = Math.round((totalTokens * model.costPerMillion / 1_000_000) * 100) / 100;
+  const inputCost = model.inputCostPerMillion ?? 0;
+  const outputCost = model.outputCostPerMillion ?? 0;
+
+  const cost =
+    Math.round(
+      ((promptTokens * inputCost + completionTokens * outputCost) / 1_000_000) * 100,
+    ) / 100;
+
   if (cost <= 0) {
     return NextResponse.json({ ok: true, deducted: 0 });
   }

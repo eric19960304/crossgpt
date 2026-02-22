@@ -453,7 +453,8 @@ export const useChatStore = createPersistStore(
               body: JSON.stringify({
                 modelName: modelConfig.model,
                 providerName: modelConfig.providerName,
-                totalTokens: usage.totalTokens,
+                promptTokens: usage.promptTokens,
+                completionTokens: usage.completionTokens,
               }),
             }).catch((e) => console.error("[Credits] deduct failed", e));
           },
