@@ -21,6 +21,8 @@ yarn start         # Start production server
 yarn lint          # Run ESLint
 ```
 
+Instruction to agents: After every code modification, please run `yarn build` to ensure the changes don't have compilation error. Don't run other command like yarn dev or yarn start which is likely requires DB and other dependencies that may not be presented in the terminal environment.
+
 ## Environment Variables
 
 Required in `.env.local` for local development:
@@ -71,7 +73,7 @@ When adding/removing models, the app need to modify this file and re-deploy.
 - [app/client/](app/client/) — Client-side API wrappers and chat controller; platform integrations under `app/client/platforms/`
 - [app/components/](app/components/) — React UI components (40+); main chat UI in `home.tsx` and `chat.tsx`
 - [app/store/](app/store/) — Zustand stores: `chat.ts`, `config.ts`, `access.ts`, `plugin.ts`, `sync.ts`
-- [app/models/](app/models/) — Mongoose models: `User.ts` (email, name, image) and `Activity.ts` (login tracking)
+- [app/models/](app/models/) — Mongoose models: `User.ts` (email, name, image, creditUSD), `Activity.ts` (login tracking), and `LLMModel.ts` (DB-managed model list with costPerMillion)
 - [app/lib/mongodb.ts](app/lib/mongodb.ts) — MongoDB connection singleton
 
 ### Authentication Flow
@@ -84,6 +86,27 @@ NextAuth.js v5 with Google OAuth only. JWT sessions (30-day expiry).
 
 Server-side: `import { auth } from "@/auth"; const session = await auth();`
 Client-side: `import { useSession } from "next-auth/react";`
+
+### Credit System
+
+Each user has a `creditUSD` balance (Number, default 0, rounded to 2 decimal places) stored in the `User` collection. Each model has a `costPerMillion` field (Number, default 0) in the `LLMModel` collection representing USD cost per 1 million tokens.
+
+**Token usage extraction** — after every successful LLM API call the client-side platform classes (OpenAI, XAI, Google) call `options.onUsage({ promptTokens, completionTokens, totalTokens })`:
+- OpenAI / XAI: `stream_options: { include_usage: true }` is added to streaming requests; usage is read from the final SSE chunk (`json.usage`) or from `resJson.usage` in non-streaming responses.
+- Google: usage is read from `chunkJson.usageMetadata` in streaming chunks or `resJson.usageMetadata` in non-streaming responses.
+
+**Deduction flow** — `onUserInput` in [app/store/chat.ts](app/store/chat.ts) passes an `onUsage` handler that POSTs to `/api/credits/deduct` with `{ modelName, providerName, totalTokens }`. That route looks up the model's `costPerMillion`, computes `cost = totalTokens × costPerMillion / 1_000_000`, and applies `$inc: { creditUSD: -cost }` on the user document.
+
+**Key files:**
+- [app/models/User.ts](app/models/User.ts) — `creditUSD` field
+- [app/models/LLMModel.ts](app/models/LLMModel.ts) — `costPerMillion` field
+- [app/client/api.ts](app/client/api.ts) — `LLMUsageTokens` interface; `onUsage?` in `ChatOptions`
+- [app/api/credits/deduct/route.ts](app/api/credits/deduct/route.ts) — authenticated POST; deducts credit after a chat call
+- [app/api/admin/credits/route.ts](app/api/admin/credits/route.ts) — admin-only POST; grants credit to a user by email
+- [app/api/user/credit/route.ts](app/api/user/credit/route.ts) — authenticated GET; returns current user's `creditUSD`
+- [app/components/user-profile.tsx](app/components/user-profile.tsx) — fetches `/api/user/credit` on mount and displays the balance in the sidebar
+
+**Admin UI** — the `/admin` page has a **Credits** tab (grant credit by email + amount) and the **Models** tab has an inline-editable "Cost / 1M tokens" column that PATCHes `/api/admin/models/[id]`.
 
 ### TypeScript Path Alias
 

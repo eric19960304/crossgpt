@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./admin.module.scss";
 
 interface UserData {
@@ -46,9 +46,48 @@ const PROVIDER_OPTIONS: ModelProviderData[] = [
   { id: "xai", providerName: "XAI", providerType: "xai", sorted: 11 },
 ];
 
+const QUICK_CREDIT_AMOUNTS = [1, 5, 10];
+
 export function AdminPage({ users, activities, models: initialModels }: AdminPageProps) {
   const [activeTab, setActiveTab] = useState<"users" | "models" | "credits">("users");
   const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
+
+  // Local credit overrides updated optimistically after quick-grant
+  const [userCredits, setUserCredits] = useState<Record<string, number>>(
+    () => Object.fromEntries(users.map((u) => [u.email, u.creditUSD])),
+  );
+
+  // Email of the user whose quick-credit popup is open
+  const [creditPopupEmail, setCreditPopupEmail] = useState<string | null>(null);
+  const [grantingQuick, setGrantingQuick] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  // Close popup when clicking outside
+  useEffect(() => {
+    if (!creditPopupEmail) return;
+    function onPointerDown(e: PointerEvent) {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        setCreditPopupEmail(null);
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [creditPopupEmail]);
+
+  async function handleQuickGrant(email: string, amount: number) {
+    setGrantingQuick(true);
+    const res = await fetch("/api/admin/credits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, amount }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && typeof data.balance === "number") {
+      setUserCredits((prev) => ({ ...prev, [email]: data.balance }));
+    }
+    setCreditPopupEmail(null);
+    setGrantingQuick(false);
+  }
 
   // Models state
   const [models, setModels] = useState<ModelData[]>(initialModels);
@@ -220,6 +259,8 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
             {users.map((user) => {
               const isExpanded = expandedEmail === user.email;
               const userActivities = activitiesByEmail[user.email] || [];
+              const credit = userCredits[user.email] ?? user.creditUSD;
+              const isPopupOpen = creditPopupEmail === user.email;
 
               return (
                 <div key={user.email} className={styles.userCard}>
@@ -242,8 +283,44 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                     </div>
                     <div className={styles.userMeta}>
                       <span className={styles.creditBadge}>
-                        ${user.creditUSD.toFixed(2)}
+                        ${credit.toFixed(2)}
                       </span>
+
+                      {/* Quick-credit button + popup */}
+                      <span
+                        className={styles.quickCreditWrap}
+                        ref={isPopupOpen ? popupRef : undefined}
+                      >
+                        <button
+                          className={styles.addCreditBtn}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCreditPopupEmail(isPopupOpen ? null : user.email);
+                          }}
+                          disabled={grantingQuick}
+                          title="Add Credit"
+                        >
+                          + Credit
+                        </button>
+                        {isPopupOpen && (
+                          <div className={styles.creditPopup}>
+                            {QUICK_CREDIT_AMOUNTS.map((amt) => (
+                              <button
+                                key={amt}
+                                className={styles.creditPopupBtn}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleQuickGrant(user.email, amt);
+                                }}
+                                disabled={grantingQuick}
+                              >
+                                ${amt}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </span>
+
                       <span className={styles.badge}>
                         {userActivities.length} events
                       </span>

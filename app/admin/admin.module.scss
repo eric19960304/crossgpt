@@ -333,6 +333,71 @@
   white-space: nowrap;
 }
 
+// Quick-credit button and popup
+.quickCreditWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.addCreditBtn {
+  padding: 2px 8px;
+  border: 1px solid #0070f3;
+  border-radius: 12px;
+  background: #fff;
+  color: #0070f3;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: #e8f4fd;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.creditPopup {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.creditPopupBtn {
+  padding: 5px 14px;
+  border: 1px solid #0070f3;
+  border-radius: 6px;
+  background: #fff;
+  color: #0070f3;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #0070f3;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 // Cost display / edit in models table
 .costDisplay {
   cursor: pointer;
