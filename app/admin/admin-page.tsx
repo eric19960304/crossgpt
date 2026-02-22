@@ -437,8 +437,8 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
               <tr>
                 <th>Model</th>
                 <th>Provider</th>
-                <th>Input $/1M</th>
-                <th>Output $/1M</th>
+                <th>Input Cost</th>
+                <th>Output Cost</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>

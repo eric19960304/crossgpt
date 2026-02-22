@@ -28,6 +28,33 @@ async function handle(
   const denied = await requireSession(req);
   if (denied) return denied;
 
+  // Check model availability in DB for POST requests with a JSON body
+  if (req.method === "POST") {
+    try {
+      const cloned = await req.clone().json();
+      const modelName = cloned?.model as string | undefined;
+      if (modelName) {
+        const checkRes = await fetch(
+          `${req.nextUrl.origin}/api/model-check`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ modelName, providerId: params.provider }),
+          },
+        );
+        const checkData = await checkRes.json();
+        if (!checkData.available) {
+          return NextResponse.json(
+            { error: true, message: `Model "${modelName}" is disabled.` },
+            { status: 403 },
+          );
+        }
+      }
+    } catch {
+      // Body is not JSON (e.g. multipart) — skip model check
+    }
+  }
+
   const apiPath = `/api/${params.provider}`;
   console.log(`[${params.provider} Route] params `, params);
   switch (apiPath) {
