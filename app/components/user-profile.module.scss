@@ -1,6 +1,6 @@
 .user-profile {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 16px;
   border-top: 1px solid var(--border-in-light);
 }
@@ -39,4 +39,26 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.user-credit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 0;
+  width: 100%;
+}
+
+.credit-label {
+  font-size: 11px;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.credit-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
 }

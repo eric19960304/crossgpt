@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import LogoutIcon from "../icons/logout.svg";
 import { IconButton } from "./button";
@@ -14,6 +15,19 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ user }: UserProfileProps) {
+  const [creditUSD, setCreditUSD] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/user/credit")
+      .then((r) => r.json())
+      .then((data) => {
+        if (typeof data.creditUSD === "number") {
+          setCreditUSD(data.creditUSD);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const handleSignOut = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
@@ -43,6 +57,14 @@ export function UserProfile({ user }: UserProfileProps) {
           <IconButton icon={<LogoutIcon />} onClick={handleSignOut} />
         </div>
       </div>
+      {creditUSD !== null && (
+        <div className={styles["user-credit"]}>
+          <span className={styles["credit-label"]}>Credit</span>
+          <span className={styles["credit-value"]}>
+            {creditUSD.toFixed(2)} USD
+          </span>
+        </div>
+      )}
     </div>
   );
 }
