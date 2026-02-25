@@ -59,7 +59,7 @@
 
 .userEmail {
   font-size: 0.8rem;
-  color: #666;
+  color: #333333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -70,7 +70,7 @@
   gap: 0.75rem;
   align-items: center;
   font-size: 0.8rem;
-  color: #888;
+  color: #333333;
 }
 
 .badge {
@@ -86,7 +86,7 @@
 
 .chevron {
   font-size: 0.7rem;
-  color: #999;
+  color: #636363;
 }
 
 .activitySection {
@@ -96,7 +96,7 @@
 }
 
 .noActivity {
-  color: #999;
+  color: #636363;
   font-size: 0.85rem;
 }
 
@@ -420,7 +420,7 @@
 }
 
 .costInput {
-  width: 90px;
+  width: 150px;
   padding: 3px 6px;
   border: 1px solid #0070f3;
   border-radius: 4px;
@@ -477,15 +477,25 @@
 
 .grantForm {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.grantFormRow {
+  display: flex;
   gap: 0.5rem;
   align-items: flex-start;
-  flex-wrap: wrap;
+
+  .costInput {
+    flex: 1;
+    width: auto;
+  }
 }
 
 .emailAutocompleteWrap {
   position: relative;
-  flex: 1;
-  min-width: 200px;
+  width: 100%;
+  color: #000;
 }
 
 .emailSuggestions {

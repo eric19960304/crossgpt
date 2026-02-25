@@ -721,19 +721,21 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
                 </ul>
               )}
             </div>
-            <input
-              className={styles.costInput}
-              type="number"
-              min="0"
-              step="0.01"
-              placeholder="New balance (USD)"
-              value={grantAmount}
-              onChange={(e) => setGrantAmount(e.target.value)}
-              required
-            />
-            <button className={styles.addBtn} type="submit" disabled={granting}>
-              {granting ? "Saving…" : "Set Credit"}
-            </button>
+            <div className={styles.grantFormRow}>
+              <input
+                className={styles.costInput}
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="New balance (USD)"
+                value={grantAmount}
+                onChange={(e) => setGrantAmount(e.target.value)}
+                required
+              />
+              <button className={styles.addBtn} type="submit" disabled={granting}>
+                {granting ? "Saving…" : "Set Credit"}
+              </button>
+            </div>
           </form>
           {grantResult && (
             <p className={grantResult.ok ? styles.successMsg : styles.errorMsg}>
