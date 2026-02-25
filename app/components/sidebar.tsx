@@ -292,16 +292,6 @@ export function SideBar(props: { className?: string }) {
         <SideBarTail
           primaryAction={
             <>
-              <div className={clsx(styles["sidebar-action"], styles.mobile)}>
-                <IconButton
-                  icon={<DeleteIcon />}
-                  onClick={async () => {
-                    if (await showConfirm(Locale.Home.DeleteChat)) {
-                      chatStore.deleteSession(chatStore.currentSessionIndex);
-                    }
-                  }}
-                />
-              </div>
               <div className={styles["sidebar-action"]}>
                 <Link to={Path.Settings}>
                   <IconButton
