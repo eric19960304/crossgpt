@@ -447,7 +447,7 @@ export function ChatActions(props: {
     const outputCost = model.outputCostPerMillion ?? 0;
     const costLabel =
       inputCost > 0 || outputCost > 0
-        ? ` (input/output per 1M tokens: $${inputCost.toFixed(2)}/$${outputCost.toFixed(2)})`
+        ? ` (input/output per 1M tokens: $${parseFloat(inputCost.toFixed(2))}/$${parseFloat(outputCost.toFixed(2))})`
         : "";
     return { label: `${currentProviderName}: ${displayName}${costLabel}`, hasCost: inputCost > 0 || outputCost > 0 };
   }, [models, currentModel, currentProviderName]);

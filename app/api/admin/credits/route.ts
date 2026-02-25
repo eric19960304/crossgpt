@@ -17,17 +17,21 @@ export async function POST(req: NextRequest) {
   if (denied) return denied;
 
   const body = await req.json();
-  const { email, amount } = body;
+  const { email, amount, mode } = body;
 
-  if (!email || typeof amount !== "number") {
+  if (!email || typeof amount !== "number" || amount < 0) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
   await connectToDatabase();
 
+  const update = mode === "inc"
+    ? { $inc: { creditUSD: amount } }
+    : { $set: { creditUSD: amount } };
+
   const updated = await User.findOneAndUpdate(
     { email },
-    { $inc: { creditUSD: amount } },
+    update,
     { new: true },
   ).lean() as any;
 

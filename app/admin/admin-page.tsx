@@ -80,7 +80,7 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
     const res = await fetch("/api/admin/credits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, amount }),
+      body: JSON.stringify({ email, amount, mode: "inc" }),
     });
     const data = await res.json().catch(() => ({}));
     if (res.ok && typeof data.balance === "number") {
@@ -101,11 +101,84 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
   const [editingInputCost, setEditingInputCost] = useState<Record<string, string>>({});
   const [editingOutputCost, setEditingOutputCost] = useState<Record<string, string>>({});
 
-  // Credits grant state
+  // Credits set state
   const [grantEmail, setGrantEmail] = useState("");
   const [grantAmount, setGrantAmount] = useState("");
   const [granting, setGranting] = useState(false);
   const [grantResult, setGrantResult] = useState<{ ok: boolean; message: string } | null>(null);
+
+  // Email autocomplete
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeSuggestion, setActiveSuggestion] = useState(-1);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchAbort = useRef<AbortController | null>(null);
+  const emailWrapRef = useRef<HTMLDivElement>(null);
+
+  // Close suggestions on outside click
+  useEffect(() => {
+    function onPointerDown(e: PointerEvent) {
+      if (emailWrapRef.current && !emailWrapRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, []);
+
+  function handleEmailChange(value: string) {
+    setGrantEmail(value);
+    setActiveSuggestion(-1);
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    if (searchAbort.current) searchAbort.current.abort();
+
+    if (!value.trim()) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    debounceTimer.current = setTimeout(async () => {
+      const controller = new AbortController();
+      searchAbort.current = controller;
+      try {
+        const res = await fetch(
+          `/api/admin/users/search?q=${encodeURIComponent(value.trim())}`,
+          { signal: controller.signal },
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        setSuggestions(data.emails ?? []);
+        setShowSuggestions(true);
+      } catch {
+        // aborted or network error — ignore
+      }
+    }, 1000);
+  }
+
+  function selectSuggestion(email: string) {
+    setGrantEmail(email);
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setActiveSuggestion(-1);
+  }
+
+  function handleEmailKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!showSuggestions || suggestions.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveSuggestion((i) => Math.min(i + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveSuggestion((i) => Math.max(i - 1, -1));
+    } else if (e.key === "Enter" && activeSuggestion >= 0) {
+      e.preventDefault();
+      selectSuggestion(suggestions[activeSuggestion]);
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+    }
+  }
 
   const activitiesByEmail = activities.reduce(
     (acc, a) => {
@@ -220,12 +293,12 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
     }
   }
 
-  async function handleGrantCredit(e: React.FormEvent) {
+  async function handleSetCredit(e: React.FormEvent) {
     e.preventDefault();
     setGranting(true);
     setGrantResult(null);
     const amount = parseFloat(grantAmount);
-    if (!grantEmail.trim() || isNaN(amount)) {
+    if (!grantEmail.trim() || isNaN(amount) || amount < 0) {
       setGrantResult({ ok: false, message: "Invalid email or amount" });
       setGranting(false);
       return;
@@ -239,12 +312,12 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
     if (res.ok) {
       setGrantResult({
         ok: true,
-        message: `Granted $${amount.toFixed(2)} to ${grantEmail.trim()}. New balance: $${data.balance?.toFixed(2) ?? "?"}`,
+        message: `Credit for ${grantEmail.trim()} set to $${data.balance?.toFixed(2) ?? amount.toFixed(2)}.`,
       });
       setGrantEmail("");
       setGrantAmount("");
     } else {
-      setGrantResult({ ok: false, message: data.error || "Failed to grant credit" });
+      setGrantResult({ ok: false, message: data.error || "Failed to set credit" });
     }
     setGranting(false);
   }
@@ -616,36 +689,54 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
 
       {activeTab === "credits" && (
         <div className={styles.creditsSection}>
-          <h2 className={styles.sectionTitle}>Grant Credit</h2>
-          <p className={styles.subtitle}>Add credit balance to a user&apos;s account.</p>
-          <form className={styles.grantForm} onSubmit={handleGrantCredit}>
-            <input
-              className={styles.modelInput}
-              type="email"
-              placeholder="User email"
-              value={grantEmail}
-              onChange={(e) => setGrantEmail(e.target.value)}
-              required
-            />
+          <h2 className={styles.sectionTitle}>Set Credit</h2>
+          <p className={styles.subtitle}>Directly set the credit balance for a user&apos;s account.</p>
+          <form className={styles.grantForm} onSubmit={handleSetCredit}>
+            <div className={styles.emailAutocompleteWrap} ref={emailWrapRef}>
+              <input
+                className={styles.modelInput}
+                type="text"
+                placeholder="User email"
+                value={grantEmail}
+                onChange={(e) => handleEmailChange(e.target.value)}
+                onKeyDown={handleEmailKeyDown}
+                onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                autoComplete="off"
+                required
+              />
+              {showSuggestions && suggestions.length > 0 && (
+                <ul className={styles.emailSuggestions}>
+                  {suggestions.map((email, i) => (
+                    <li
+                      key={email}
+                      className={`${styles.emailSuggestionItem} ${i === activeSuggestion ? styles.emailSuggestionActive : ""}`}
+                      onPointerDown={(e) => {
+                        e.preventDefault(); // prevent blur before click fires
+                        selectSuggestion(email);
+                      }}
+                    >
+                      {email}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <input
               className={styles.costInput}
               type="number"
+              min="0"
               step="0.01"
-              placeholder="Amount (USD)"
+              placeholder="New balance (USD)"
               value={grantAmount}
               onChange={(e) => setGrantAmount(e.target.value)}
               required
             />
             <button className={styles.addBtn} type="submit" disabled={granting}>
-              {granting ? "Granting…" : "Grant Credit"}
+              {granting ? "Saving…" : "Set Credit"}
             </button>
           </form>
           {grantResult && (
-            <p
-              className={
-                grantResult.ok ? styles.successMsg : styles.errorMsg
-              }
-            >
+            <p className={grantResult.ok ? styles.successMsg : styles.errorMsg}>
               {grantResult.message}
             </p>
           )}
