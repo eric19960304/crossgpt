@@ -4,6 +4,10 @@ import { connectToDatabase } from "@/app/lib/mongodb";
 import { User } from "@/app/models/User";
 import { Activity } from "@/app/models/Activity";
 import { LLMModelDoc } from "@/app/models/LLMModel";
+import {
+  GlobalConfig,
+  FALLBACK_INITIAL_USER_CREDIT,
+} from "@/app/models/GlobalConfig";
 import { AdminPage } from "./admin-page";
 import { ADMIN_EMAIL } from "./config";
 
@@ -21,6 +25,12 @@ export default async function Admin() {
     .sort({ timestamp: -1 })
     .lean();
   const models = await LLMModelDoc.find().sort({ sorted: 1 }).lean();
+
+  const configDoc = (await GlobalConfig.findOne({ key: "global" }).lean()) as any;
+  const initialUserCredit: number =
+    typeof configDoc?.initialUserCredit === "number"
+      ? configDoc.initialUserCredit
+      : FALLBACK_INITIAL_USER_CREDIT;
 
   // Serialize for client component
   const serializedUsers = users.map((u: any) => ({
@@ -57,6 +67,7 @@ export default async function Admin() {
       users={serializedUsers}
       activities={serializedActivities}
       models={serializedModels}
+      initialUserCredit={initialUserCredit}
     />
   );
 }

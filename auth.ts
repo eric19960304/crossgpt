@@ -3,6 +3,10 @@ import { authConfig } from "./auth.config";
 import { connectToDatabase } from "@/app/lib/mongodb";
 import { User } from "@/app/models/User";
 import { Activity } from "@/app/models/Activity";
+import {
+  GlobalConfig,
+  FALLBACK_INITIAL_USER_CREDIT,
+} from "@/app/models/GlobalConfig";
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
@@ -18,11 +22,18 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         // Record login: upsert user and create activity
         try {
           await connectToDatabase();
+          const configDoc = (await GlobalConfig.findOne({
+            key: "global",
+          }).lean()) as any;
+          const initialCredit: number =
+            typeof configDoc?.initialUserCredit === "number"
+              ? configDoc.initialUserCredit
+              : FALLBACK_INITIAL_USER_CREDIT;
           await User.findOneAndUpdate(
             { email: user.email },
             {
               $set: { name: user.name, image: user.image },
-              $setOnInsert: { createdAt: new Date() },
+              $setOnInsert: { createdAt: new Date(), creditUSD: initialCredit },
             },
             { upsert: true },
           );

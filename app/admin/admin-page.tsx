@@ -38,6 +38,7 @@ interface AdminPageProps {
   users: UserData[];
   activities: ActivityData[];
   models: ModelData[];
+  initialUserCredit: number;
 }
 
 const PROVIDER_OPTIONS: ModelProviderData[] = [
@@ -49,7 +50,12 @@ const PROVIDER_OPTIONS: ModelProviderData[] = [
 
 const QUICK_CREDIT_AMOUNTS = [1, 5, 10];
 
-export function AdminPage({ users, activities, models: initialModels }: AdminPageProps) {
+export function AdminPage({
+  users,
+  activities,
+  models: initialModels,
+  initialUserCredit,
+}: AdminPageProps) {
   const [activeTab, setActiveTab] = useState<"users" | "models" | "credits">("users");
   const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
 
@@ -100,6 +106,12 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
   // Inline cost editing state: modelId -> draft value string
   const [editingInputCost, setEditingInputCost] = useState<Record<string, string>>({});
   const [editingOutputCost, setEditingOutputCost] = useState<Record<string, string>>({});
+
+  // Initial user credit config state
+  const [configCredit, setConfigCredit] = useState<number>(initialUserCredit);
+  const [configCreditDraft, setConfigCreditDraft] = useState<string>(String(initialUserCredit));
+  const [savingConfig, setSavingConfig] = useState(false);
+  const [configResult, setConfigResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   // Credits set state
   const [grantEmail, setGrantEmail] = useState("");
@@ -291,6 +303,35 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
         return next;
       });
     }
+  }
+
+  async function handleSaveInitialCredit(e: React.FormEvent) {
+    e.preventDefault();
+    setSavingConfig(true);
+    setConfigResult(null);
+    const value = parseFloat(configCreditDraft);
+    if (isNaN(value) || value < 0) {
+      setConfigResult({ ok: false, message: "Amount must be a non-negative number" });
+      setSavingConfig(false);
+      return;
+    }
+    const res = await fetch("/api/admin/config", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initialUserCredit: value }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      setConfigCredit(data.initialUserCredit);
+      setConfigCreditDraft(String(data.initialUserCredit));
+      setConfigResult({
+        ok: true,
+        message: `Initial credit updated to $${data.initialUserCredit.toFixed(2)}.`,
+      });
+    } else {
+      setConfigResult({ ok: false, message: data.error || "Failed to update config" });
+    }
+    setSavingConfig(false);
   }
 
   async function handleSetCredit(e: React.FormEvent) {
@@ -689,6 +730,36 @@ export function AdminPage({ users, activities, models: initialModels }: AdminPag
 
       {activeTab === "credits" && (
         <div className={styles.creditsSection}>
+          <h2 className={styles.sectionTitle}>Initial User Credit</h2>
+          <p className={styles.subtitle}>
+            Credit (USD) applied to new users on their first sign-in. Currently{" "}
+            <strong>${configCredit.toFixed(2)}</strong>.
+          </p>
+          <form className={styles.grantForm} onSubmit={handleSaveInitialCredit}>
+            <div className={styles.grantFormRow}>
+              <input
+                className={styles.costInput}
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Amount (USD)"
+                value={configCreditDraft}
+                onChange={(e) => setConfigCreditDraft(e.target.value)}
+                required
+              />
+              <button className={styles.addBtn} type="submit" disabled={savingConfig}>
+                {savingConfig ? "Saving…" : "Save"}
+              </button>
+            </div>
+          </form>
+          {configResult && (
+            <p className={configResult.ok ? styles.successMsg : styles.errorMsg}>
+              {configResult.message}
+            </p>
+          )}
+
+          <hr style={{ margin: "1.5rem 0", border: "none", borderTop: "1px solid #e0e0e0" }} />
+
           <h2 className={styles.sectionTitle}>Set Credit</h2>
           <p className={styles.subtitle}>Directly set the credit balance for a user&apos;s account.</p>
           <form className={styles.grantForm} onSubmit={handleSetCredit}>
