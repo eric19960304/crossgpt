@@ -279,10 +279,45 @@ function ClearContextDivider() {
   );
 }
 
+function CostInfoHint() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [open]);
+
+  return (
+    <span
+      ref={ref}
+      className={styles["cost-hint"]}
+      onClick={(e) => {
+        e.stopPropagation();
+        setOpen((v) => !v);
+      }}
+    >
+      <span className={styles["cost-hint-icon"]}>?</span>
+      {open && (
+        <span className={styles["cost-hint-popup"]}>
+          Minimum cost for each response from models is 0.01.
+        </span>
+      )}
+    </span>
+  );
+}
+
 export function ChatAction(props: {
   text: string;
   icon: JSX.Element;
   onClick: () => void;
+  suffix?: React.ReactNode;
 }) {
   const iconRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -300,6 +335,7 @@ export function ChatAction(props: {
       <div className={styles["text"]} ref={textRef}>
         {props.text}
       </div>
+      {props.suffix}
     </div>
   );
 }
@@ -405,7 +441,7 @@ export function ChatActions(props: {
         m.name == currentModel &&
         m?.provider?.providerName == currentProviderName,
     );
-    if (!model) return "";
+    if (!model) return { label: "", hasCost: false };
     const displayName = model.displayName ?? model.name;
     const inputCost = model.inputCostPerMillion ?? 0;
     const outputCost = model.outputCostPerMillion ?? 0;
@@ -413,7 +449,7 @@ export function ChatActions(props: {
       inputCost > 0 || outputCost > 0
         ? ` (input/output per 1M tokens: $${inputCost.toFixed(2)}/$${outputCost.toFixed(2)})`
         : "";
-    return `${currentProviderName}: ${displayName}${costLabel}`;
+    return { label: `${currentProviderName}: ${displayName}${costLabel}`, hasCost: inputCost > 0 || outputCost > 0 };
   }, [models, currentModel, currentProviderName]);
   const [showModelSelector, setShowModelSelector] = useState(false);
   const [showPluginSelector, setShowPluginSelector] = useState(false);
@@ -504,8 +540,9 @@ export function ChatActions(props: {
 
         <ChatAction
           onClick={() => setShowModelSelector(true)}
-          text={currentModelName}
+          text={currentModelName.label}
           icon={<RobotIcon />}
+          suffix={currentModelName.hasCost ? <CostInfoHint /> : undefined}
         />
 
         {showModelSelector && (
