@@ -411,7 +411,7 @@ export function ChatActions(props: {
     const outputCost = model.outputCostPerMillion ?? 0;
     const costLabel =
       inputCost > 0 || outputCost > 0
-        ? ` (input．output cost per 1M tokens: $${inputCost.toFixed(2)}．$${outputCost.toFixed(2)})`
+        ? ` (input/output per 1M tokens: $${inputCost.toFixed(2)}/$${outputCost.toFixed(2)})`
         : "";
     return `${currentProviderName}: ${displayName}${costLabel}`;
   }, [models, currentModel, currentProviderName]);
@@ -494,12 +494,6 @@ export function ChatActions(props: {
           />
         )}
 
-        <ChatAction
-          onClick={() => setShowModelSelector(true)}
-          text={currentModelName}
-          icon={<RobotIcon />}
-        />
-
         {showUploadImage && (
           <ChatAction
             onClick={props.uploadImage}
@@ -507,6 +501,12 @@ export function ChatActions(props: {
             icon={props.uploading ? <LoadingButtonIcon /> : <ImageIcon />}
           />
         )}
+
+        <ChatAction
+          onClick={() => setShowModelSelector(true)}
+          text={currentModelName}
+          icon={<RobotIcon />}
+        />
 
         {showModelSelector && (
           <Selector
