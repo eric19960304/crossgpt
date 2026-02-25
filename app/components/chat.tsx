@@ -444,14 +444,14 @@ export function ChatActions(props: {
         m?.provider?.providerName == currentProviderName,
     );
     if (!model) return { label: "", hasCost: false };
-    const displayName = model.displayName ?? model.name;
+    const modelName = model.displayName ?? model.name;
     const inputCost = model.inputCostPerMillion ?? 0;
     const outputCost = model.outputCostPerMillion ?? 0;
     const costLabel =
       inputCost > 0 || outputCost > 0
         ? ` (input/output per 1M tokens: $${parseFloat(inputCost.toFixed(2))}/$${parseFloat(outputCost.toFixed(2))})`
         : "";
-    return { label: `${currentProviderName}: ${displayName}${costLabel}`, hasCost: inputCost > 0 || outputCost > 0 };
+    return { label: `${modelName}${costLabel}`, hasCost: inputCost > 0 || outputCost > 0 };
   }, [models, currentModel, currentProviderName]);
   const [showModelSelector, setShowModelSelector] = useState(false);
   const [showPluginSelector, setShowPluginSelector] = useState(false);
