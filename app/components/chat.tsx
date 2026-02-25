@@ -303,7 +303,9 @@ function CostInfoHint() {
         setOpen((v) => !v);
       }}
     >
-      <span className={styles["cost-hint-icon"]}>?</span>
+      <span className={styles["cost-hint-icon"]}>
+        <span className={styles["cost-hint-icon-text"]}>?</span>
+      </span>
       {open && (
         <span className={styles["cost-hint-popup"]}>
           Minimum cost for each response from models is 0.01.
