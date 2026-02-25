@@ -47,14 +47,14 @@ export async function POST(req: NextRequest) {
   const inputCost = model.inputCostPerMillion ?? 0;
   const outputCost = model.outputCostPerMillion ?? 0;
 
-  const cost =
-    Math.round(
-      ((promptTokens * inputCost + completionTokens * outputCost) / 1_000_000) * 100,
-    ) / 100;
+  const rawCost =
+    (promptTokens * inputCost + completionTokens * outputCost) / 1_000_000;
 
-  if (cost <= 0) {
+  if (rawCost <= 0) {
     return NextResponse.json({ ok: true, deducted: 0 });
   }
+
+  const cost = Math.max(0.01, Math.round(rawCost * 100) / 100);
 
   const updated = await User.findOneAndUpdate(
     { email: session.user.email },
