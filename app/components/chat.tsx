@@ -308,7 +308,7 @@ function CostInfoHint() {
       </span>
       {open && (
         <span className={styles["cost-hint-popup"]}>
-          Minimum cost for each response from models is 0.01.
+          Minimum cost for each response from models is 0.01
         </span>
       )}
     </span>
