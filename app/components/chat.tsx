@@ -37,7 +37,6 @@ import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
 import StopIcon from "../icons/pause.svg";
-import RobotIcon from "../icons/robot.svg";
 import SizeIcon from "../icons/size.svg";
 import QualityIcon from "../icons/hd.svg";
 import StyleIcon from "../icons/palette.svg";
@@ -317,7 +316,7 @@ function CostInfoHint() {
 
 export function ChatAction(props: {
   text: string;
-  icon: JSX.Element;
+  icon?: JSX.Element;
   onClick: () => void;
   suffix?: React.ReactNode;
 }) {
@@ -331,9 +330,11 @@ export function ChatAction(props: {
         props.onClick();
       }}
     >
-      <div ref={iconRef} className={styles["icon"]}>
-        {props.icon}
-      </div>
+      {props.icon && (
+        <div ref={iconRef} className={styles["icon"]}>
+          {props.icon}
+        </div>
+      )}
       <div className={styles["text"]} ref={textRef}>
         {props.text}
       </div>
@@ -518,7 +519,7 @@ export function ChatActions(props: {
 
         {props.hitBottom && (
           <ChatAction
-            onClick={props.showPromptModal}
+            onClick={() => navigate(Path.Settings)}
             text={Locale.Chat.InputActions.Settings}
             icon={<SettingsIcon />}
           />
@@ -543,7 +544,6 @@ export function ChatActions(props: {
         <ChatAction
           onClick={() => setShowModelSelector(true)}
           text={currentModelName.label}
-          icon={<RobotIcon />}
           suffix={currentModelName.hasCost ? <CostInfoHint /> : undefined}
         />
 
