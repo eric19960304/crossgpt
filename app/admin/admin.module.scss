@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: text;
 }
 
 .title {
@@ -20,12 +21,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .userCard {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  overflow: hidden;
   background: #fff;
 }
 
@@ -35,9 +38,14 @@
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   cursor: pointer;
+  border-radius: 8px 8px 0 0;
 
   &:hover {
     background: #f8f8f8;
+  }
+
+  &:only-child {
+    border-radius: 8px;
   }
 }
 
@@ -93,6 +101,8 @@
   border-top: 1px solid #e0e0e0;
   padding: 0.75rem 1rem;
   background: #fafafa;
+  border-radius: 0 0 8px 8px;
+  overflow-x: auto;
 }
 
 .noActivity {
