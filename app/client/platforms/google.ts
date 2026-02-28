@@ -211,6 +211,12 @@ export class GeminiProApi implements LLMApi {
           .getAsTools(
             [],
           );
+
+        // Accumulate the latest usageMetadata across chunks; call onUsage once at the end.
+        // Google includes usageMetadata in every streaming chunk, so calling onUsage per-chunk
+        // would trigger a credit deduction for each chunk instead of once per response.
+        let lastUsage: { promptTokens: number; completionTokens: number; totalTokens: number } | undefined;
+
         return stream(
           chatPath,
           requestPayload,
@@ -227,13 +233,13 @@ export class GeminiProApi implements LLMApi {
             // console.log("parseSSE", text, runTools);
             const chunkJson = JSON.parse(text);
 
-            // Extract token usage from usageMetadata (present in final chunk)
+            // Save the latest usageMetadata — will be reported once in onFinish
             if (chunkJson.usageMetadata) {
-              options.onUsage?.({
+              lastUsage = {
                 promptTokens: chunkJson.usageMetadata.promptTokenCount ?? 0,
                 completionTokens: chunkJson.usageMetadata.candidatesTokenCount ?? 0,
                 totalTokens: chunkJson.usageMetadata.totalTokenCount ?? 0,
-              });
+              };
             }
 
             const functionCall = chunkJson?.candidates
@@ -294,7 +300,16 @@ export class GeminiProApi implements LLMApi {
               })),
             );
           },
-          options,
+          {
+            ...options,
+            onFinish: (message: string, res: Response) => {
+              // Report usage exactly once using the final accumulated token counts
+              if (lastUsage) {
+                options.onUsage?.(lastUsage);
+              }
+              options.onFinish?.(message, res);
+            },
+          },
         );
       } else {
         const res = await fetch(chatPath, chatPayload);

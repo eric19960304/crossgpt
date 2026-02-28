@@ -424,6 +424,20 @@ export const useChatStore = createPersistStore(
           ]);
         });
 
+        // Client-side credit pre-check for immediate UX feedback
+        const creditBalance = useCreditStore.getState().creditUSD;
+        if (creditBalance !== null && creditBalance <= 0) {
+          botMessage.content =
+            "Insufficient credits. Please top up your account to continue chatting.";
+          botMessage.streaming = false;
+          botMessage.isError = true;
+          get().updateTargetSession(session, (session) => {
+            session.messages = session.messages.concat();
+          });
+          ChatControllerPool.remove(session.id, botMessage.id);
+          return;
+        }
+
         const api: ClientApi = getClientApi(modelConfig.providerName);
         // make request
         api.llm.chat({

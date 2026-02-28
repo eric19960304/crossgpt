@@ -53,6 +53,33 @@ async function handle(
     } catch {
       // Body is not JSON (e.g. multipart) — skip model check
     }
+
+    // Check user credit balance
+    try {
+      const creditRes = await fetch(
+        `${req.nextUrl.origin}/api/credits/check`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            cookie: req.headers.get("cookie") ?? "",
+          },
+        },
+      );
+      const creditData = await creditRes.json();
+      if (!creditData.hasSufficientCredits) {
+        return NextResponse.json(
+          {
+            error: true,
+            message:
+              "Insufficient credits. Please top up your account to continue.",
+          },
+          { status: 402 },
+        );
+      }
+    } catch {
+      // Credit check failed — allow request to proceed to avoid blocking on infra errors
+    }
   }
 
   const apiPath = `/api/${params.provider}`;

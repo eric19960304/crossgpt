@@ -20,14 +20,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  max-height: min(70vh, 760px);
-  overflow: auto;
-  padding-bottom: 0.25rem;
 }
 
 .userCard {
-  width: max-content;
-  min-width: 100%;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
@@ -552,46 +547,4 @@
   color: #1e7e34;
   font-size: 0.85rem;
   margin: 0;
-}
-
-@media (max-width: 700px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .userRow {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    grid-template-areas:
-      "avatar info chevron"
-      "meta meta meta";
-    align-items: center;
-    row-gap: 0.5rem;
-  }
-
-  .avatar {
-    grid-area: avatar;
-  }
-
-  .userInfo {
-    grid-area: info;
-  }
-
-  .chevron {
-    grid-area: chevron;
-    justify-self: end;
-  }
-
-  .userMeta {
-    grid-area: meta;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding-left: calc(36px + 0.75rem);
-  }
-
-  .creditPopup {
-    top: calc(100% + 6px);
-    left: 0;
-    transform: none;
-  }
 }
