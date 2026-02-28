@@ -39,6 +39,7 @@
   padding: 0.75rem 1rem;
   cursor: pointer;
   border-radius: 8px 8px 0 0;
+  overflow-x: auto;
 
   &:hover {
     background: #f8f8f8;
@@ -53,23 +54,23 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .userInfo {
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
+  min-width: 140px;
 }
 
 .userName {
   font-weight: 600;
   font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .userEmail {
   font-size: 0.8rem;
   color: #333333;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -79,6 +80,7 @@
   align-items: center;
   font-size: 0.8rem;
   color: #333333;
+  flex-shrink: 0;
 }
 
 .badge {
