@@ -5,11 +5,11 @@
   padding: 2rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   user-select: text;
-  // Fill the viewport and scroll internally so body's overflow:hidden never clips the title
-  max-height: 100vh;
+  // Match body's exact height so body's overflow:hidden never clips content.
+  // overflow-y:auto handles all vertical scrolling within the container.
+  height: 100%;
   overflow-y: auto;
   box-sizing: border-box;
-  align-self: flex-start;
 }
 
 .title {
