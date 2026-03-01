@@ -409,6 +409,7 @@ export function AdminPage({
                       setExpandedEmail(isExpanded ? null : user.email)
                     }
                   >
+                    <div className={styles.userRowInner}>
                     {user.image && (
                       <img
                         src={user.image}
@@ -470,6 +471,7 @@ export function AdminPage({
                     <span className={styles.chevron}>
                       {isExpanded ? "\u25B2" : "\u25BC"}
                     </span>
+                    </div>
                   </div>
 
                   {isExpanded && (
