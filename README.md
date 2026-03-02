@@ -6,7 +6,9 @@ This personal project is built on top of an open source project https://github.c
 
 ## Screenshots
 
-<img src="https://raw.githubusercontent.com/eric19960304/my-homepage/master/public/images/crossgpt/demo1.png" width="555"> <img src="https://raw.githubusercontent.com/eric19960304/my-homepage/master/public/images/crossgpt/demo2.png" width="493">
+<img src="https://raw.githubusercontent.com/eric19960304/my-homepage/master/public/images/crossgpt/demo1.png" width="650">
+
+<img src="https://raw.githubusercontent.com/eric19960304/my-homepage/master/public/images/crossgpt/demo2.png" width="650">
 
 ## Disclaimer
 This website is a non-commercial, personal learning project and is provided "as-is" under the MIT License. I am not a business or service provider, and I hold zero accountability or liability for any bugs, logical errors, or unintended behavior.
