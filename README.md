@@ -1,6 +1,6 @@
 # CrossGPT
 
-A centralized AI chat platform, supporting ChatGPT, Gemini, XAI, and more, allows you to manage your conversation and budget in one places.
+A unified AI chat platform that aggregates OpenAI, Gemini, Claude, and Grok into a single workspace, allowing your conversations and budget in one place with pay-as-you-go pricing, and eliminating the need for multiple monthly subscriptions.
 
 This personal project is hosting on https://chat.ericlauchiho.me, and is built on top of an open source project https://github.com/ChatGPTNextWeb/NextChat.
 
