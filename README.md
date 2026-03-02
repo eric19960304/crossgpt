@@ -1,6 +1,6 @@
 # CrossGPT
 
-A unified AI chat platform that aggregates OpenAI, Gemini, Claude, and Grok into a single workspace, allowing your conversations and budget to be managed in one place with pay-as-you-go pricing, and eliminating the need for multiple monthly subscriptions.
+A unified AI chat platform that aggregates OpenAI, Gemini, Claude, and Grok into a single workspace — allowing you to manage conversations and budgets in one place with pay-as-you-go pricing while eliminating the need for multiple monthly subscriptions.
 
 This personal project is hosting on https://chat.ericlauchiho.me, and is built on top of an open source project https://github.com/ChatGPTNextWeb/NextChat.
 
