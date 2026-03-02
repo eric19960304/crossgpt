@@ -28,7 +28,13 @@ async function handle(req: NextRequest) {
   }
 
   const models = await LLMModelDoc.find().sort({ sorted: 1 }).lean();
-  return NextResponse.json(models);
+  const result = models.map((m: any) => {
+    const costsMissing =
+      (m.inputCostPerMillion ?? 0) <= 0 ||
+      (m.outputCostPerMillion ?? 0) <= 0;
+    return costsMissing ? { ...m, available: false } : m;
+  });
+  return NextResponse.json(result);
 }
 
 export const GET = handle;

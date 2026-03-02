@@ -2,7 +2,7 @@
 
 A centralized AI chat platform, supporting ChatGPT, Gemini, XAI, and more, allows you to manage your conversation and budget in one places.
 
-This personal project is built on top of an open source project https://github.com/ChatGPTNextWeb/NextChat.
+This personal project is hosting on https://chat.ericlauchiho.me, and is built on top of an open source project https://github.com/ChatGPTNextWeb/NextChat.
 
 ## Screenshots
 
