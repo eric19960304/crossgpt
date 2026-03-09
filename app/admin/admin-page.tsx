@@ -31,6 +31,7 @@ interface ModelData {
   sorted: number;
   inputCostPerMillion: number;
   outputCostPerMillion: number;
+  visionCapable: boolean;
   provider: ModelProviderData;
 }
 
@@ -227,6 +228,22 @@ export function AdminPage({
     }
   }
 
+  async function handleToggleVision(model: ModelData) {
+    const res = await fetch(`/api/admin/models/${model._id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ visionCapable: !model.visionCapable }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setModels((prev) =>
+        prev.map((m) =>
+          m._id === model._id ? { ...m, visionCapable: updated.visionCapable } : m,
+        ),
+      );
+    }
+  }
+
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
     const name = newModelName.trim();
@@ -250,6 +267,7 @@ export function AdminPage({
           sorted: created.sorted,
           inputCostPerMillion: created.inputCostPerMillion ?? 0,
           outputCostPerMillion: created.outputCostPerMillion ?? 0,
+          visionCapable: created.visionCapable ?? false,
           provider: created.provider,
         },
       ]);
@@ -555,6 +573,7 @@ export function AdminPage({
                 <th>Provider</th>
                 <th>Input Cost</th>
                 <th>Output Cost</th>
+                <th>Vision</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -698,6 +717,15 @@ export function AdminPage({
                             ${model.outputCostPerMillion.toFixed(4)}
                           </span>
                         )}
+                      </td>
+                      <td>
+                        <button
+                          className={styles.toggleBtn}
+                          onClick={() => handleToggleVision(model)}
+                          title={model.visionCapable ? "Accepts image input" : "Text only"}
+                        >
+                          {model.visionCapable ? "Yes" : "No"}
+                        </button>
                       </td>
                       <td>
                         <span

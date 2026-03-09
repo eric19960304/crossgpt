@@ -16,6 +16,7 @@ const LLMModelSchema = new Schema({
   sorted: { type: Number, default: 0 },
   inputCostPerMillion: { type: Number, default: 0 },
   outputCostPerMillion: { type: Number, default: 0 },
+  visionCapable: { type: Boolean, default: false },
   provider: { type: LLMModelProviderSchema, required: true },
 });
 
