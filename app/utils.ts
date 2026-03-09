@@ -281,14 +281,20 @@ export function getMessageImages(message: RequestMessage): string[] {
 }
 
 export function isVisionModel(model: string) {
-  const visionModels = useAccessStore.getState().visionModels;
+  const { visionModels, dbModels } = useAccessStore.getState();
+
+  // Check DB model flag first
+  const dbModel = dbModels.find((m) => m.name === model);
+  if (dbModel) {
+    return dbModel.visionCapable === true;
+  }
+
+  // Fall back to env var list and regex for models not in DB
   const envVisionModels = visionModels?.split(",").map((m) => m.trim());
   if (envVisionModels?.includes(model)) {
     return true;
   }
-  return (
-    VISION_MODEL_REGEXES.some((regex) => regex.test(model))
-  );
+  return VISION_MODEL_REGEXES.some((regex) => regex.test(model));
 }
 
 export function isDalle3(model: string) {

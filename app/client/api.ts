@@ -98,6 +98,7 @@ export interface LLMModel {
   sorted: number;
   inputCostPerMillion?: number;
   outputCostPerMillion?: number;
+  visionCapable?: boolean;
 }
 
 export interface LLMModelProvider {
