@@ -54,6 +54,7 @@ export default async function Admin() {
     sorted: m.sorted,
     inputCostPerMillion: m.inputCostPerMillion ?? 0,
     outputCostPerMillion: m.outputCostPerMillion ?? 0,
+    visionCapable: m.visionCapable ?? false,
     provider: {
       id: m.provider.id,
       providerName: m.provider.providerName,
