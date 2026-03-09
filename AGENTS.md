@@ -108,6 +108,25 @@ Each user has a `creditUSD` balance (Number, default 0, rounded to 2 decimal pla
 
 **Admin UI** — the `/admin` page has a **Credits** tab (grant credit by email + amount) and the **Models** tab has an inline-editable "Cost / 1M tokens" column that PATCHes `/api/admin/models/[id]`.
 
+### Image Input (Vision)
+
+Vision (image input) support is controlled per-model via the `visionCapable` boolean field in `LLMModel` (DB) and the `LLMModel` TypeScript interface in [app/client/api.ts](app/client/api.ts).
+
+- `isVisionModel(modelName)` in [app/utils.ts](app/utils.ts) determines whether the upload button is shown in chat. It checks in order:
+  1. `dbModels` from the access store — if the model is found, its `visionCapable` flag is used directly.
+  2. `VISION_MODELS` env var (comma-separated model names).
+  3. Hardcoded `VISION_MODEL_REGEXES` in [app/constant.ts](app/constant.ts) (e.g. `/gpt/`, `/gemini-2\.5/`).
+- The admin **Models** tab has a **Vision** toggle column to set `visionCapable` per model without redeploying.
+
+### Image Output (Generation)
+
+Image generation is **only supported via DALL-E 3** (OpenAI). No other provider (Gemini, XAI, etc.) produces image output.
+
+- `isDalle3(modelName)` in [app/utils.ts](app/utils.ts) detects DALL-E 3 models.
+- [app/client/platforms/openai.ts](app/client/platforms/openai.ts) routes DALL-E 3 requests to `/images/generations` instead of `/chat/completions`, then extracts the returned image URL/base64 into a `MultimodalContent` array.
+- The result is rendered as an `<img>` tag in [app/components/chat.tsx](app/components/chat.tsx).
+- Gemini and other models do **not** generate image output. If they appear to respond with a tool-call JSON (`action`/`thought`/`action_input`), it is raw text — the app does not parse ReAct-style action blocks; only native `tool_calls` (OpenAI format) and `functionCall` (Gemini format) are handled.
+
 ### TypeScript Path Alias
 
 `@/*` maps to the project root (configured in [tsconfig.json](tsconfig.json)).
