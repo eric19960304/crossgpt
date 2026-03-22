@@ -12,8 +12,6 @@
     "app:dev": "yarn tauri dev",
     "app:build": "yarn tauri build",
     "app:clear": "yarn tauri dev",
-    "prompts": "node ./scripts/fetch-prompts.mjs",
-    "proxy-dev": "sh ./scripts/init-proxy.sh && proxychains -f ./scripts/proxychains.conf yarn dev",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
