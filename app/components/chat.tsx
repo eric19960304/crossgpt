@@ -307,7 +307,7 @@ function CostInfoHint() {
       </span>
       {open && (
         <span className={styles["cost-hint-popup"]}>
-          Minimum cost for each response from models is 0.01
+          Input/output cost for 1M tokens. Each response cost at least 0.01.
         </span>
       )}
     </span>
@@ -450,7 +450,7 @@ export function ChatActions(props: {
     const outputCost = model.outputCostPerMillion ?? 0;
     const costLabel =
       inputCost > 0 || outputCost > 0
-        ? ` (input/output per 1M tokens: $${parseFloat(inputCost.toFixed(2))}/$${parseFloat(outputCost.toFixed(2))})`
+        ? ` (cost: $${parseFloat(inputCost.toFixed(2))}/$${parseFloat(outputCost.toFixed(2))})`
         : "";
     return { label: `${modelName}${costLabel}`, hasCost: inputCost > 0 || outputCost > 0 };
   }, [models, currentModel, currentProviderName]);
