@@ -3,7 +3,7 @@ import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { ADMIN_EMAIL } from "@/app/admin/config";
-import dbConnect from "@/app/lib/dbConnect";
+import { connectToDatabase } from "@/app/lib/mongodb";
 import { OperationHistory } from "@/app/models/OperationHistory";
 
 async function requireAdmin() {
@@ -18,7 +18,7 @@ export async function GET() {
   const deny = await requireAdmin();
   if (deny) return deny;
 
-  await dbConnect();
+  await connectToDatabase();
   const history = await OperationHistory.find()
     .sort({ performedAt: -1 })
     .limit(100)
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "operationName is required" }, { status: 400 });
   }
 
-  await dbConnect();
+  await connectToDatabase();
 
   let status: "successful" | "failed" = "successful";
   try {
