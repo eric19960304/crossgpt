@@ -568,3 +568,90 @@
   font-size: 0.85rem;
   margin: 0;
 }
+
+// Operations tab
+.operationsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.operationRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.operationItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.operationLabel {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.runBtn {
+  padding: 0.45rem 1.25rem;
+  background: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: #005fcc;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.operationHistoryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+    color: #444;
+  }
+
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+}
+
+.opStatusBadge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.opSuccess {
+    background: #e6f4ea;
+    color: #1e7e34;
+  }
+
+  &.opFailed {
+    background: #fce8e6;
+    color: #c5221f;
+  }
+}

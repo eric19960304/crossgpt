@@ -1,2 +1,2 @@
-git -C /home/eric/projects/crossgpt pull
-docker compose -f /home/eric/projects/crossgpt/docker-compose.yml up -d --build
+git -C /crossgpt pull
+docker compose -f /crossgpt/docker-compose.yml up -d --build

@@ -51,13 +51,20 @@ const PROVIDER_OPTIONS: ModelProviderData[] = [
 
 const QUICK_CREDIT_AMOUNTS = [1, 5, 10];
 
+interface OperationHistoryData {
+  _id: string;
+  operationName: string;
+  performedAt: string;
+  status: "successful" | "failed";
+}
+
 export function AdminPage({
   users,
   activities,
   models: initialModels,
   initialUserCredit,
 }: AdminPageProps) {
-  const [activeTab, setActiveTab] = useState<"users" | "models" | "credits">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "models" | "credits" | "operations">("users");
   const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
 
   // Local credit overrides updated optimistically after quick-grant
@@ -107,6 +114,43 @@ export function AdminPage({
   // Inline cost editing state: modelId -> draft value string
   const [editingInputCost, setEditingInputCost] = useState<Record<string, string>>({});
   const [editingOutputCost, setEditingOutputCost] = useState<Record<string, string>>({});
+
+  // Operations tab state
+  const [opHistory, setOpHistory] = useState<OperationHistoryData[]>([]);
+  const [opHistoryLoaded, setOpHistoryLoaded] = useState(false);
+  const [triggering, setTriggering] = useState(false);
+  const [triggerResult, setTriggerResult] = useState<{ ok: boolean; message: string } | null>(null);
+
+  useEffect(() => {
+    if (activeTab !== "operations" || opHistoryLoaded) return;
+    fetch("/api/admin/operations")
+      .then((r) => r.json())
+      .then((data: OperationHistoryData[]) => {
+        setOpHistory(data);
+        setOpHistoryLoaded(true);
+      })
+      .catch(() => setOpHistoryLoaded(true));
+  }, [activeTab, opHistoryLoaded]);
+
+  async function handleRunOperation(operationName: string) {
+    setTriggering(true);
+    setTriggerResult(null);
+    const res = await fetch("/api/admin/operations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ operationName }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      setTriggerResult({ ok: true, message: `Operation "${operationName}" triggered successfully.` });
+      if (data.record) {
+        setOpHistory((prev) => [data.record, ...prev]);
+      }
+    } else {
+      setTriggerResult({ ok: false, message: data.error || "Failed to trigger operation" });
+    }
+    setTriggering(false);
+  }
 
   // Initial user credit config state
   const [configCredit, setConfigCredit] = useState<number>(initialUserCredit);
@@ -403,6 +447,12 @@ export function AdminPage({
           onClick={() => setActiveTab("credits")}
         >
           Credits
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === "operations" ? styles.tabActive : ""}`}
+          onClick={() => setActiveTab("operations")}
+        >
+          Operations
         </button>
       </div>
 
@@ -842,6 +892,67 @@ export function AdminPage({
             <p className={grantResult.ok ? styles.successMsg : styles.errorMsg}>
               {grantResult.message}
             </p>
+          )}
+        </div>
+      )}
+
+      {activeTab === "operations" && (
+        <div className={styles.operationsSection}>
+          <h2 className={styles.sectionTitle}>Operations</h2>
+
+          <div className={styles.operationRow}>
+            <div className={styles.operationItem}>
+              <span className={styles.operationLabel}>Re-build &amp; re-deploy</span>
+              <button
+                className={styles.runBtn}
+                onClick={() => handleRunOperation("Re-build & re-deploy")}
+                disabled={triggering}
+              >
+                {triggering ? "Triggering…" : "Run"}
+              </button>
+            </div>
+          </div>
+
+          {triggerResult && (
+            <p className={triggerResult.ok ? styles.successMsg : styles.errorMsg}>
+              {triggerResult.message}
+            </p>
+          )}
+
+          <h2 className={styles.sectionTitle} style={{ marginTop: "1.5rem" }}>History</h2>
+          {!opHistoryLoaded ? (
+            <p className={styles.subtitle}>Loading…</p>
+          ) : opHistory.length === 0 ? (
+            <p className={styles.subtitle}>No operations recorded yet.</p>
+          ) : (
+            <table className={styles.operationHistoryTable}>
+              <thead>
+                <tr>
+                  <th>Operation</th>
+                  <th>Status</th>
+                  <th>Performed At (UTC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {opHistory.map((entry) => (
+                  <tr key={entry._id}>
+                    <td>{entry.operationName}</td>
+                    <td>
+                      <span
+                        className={`${styles.opStatusBadge} ${
+                          entry.status === "successful" ? styles.opSuccess : styles.opFailed
+                        }`}
+                      >
+                        {entry.status}
+                      </span>
+                    </td>
+                    <td>
+                      {new Date(entry.performedAt).toLocaleString("en-US", { timeZone: "UTC" })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       )}

@@ -13,7 +13,7 @@ RUN yarn install
 
 FROM base AS builder
 
-RUN apk update && apk add --no-cache git
+RUN apk add --no-cache docker-cli git bash
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -24,10 +24,13 @@ RUN yarn build
 FROM base AS runner
 WORKDIR /app
 
+RUN apk add --no-cache docker-cli git bash
+
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/.next/server ./.next/server
+COPY scripts ./scripts
 
 EXPOSE 3000
 
