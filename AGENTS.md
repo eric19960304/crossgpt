@@ -102,24 +102,7 @@ Google OAuth redirect URI must be set to `https://localhost:3000/api/auth/callba
 
 ## Models Constant
 
-All the avaliable models are defined at [app/constant.ts](/app/constant.ts), for example:
-```ts
-const openaiModels = [
-  "gpt-5-mini",
-  "gpt-5.4",
-  "gpt-5.5",
-];
-
-const googleModels: string[] = [
-  "gemini-3-pro-preview"
-];
-
-const xAIModes = [
-  "grok-4-0709",
-  "grok-fast-reasoning",
-  "grok-code-fast-1",
-];
-```
+All the avaliable models are stored at DB, see [LLMModel.ts](app/models/LLMModel.ts).
 
 When adding/removing models, the app needs to modify this file and re-deploy. Note that the model list served to clients is DB-backed (see [Model Management](#model-management) below); `DEFAULT_MODELS` in `constant.ts` is only used as a seed source on first run.
 
