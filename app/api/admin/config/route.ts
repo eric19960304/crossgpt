@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/app/lib/mongodb";
 import {
   GlobalConfig,
   FALLBACK_INITIAL_USER_CREDIT,
+  FALLBACK_DEFAULT_MODEL,
 } from "@/app/models/GlobalConfig";
 import { ADMIN_EMAIL } from "@/app/admin/config";
 
@@ -26,6 +27,7 @@ export async function GET() {
   return NextResponse.json({
     initialUserCredit:
       config?.initialUserCredit ?? FALLBACK_INITIAL_USER_CREDIT,
+    defaultModel: config?.defaultModel ?? FALLBACK_DEFAULT_MODEL,
   });
 }
 
@@ -45,10 +47,23 @@ export async function PATCH(req: NextRequest) {
     );
   }
 
+  if (
+    body.defaultModel !== undefined &&
+    (typeof body.defaultModel !== "string" || body.defaultModel.trim() === "")
+  ) {
+    return NextResponse.json(
+      { error: "defaultModel must be a non-empty string" },
+      { status: 400 },
+    );
+  }
+
   // Build $set from whitelist only — never let the client write arbitrary fields
   const $set: Record<string, unknown> = {};
   if (typeof body.initialUserCredit === "number") {
     $set.initialUserCredit = body.initialUserCredit;
+  }
+  if (typeof body.defaultModel === "string") {
+    $set.defaultModel = body.defaultModel.trim();
   }
 
   if (Object.keys($set).length === 0) {
@@ -69,5 +84,6 @@ export async function PATCH(req: NextRequest) {
   return NextResponse.json({
     initialUserCredit:
       updated?.initialUserCredit ?? FALLBACK_INITIAL_USER_CREDIT,
+    defaultModel: updated?.defaultModel ?? FALLBACK_DEFAULT_MODEL,
   });
 }

@@ -259,8 +259,10 @@ export const useAccessStore = createPersistStore(
           r.json().catch(() => []),
         ),
       ])
-        .then(([config, models]: [DangerConfig, any[]]) => {
-          const defaultModel = config.defaultModel ?? "";
+        .then(([config, modelsPayload]: [DangerConfig, any]) => {
+          const dbModels = Array.isArray(modelsPayload?.models) ? modelsPayload.models : [];
+          // DB-stored defaultModel takes priority over env-var defaultModel
+          const defaultModel = modelsPayload?.defaultModel || config.defaultModel || "";
           if (defaultModel !== "") {
             const [model, providerName] = getModelProvider(defaultModel);
             DEFAULT_CONFIG.modelConfig.model = model;
@@ -268,8 +270,8 @@ export const useAccessStore = createPersistStore(
           }
 
           console.log("[Config] got config from server", config);
-          console.log("[Models] got", models.length, "models from DB");
-          set(() => ({ ...config, dbModels: Array.isArray(models) ? models : [] }));
+          console.log("[Models] got", dbModels.length, "models from DB");
+          set(() => ({ ...config, defaultModel, dbModels }));
         })
         .catch(() => {
           console.error("[Config] failed to fetch config");

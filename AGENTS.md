@@ -35,7 +35,7 @@ GOOGLE_CLIENT_ID=        # Google OAuth client ID
 GOOGLE_CLIENT_SECRET=    # Google OAuth client secret
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=         # Generate with: openssl rand -base64 32
-DEFAULT_MODEL=           # e.g. gpt-4o-mini
+DEFAULT_MODEL=           # Deprecated — default model is now set via the admin UI (DB-backed)
 ```
 
 Google OAuth redirect URI must be set to `https://localhost:3000/api/auth/callback/google` in Google Cloud Console for local dev.
@@ -63,7 +63,7 @@ const xAIModes = [
 ];
 ```
 
-When adding/removing models, the app need to modify this file and re-deploy.
+When adding/removing models, the app needs to modify this file and re-deploy. Note that the model list served to clients is DB-backed (see [Model Management](#model-management) below); `DEFAULT_MODELS` in `constant.ts` is only used as a seed source on first run.
 
 **Next.js 14 App Router** with MongoDB (Mongoose) for user tracking and NextAuth.js v5 for auth.
 
@@ -73,7 +73,7 @@ When adding/removing models, the app need to modify this file and re-deploy.
 - [app/client/](app/client/) — Client-side API wrappers and chat controller; platform integrations under `app/client/platforms/`
 - [app/components/](app/components/) — React UI components (40+); main chat UI in `home.tsx` and `chat.tsx`
 - [app/store/](app/store/) — Zustand stores: `chat.ts`, `config.ts`, `access.ts`, `plugin.ts`, `sync.ts`
-- [app/models/](app/models/) — Mongoose models: `User.ts` (email, name, image, creditUSD), `Activity.ts` (login tracking), and `LLMModel.ts` (DB-managed model list with costPerMillion)
+- [app/models/](app/models/) — Mongoose models: `User.ts` (email, name, image, creditUSD), `Activity.ts` (login tracking), `LLMModel.ts` (DB-managed model list with costPerMillion), `GlobalConfig.ts` (singleton config: `initialUserCredit`, `defaultModel`), `OperationHistory.ts` (admin operation log)
 - [app/lib/mongodb.ts](app/lib/mongodb.ts) — MongoDB connection singleton
 
 ### Authentication Flow
@@ -86,6 +86,31 @@ NextAuth.js v5 with Google OAuth only. JWT sessions (30-day expiry).
 
 Server-side: `import { auth } from "@/auth"; const session = await auth();`
 Client-side: `import { useSession } from "next-auth/react";`
+
+### Model Management
+
+The available model list and the default model are both DB-backed and configurable from the admin UI without redeploying.
+
+**Model list** — stored in the `LLMModel` collection. Seeded from `DEFAULT_MODELS` in `app/constant.ts` on first run (when the collection is empty). Admins can add, toggle, and delete models from the **Models** tab in `/admin`.
+
+**Default model** — stored as `defaultModel` in the singleton `GlobalConfig` document (fallback: `"gpt-4o-mini"`). Admins set it via the **Default Model** input at the top of the Models tab. The env var `DEFAULT_MODEL` is superseded by the DB value and should be considered deprecated.
+
+**Data flow:**
+- `/api/models` (Node.js, authenticated) — returns `{ models: LLMModel[], defaultModel: string }`. The DB `defaultModel` is fetched here alongside the model list.
+- `app/store/access.ts` `fetch()` — calls `/api/config` (edge, env vars) and `/api/models` (Node.js, DB) concurrently. The DB `defaultModel` from `/api/models` wins over the env-var one from `/api/config`. Both are resolved before setting `DEFAULT_CONFIG.modelConfig.model`.
+- `/api/admin/models` — admin CRUD (GET list, POST create).
+- `/api/admin/models/[id]` — admin CRUD (PATCH toggle/costs/vision, DELETE).
+- `/api/admin/config` — admin GET/PATCH for `GlobalConfig` fields (`initialUserCredit`, `defaultModel`).
+
+**Key files:**
+- [app/models/GlobalConfig.ts](app/models/GlobalConfig.ts) — singleton schema; exports `FALLBACK_DEFAULT_MODEL` and `FALLBACK_INITIAL_USER_CREDIT`
+- [app/models/LLMModel.ts](app/models/LLMModel.ts) — Mongoose schema for DB-managed models
+- [app/api/models/route.ts](app/api/models/route.ts) — public (session-gated) GET; auto-seeds; returns `{ models, defaultModel }`
+- [app/api/admin/models/route.ts](app/api/admin/models/route.ts) — admin CRUD (GET list, POST create)
+- [app/api/admin/models/[id]/route.ts](app/api/admin/models/[id]/route.ts) — admin CRUD (PATCH toggle, DELETE)
+- [app/api/admin/config/route.ts](app/api/admin/config/route.ts) — admin GET/PATCH for GlobalConfig
+- [app/store/access.ts](app/store/access.ts) — `dbModels` field; `fetch()` concurrently calls `/api/config` + `/api/models`
+- [app/utils/hooks.ts](app/utils/hooks.ts) — `useAllModels()` uses `dbModels` when available
 
 ### Credit System
 
@@ -106,7 +131,7 @@ Each user has a `creditUSD` balance (Number, default 0, rounded to 2 decimal pla
 - [app/api/user/credit/route.ts](app/api/user/credit/route.ts) — authenticated GET; returns current user's `creditUSD`
 - [app/components/user-profile.tsx](app/components/user-profile.tsx) — fetches `/api/user/credit` on mount and displays the balance in the sidebar
 
-**Admin UI** — the `/admin` page has a **Credits** tab (grant credit by email + amount) and the **Models** tab has an inline-editable "Cost / 1M tokens" column that PATCHes `/api/admin/models/[id]`.
+**Admin UI** — the `/admin` page has a **Credits** tab (grant credit by email + amount), a **Models** tab (set default model, add/toggle/delete models, inline-edit cost and vision fields), and an **Operations** tab (view history of admin actions). The operations tab no longer has any runnable actions — it is a read-only history log.
 
 ### Image Input (Vision)
 

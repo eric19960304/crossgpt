@@ -7,6 +7,7 @@ import { LLMModelDoc } from "@/app/models/LLMModel";
 import {
   GlobalConfig,
   FALLBACK_INITIAL_USER_CREDIT,
+  FALLBACK_DEFAULT_MODEL,
 } from "@/app/models/GlobalConfig";
 import { AdminPage } from "./admin-page";
 import { ADMIN_EMAIL } from "./config";
@@ -31,6 +32,10 @@ export default async function Admin() {
     typeof configDoc?.initialUserCredit === "number"
       ? configDoc.initialUserCredit
       : FALLBACK_INITIAL_USER_CREDIT;
+  const initialDefaultModel: string =
+    typeof configDoc?.defaultModel === "string" && configDoc.defaultModel !== ""
+      ? configDoc.defaultModel
+      : FALLBACK_DEFAULT_MODEL;
 
   // Serialize for client component
   const serializedUsers = users.map((u: any) => ({
@@ -69,6 +74,7 @@ export default async function Admin() {
       activities={serializedActivities}
       models={serializedModels}
       initialUserCredit={initialUserCredit}
+      initialDefaultModel={initialDefaultModel}
     />
   );
 }

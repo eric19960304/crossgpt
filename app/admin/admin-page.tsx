@@ -40,6 +40,7 @@ interface AdminPageProps {
   activities: ActivityData[];
   models: ModelData[];
   initialUserCredit: number;
+  initialDefaultModel: string;
 }
 
 const PROVIDER_OPTIONS: ModelProviderData[] = [
@@ -63,6 +64,7 @@ export function AdminPage({
   activities,
   models: initialModels,
   initialUserCredit,
+  initialDefaultModel,
 }: AdminPageProps) {
   const [activeTab, setActiveTab] = useState<"users" | "models" | "credits" | "operations">("users");
   const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
@@ -135,6 +137,12 @@ export function AdminPage({
   const [configCreditDraft, setConfigCreditDraft] = useState<string>(String(initialUserCredit));
   const [savingConfig, setSavingConfig] = useState(false);
   const [configResult, setConfigResult] = useState<{ ok: boolean; message: string } | null>(null);
+
+  // Default model config state
+  const [defaultModel, setDefaultModel] = useState<string>(initialDefaultModel);
+  const [defaultModelDraft, setDefaultModelDraft] = useState<string>(initialDefaultModel);
+  const [savingDefaultModel, setSavingDefaultModel] = useState(false);
+  const [defaultModelResult, setDefaultModelResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   // Credits set state
   const [grantEmail, setGrantEmail] = useState("");
@@ -374,6 +382,32 @@ export function AdminPage({
     setSavingConfig(false);
   }
 
+  async function handleSaveDefaultModel(e: React.FormEvent) {
+    e.preventDefault();
+    setSavingDefaultModel(true);
+    setDefaultModelResult(null);
+    const value = defaultModelDraft.trim();
+    if (!value) {
+      setDefaultModelResult({ ok: false, message: "Model name cannot be empty" });
+      setSavingDefaultModel(false);
+      return;
+    }
+    const res = await fetch("/api/admin/config", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ defaultModel: value }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      setDefaultModel(data.defaultModel);
+      setDefaultModelDraft(data.defaultModel);
+      setDefaultModelResult({ ok: true, message: `Default model updated to "${data.defaultModel}".` });
+    } else {
+      setDefaultModelResult({ ok: false, message: data.error || "Failed to update default model" });
+    }
+    setSavingDefaultModel(false);
+  }
+
   async function handleSetCredit(e: React.FormEvent) {
     e.preventDefault();
     setGranting(true);
@@ -568,6 +602,30 @@ export function AdminPage({
 
       {activeTab === "models" && (
         <div className={styles.modelsSection}>
+          <h2 className={styles.sectionTitle}>Default Model</h2>
+          <p className={styles.subtitle}>
+            Model selected by default in every new chat. Currently <strong>{defaultModel}</strong>.
+          </p>
+          <form className={styles.addModelForm} onSubmit={handleSaveDefaultModel}>
+            <input
+              className={styles.modelInput}
+              type="text"
+              placeholder="Model name (e.g. gpt-4o-mini)"
+              value={defaultModelDraft}
+              onChange={(e) => setDefaultModelDraft(e.target.value)}
+              required
+            />
+            <button className={styles.addBtn} type="submit" disabled={savingDefaultModel}>
+              {savingDefaultModel ? "Saving…" : "Save"}
+            </button>
+          </form>
+          {defaultModelResult && (
+            <p className={defaultModelResult.ok ? styles.successMsg : styles.errorMsg}>
+              {defaultModelResult.message}
+            </p>
+          )}
+
+          <h2 className={styles.sectionTitle} style={{ marginTop: "1.5rem" }}>Models</h2>
           <form className={styles.addModelForm} onSubmit={handleAdd}>
             <input
               className={styles.modelInput}

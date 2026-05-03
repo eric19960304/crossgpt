@@ -9,9 +9,6 @@
     "lint": "next lint",
     "export": "cross-env BUILD_MODE=export BUILD_APP=1 next build",
     "export:dev": "cross-env BUILD_MODE=export BUILD_APP=1 next dev",
-    "app:dev": "yarn tauri dev",
-    "app:build": "yarn tauri build",
-    "app:clear": "yarn tauri dev",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
@@ -56,8 +53,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
-    "@tauri-apps/api": "^2.1.1",
-    "@tauri-apps/cli": "1.5.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
