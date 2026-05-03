@@ -67,7 +67,7 @@ NEXTAUTH_URL='your application URL, http://localhost:3000 for localhost dev'
 NEXTAUTH_SECRET='a random secret you generated for security purpose, use openssl rand -base64 32'
 
 # app setting
-DEFAULT_MODEL='default model to use, e.g. gpt-5-nano'
+DEFAULT_MODEL='default model to use, e.g. gpt-5-mini'
 
 # DB setting
 CROSSGPT_DB_DATA_PATH='specifying data path at the host machine, only required when running via Docker Compose'

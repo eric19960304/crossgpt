@@ -47,9 +47,9 @@ Google OAuth redirect URI must be set to `https://localhost:3000/api/auth/callba
 All the avaliable models are defined at [app/constant.ts](/app/constant.ts), for example:
 ```ts
 const openaiModels = [
-  "gpt-5-nano",
   "gpt-5-mini",
-  "gpt-5",
+  "gpt-5.4",
+  "gpt-5.5",
 ];
 
 const googleModels: string[] = [
