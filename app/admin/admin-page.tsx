@@ -118,8 +118,6 @@ export function AdminPage({
   // Operations tab state
   const [opHistory, setOpHistory] = useState<OperationHistoryData[]>([]);
   const [opHistoryLoaded, setOpHistoryLoaded] = useState(false);
-  const [triggering, setTriggering] = useState(false);
-  const [triggerResult, setTriggerResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   useEffect(() => {
     if (activeTab !== "operations" || opHistoryLoaded) return;
@@ -131,26 +129,6 @@ export function AdminPage({
       })
       .catch(() => setOpHistoryLoaded(true));
   }, [activeTab, opHistoryLoaded]);
-
-  async function handleRunOperation(operationName: string) {
-    setTriggering(true);
-    setTriggerResult(null);
-    const res = await fetch("/api/admin/operations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ operationName }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok) {
-      setTriggerResult({ ok: true, message: `Operation "${operationName}" triggered successfully.` });
-      if (data.record) {
-        setOpHistory((prev) => [data.record, ...prev]);
-      }
-    } else {
-      setTriggerResult({ ok: false, message: data.error || "Failed to trigger operation" });
-    }
-    setTriggering(false);
-  }
 
   // Initial user credit config state
   const [configCredit, setConfigCredit] = useState<number>(initialUserCredit);
@@ -899,25 +877,6 @@ export function AdminPage({
       {activeTab === "operations" && (
         <div className={styles.operationsSection}>
           <h2 className={styles.sectionTitle}>Operations</h2>
-
-          <div className={styles.operationRow}>
-            <div className={styles.operationItem}>
-              <span className={styles.operationLabel}>Re-build &amp; re-deploy</span>
-              <button
-                className={styles.runBtn}
-                onClick={() => handleRunOperation("Re-build & re-deploy")}
-                disabled={triggering}
-              >
-                {triggering ? "Triggering…" : "Run"}
-              </button>
-            </div>
-          </div>
-
-          {triggerResult && (
-            <p className={triggerResult.ok ? styles.successMsg : styles.errorMsg}>
-              {triggerResult.message}
-            </p>
-          )}
 
           <h2 className={styles.sectionTitle} style={{ marginTop: "1.5rem" }}>History</h2>
           {!opHistoryLoaded ? (
