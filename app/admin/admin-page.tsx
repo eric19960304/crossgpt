@@ -607,7 +607,7 @@ export function AdminPage({
             <input
               className={styles.modelInput}
               type="text"
-              placeholder="Model name (e.g. gpt-4o-mini)"
+              placeholder="Model name (e.g. gpt-5-mini)"
               value={defaultModelDraft}
               onChange={(e) => setDefaultModelDraft(e.target.value)}
               required

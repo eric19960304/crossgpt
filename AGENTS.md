@@ -134,7 +134,7 @@ The available model list and the default model are both DB-backed and configurab
 
 **Model list** — stored in the `LLMModel` collection. Seeded from `DEFAULT_MODELS` in `app/constant.ts` on first run (when the collection is empty). Admins can add, toggle, and delete models from the **Models** tab in `/admin`.
 
-**Default model** — stored as `defaultModel` in the singleton `GlobalConfig` document (fallback: `"gpt-4o-mini"`). Admins set it via the **Default Model** input at the top of the Models tab. The env var `DEFAULT_MODEL` is superseded by the DB value and should be considered deprecated.
+**Default model** — stored as `defaultModel` in the singleton `GlobalConfig` document (fallback: `"gpt-5-mini"`). Admins set it via the **Default Model** input at the top of the Models tab. The env var `DEFAULT_MODEL` is superseded by the DB value and should be considered deprecated.
 
 **Data flow:**
 - `/api/models` (Node.js, authenticated) — returns `{ models: LLMModel[], defaultModel: string }`. The DB `defaultModel` is fetched here alongside the model list.
