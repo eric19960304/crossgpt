@@ -603,9 +603,6 @@ export function AdminPage({
       {activeTab === "models" && (
         <div className={styles.modelsSection}>
           <h2 className={styles.sectionTitle}>Default Model</h2>
-          <p className={styles.subtitle}>
-            Model selected by default in every new chat. Currently <strong>{defaultModel}</strong>.
-          </p>
           <form className={styles.addModelForm} onSubmit={handleSaveDefaultModel}>
             <input
               className={styles.modelInput}
